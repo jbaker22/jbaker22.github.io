@@ -2,23 +2,62 @@
 <meta charset="utf-8">
 <style>
 
-.chart rect {
+.bar {
   fill: steelblue;
 }
 
-.chart text {
-  fill: white;
+.axis text {
   font: 10px sans-serif;
-  text-anchor: middle;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
 }
 
 </style>
-<svg class="chart"></svg>
+<svg class="chart" height="1" width="1"></svg>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<br>
 <script>
 
-var width = 960,
-    height = 500;
+// get query string
+var query = decodeURI(window.location.search);
+
+// function to clean the query string of everything but alphanumerics
+String.prototype.cleanup = function() {
+  return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '');
+}
+
+// get cleaned-up string
+var cleanString = query.cleanup();
+
+// init hash table of letters and their counts
+var letterCounts = Object();
+
+// iterate through string to populate table
+for (i = 0; i < cleanString.length; i++) {
+  var l = cleanString.charAt(i);
+  letterCounts[l] = (isNaN(letterCounts[l]) ? 1 : letterCounts[l] + 1);
+}
+
+// get keys (letters)
+var letters = Object.keys(letterCounts);
+
+// get values for the letter keys
+var counts = Object.keys(letterCounts).map(function(key) {
+  return letterCounts[key];
+});
+
+var margin = {top: 20, right: 20, bottom: 30, left: 70},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
 var x = d3.scale.ordinal()
     .rangeRoundBands([0, width], .1);
@@ -26,33 +65,53 @@ var x = d3.scale.ordinal()
 var y = d3.scale.linear()
     .range([height, 0]);
 
-var chart = d3.select(".chart")
-    .attr("width", width)
-    .attr("height", height);
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
 
-d3.tsv("data.tsv", type, function(error, data) {
-  x.domain(data.map(function(d) { return d.name; }));
-  y.domain([0, d3.max(data, function(d) { return d.value; })]);
+var yAxis = d3.svg.axis()
+     .scale(y)
+    .orient("left")
+    .ticks(10);
 
-  var bar = chart.selectAll("g")
-      .data(data)
-    .enter().append("g")
-      .attr("transform", function(d) { return "translate(" + x(d.name) + ",0)"; });
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  bar.append("rect")
+// create array of key/value pairs
+var letterArray = d3.entries(letterCounts)
+
+  x.domain(letterArray.map(function(d) { return d.key; }));
+  y.domain([0, d3.max(letterArray, function(d) { return d.value; })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("y", 6)
+      .attr("dy", "-1.5em")
+      .style("text-anchor", "end")
+      .text("Frequency");
+
+  svg.selectAll(".bar")
+      .data(letterArray)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.key); })
+      .attr("width", x.rangeBand())
       .attr("y", function(d) { return y(d.value); })
-      .attr("height", function(d) { return height - y(d.value); })
-      .attr("width", x.rangeBand());
+      .attr("height", function(d) { return height - y(d.value); });
 
-  bar.append("text")
-      .attr("x", x.rangeBand() / 2)
-      .attr("y", function(d) { return y(d.value) + 3; })
-      .attr("dy", ".75em")
-      .text(function(d) { return d.value; });
-});
 
 function type(d) {
-  d.value = +d.value; // coerce to number
+  d.frequency = +d.frequency;
   return d;
 }
 
