@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>jbaker22.github.io by jbaker22</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="GitHub page of Jeff Baker (@jbaker22)">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <h1>Jeff Baker<br>jbaker22.github.io</h1>
+        <p>MS in Analytics, University of San Francisco</p>
+        <a href="https://github.com/jbaker22">View My GitHub Profile</a>
+        <div class="view"><a href="https://github.com/jbaker22/spring-2015-msan622">MSAN622 Submission Page</a></div>
+      </header>
+      <section>
+        <h3>Welcome to Jeff Baker's GitHub page.</h3>
+
+
+<p>I'm currently a Masters candidate at the University of San Francisco's Analytics program. For more information about the degree and/or the program, click <a href="http://www.usfca.edu/artsci/msan">here</a>.</p>
+
+<!--pre><code>$ cd your_repo_root/repo_name
+$ git fetch origin
+$ git checkout gh-pages
+</code></pre-->
+
+
+<h3>
+<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+
+<p>Having trouble with Pages? Check out the documentation at <a href="https://help.github.com/pages">https://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
