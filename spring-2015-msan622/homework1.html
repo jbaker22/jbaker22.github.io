@@ -27,11 +27,6 @@
   display: none;
 }
 
-/* remove y-axis line (B-level #1) */
-.y.axis path {
-  display: none;
-}
-
 </style>
 <h3>To update, edit query string in the url (after "?")</h3>
 <svg class="chart" height="1" width="1"></svg>
@@ -76,9 +71,12 @@ var x = d3.scale.ordinal()
 var y = d3.scale.linear()
     .range([height, 0]);
 
+// remove x-axis tick marks for each letter (B-level #1)
 var xAxis = d3.svg.axis()
     .scale(x)
-    .orient("bottom");
+    .orient("bottom")
+    .outerTickSize(0)
+    .innerTickSize(0);
 
 // set y-axis ticks to increment by 5 (B-level #2)
 var yAxis = d3.svg.axis()
@@ -118,6 +116,7 @@ letterArray = letterArray.sort(function(a,b) {
       .attr("class", "y axis")
       .call(yAxis)
 
+// modified "Frequency" axis label to be horizontal and above the line, for readability (B-level #4)
     .append("text")
       .attr("y", 6)
       .attr("dy", "-1.5em")
@@ -134,9 +133,9 @@ var vowels = ["a", "e", "i", "o", "u"];
       .attr("width", x.rangeBand())
       .attr("y", function(d) { return y(d.value); })
       .attr("height", function(d) { return height - y(d.value); })
-      // change color of bars that correspond to vowels (B-level #4)
+// change color of bars that correspond to vowels (B-level #5)
       .style("fill", function(d) {
-        if (vowels.indexOf(d.key) > -1) {return "orange"}
+        if (vowels.indexOf(d.key) > -1) {return "#ef8a62"}
         else {return "steelblue"};
       });
 
