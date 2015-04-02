@@ -27,6 +27,11 @@
   display: none;
 }
 
+/* remove y-axis line (B-level #1) */
+.y.axis path {
+  display: none;
+}
+
 </style>
 <h3>To update, edit query string in the url (after "?")</h3>
 <svg class="chart" height="1" width="1"></svg>
@@ -75,10 +80,13 @@ var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom");
 
+// set y-axis ticks to increment by 5 (B-level #2)
 var yAxis = d3.svg.axis()
      .scale(y)
     .orient("left")
-    .ticks(10);
+    .ticks(4)
+    .tickFormat(d3.format("d"))
+    .tickSubdivide(0);
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -88,6 +96,15 @@ var svg = d3.select("body").append("svg")
 
 // create array of key/value pairs
 var letterArray = d3.entries(letterCounts)
+
+// sort letters alphabetically (B-level #3)
+letterArray = letterArray.sort(function(a,b) { 
+  if (a.key < b.key)
+    return -1
+  if (b.key < a.key)
+  return 1
+  return 0 
+});
 
   x.domain(letterArray.map(function(d) { return d.key; }));
   y.domain([0, d3.max(letterArray, function(d) { return d.value; })]);
@@ -100,11 +117,14 @@ var letterArray = d3.entries(letterCounts)
   svg.append("g")
       .attr("class", "y axis")
       .call(yAxis)
+
     .append("text")
       .attr("y", 6)
       .attr("dy", "-1.5em")
       .style("text-anchor", "end")
       .text("Frequency");
+
+var vowels = ["a", "e", "i", "o", "u"];
 
   svg.selectAll(".bar")
       .data(letterArray)
@@ -113,11 +133,16 @@ var letterArray = d3.entries(letterCounts)
       .attr("x", function(d) { return x(d.key); })
       .attr("width", x.rangeBand())
       .attr("y", function(d) { return y(d.value); })
-      .attr("height", function(d) { return height - y(d.value); });
+      .attr("height", function(d) { return height - y(d.value); })
+      // change color of bars that correspond to vowels (B-level #4)
+      .style("fill", function(d) {
+        if (vowels.indexOf(d.key) > -1) {return "orange"}
+        else {return "steelblue"};
+      });
 
 
 function type(d) {
-  d.frequency = +d.frequency;
+  d.value = +d.value;
   return d;
 }
 

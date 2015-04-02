@@ -1,5 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,700);
-@import "compass/utilities/general/clearfix";
+/*@import "compass/utilities/general/clearfix";*/
 
 /* Social Icons Config */
 $SocialIconSize: 64px;
