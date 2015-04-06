@@ -9,37 +9,38 @@
 <style>
 
 .bar {
-  fill: steelblue;
+    fill: steelblue;
 }
 
 .axis text {
-  font: 10px sans-serif;
+    font: 10px sans-serif;
 }
 
 .axis path,
 .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
 
 .x.axis path {
-  display: none;
+    display: none;
 }
 
 </style>
 <br>
-<!-- <p>
+<p>
 <form name="update" id="updateForm" action="#">
-  Query string: <br>
-  <input name="" type="text" id="queryString" placeholder="Enter string&hellip;">
-  <input name="submit" type="submit" value="Count Letters" onClick="updateData();">
+    Query string: <br>
+    <input name="" type="text" id="queryString" placeholder="Enter string&hellip;">
+    <input name="submit" type="submit" value="Count Letters">
 </form></p>
- -->
+
  <label><input name="sorting" id="changeSort" type="checkbox">Change sort</label>
 <br><br>
 <svg class="chart" height="1" width="1"></svg>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<div id="chart"></div>
 <script>
 
 
@@ -75,13 +76,10 @@ var yAxis = d3.svg.axis()
 var vowels = ["a", "e", "i", "o", "u"];
 
 
-// drawChart(query);
-
-
 function cleanString(query) {
     // function to clean the query string of everything but alphanumerics
     String.prototype.cleanup = function() {
-      return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '');
+        return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '');
     }
 
     // get cleaned-up string
@@ -92,8 +90,8 @@ function cleanString(query) {
 
     // iterate through string to populate table
     for (i = 0; i < cleanString.length; i++) {
-      var l = cleanString.charAt(i);
-      letterCounts[l] = (isNaN(letterCounts[l]) ? 1 : letterCounts[l] + 1);
+        var l = cleanString.charAt(i);
+        letterCounts[l] = (isNaN(letterCounts[l]) ? 1 : letterCounts[l] + 1);
     }
 
     return letterCounts;
@@ -102,34 +100,28 @@ function cleanString(query) {
 
 function drawChart(query) {
 
-    // process query string to remove non-alphabet characters
-    var letterCounts = cleanString(query);
-
-    // create list of objects to store letter counts
-    var letterArray = d3.entries(letterCounts);
+    // process query string to remove non-alphabet characters; create list of objects to store letter counts
+    var letterArray = d3.entries(cleanString(query));
 
     // sort letters alphabetically (B-level #3)
-    letterArray = letterArray.sort(function(a,b) { 
-      if (a.key < b.key)
-        return -1
-      if (b.key < a.key)
-      return 1
-      return 0 
-    });
-
+    // letterArray = letterArray.sort(function(a,b) { 
+    //   if (a.key < b.key)
+    //     return -1
+    //   if (b.key < a.key)
+    //   return 1
+    //   return 0 
+    // });
 
     // set domain ranges for axes
     x.domain(letterArray.map(function(d) { return d.key; }));
     y.domain([0, d3.max(letterArray, function(d) { return d.value; })]);
 
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("#chart").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
 
     svg.append("g")
         .attr("class", "x axis")
@@ -139,7 +131,6 @@ function drawChart(query) {
     svg.append("g")
         .attr("class", "y axis")
         .call(yAxis)
-
         // modified "Frequency" axis label to be horizontal and above the line, for readability (B-level #4)
         .append("text")
         .attr("y", 6)
@@ -161,10 +152,12 @@ function drawChart(query) {
             else {return "steelblue"};
         });
 
-    d3.select("input").on("change", change);
+    d3.select("#changeSort").on("change", change);
+
+    svg.exit().remove();
 
     var sortTimeout = setTimeout(function() {
-        d3.select("input").property("checked", true).each(change);
+        d3.select("#changeSort").property("checked", true).each(change);
     }, 1000);
 
     function change() {
@@ -189,10 +182,18 @@ function drawChart(query) {
 
         transition.select(".x.axis")
             .call(xAxis)
-          .selectAll("g")
+            .selectAll("g")
             .delay(delay);
     }
 }
+
+// $("form").submit(function() {
+//     // get query string
+//     var query = document.getElementById("updateForm").elements.namedItem("queryString").value;
+//     var newLetterCounts = cleanString(query);
+
+
+// });
 
 
 function updateData() {
@@ -200,6 +201,7 @@ function updateData() {
     var query = document.getElementById("updateForm").elements.namedItem("queryString").value;
     // process query string to remove non-alphabet characters
     var letterCounts = cleanString(query);
+
     drawChart(letterCounts)
     return false;
 }
