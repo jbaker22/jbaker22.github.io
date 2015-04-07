@@ -7,43 +7,75 @@
   <meta name="description" content="MSAN 622 Submission Page - Homework 1">
 </head>
 <style>
+    .bar {
+        fill: steelblue;
+    }
 
-.bar {
-    fill: steelblue;
-}
+    .bar:hover {
+      fill: lightsteelblue;
+    }
 
-.axis text {
-    font: 10px sans-serif;
-}
+    .axis text {
+        font: 10px sans-serif;
+    }
 
-.axis path,
-.axis line {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
-}
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: darkgray;
+        shape-rendering: crispEdges;
+    }
 
-.x.axis path {
-    display: none;
-}
+    .x.axis path {
+        display: none;
+    }
 
+    .d3-tip {
+      line-height: 1;
+      font-weight: bold;
+      padding: 12px;
+      background: rgba(253,184,99, 0.8);
+      color: #fff;
+      border-radius: 2px;
+    }
+
+    /* Creates a small triangle extender for the tooltip */
+    .d3-tip:after {
+      box-sizing: border-box;
+      display: inline;
+      font-size: 10px;
+      width: 100%;
+      line-height: 1;
+      color: rgba(253,184,99, 0.8);
+      content: "\25BC";
+      position: absolute;
+      text-align: center;
+    }
+
+    /* Style northward tooltips differently */
+    .d3-tip.n:after {
+      text-align: center;
+      margin: -2px 0 0 0;
+      top: 100%;
+      left: 0;
+    }
 </style>
-<br>
-<p>
-<form name="update" id="updateForm" action="#">
-    Query string: <br>
-    <input name="" type="text" id="queryString" placeholder="Enter string&hellip;">
-    <input name="submit" type="submit" value="Count Letters">
-</form></p>
 
- <label><input name="sorting" id="changeSort" type="checkbox">Change sort</label>
-<br><br>
+<h1>Homework 1: Bar Chart </h1>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="https://github.com/jbaker22/jbaker22.github.io/blob/master/spring-2015-msan622/homework1.html">Code on GitHub</a></small>
+    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="#writeup">Submission details (below)</a></small>
+    <br><br>
+<p>Query string: <br>
+    <input id="queryString" type="text" placeholder="Enter string&hellip;">
+    <button id="recount" onClick="redrawChart()">Count letters</button>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input name="sorting" id="changeSort" type="checkbox">Change sort</label>
+</p>
 <svg class="chart" height="1" width="1"></svg>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <div id="chart"></div>
+
 <script>
-
-
 // get query string
 var query = decodeURI(window.location.search);
 // var query = document.getElementById("updateForm").elements.namedItem("queryString").value;
@@ -75,6 +107,13 @@ var yAxis = d3.svg.axis()
 
 var vowels = ["a", "e", "i", "o", "u"];
 
+// tooltip that includes the letter and frequency count on bar hover
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return "<span style='font: 11px sans-serif;'><strong>" + d.key.toUpperCase() + "<br>Frequency: </strong></span> <span style='font-size: 11px; color: red'>" + d.value + "</span>";
+  })
 
 function cleanString(query) {
     // function to clean the query string of everything but alphanumerics
@@ -121,7 +160,21 @@ function drawChart(query) {
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+        // hide the y-axis when the user hovers on the chart area
+        // .on("mouseover", function() { 
+        //     d3.select("y axis")
+        //     .transition()
+        //     .attr("opacity", 1)
+        // })
+        // .on("mouseout", function() { 
+        //     d3.select("y axis")
+        //     .transition()
+        //     .attr("opacity", 0) 
+        //   });
+    ;
+    // calls the tooltip function
+    svg.call(tip);
 
     svg.append("g")
         .attr("class", "x axis")
@@ -143,14 +196,20 @@ function drawChart(query) {
         .enter().append("rect")
         .attr("class", "bar")
         .attr("x", function(d) { return x(d.key); })
-        .attr("width", x.rangeBand())
         .attr("y", function(d) { return y(d.value); })
+        .attr("width", x.rangeBand())
+        // .transition()
+        //     .delay(function (d,i){ return i * 150;})
+        //     .duration(150)
         .attr("height", function(d) { return height - y(d.value); })
         // change color of bars that correspond to vowels (B-level #5)
-        .style("fill", function(d) {
-            if (vowels.indexOf(d.key) > -1) {return "#ef8a62"}
-            else {return "steelblue"};
-        });
+        // .style("fill", function(d) {
+        //     if (vowels.indexOf(d.key) > -1) {return "#ef8a62"}
+        //     else {return "steelblue"};
+        // })
+        .on("mouseover", tip.show)
+        .on("mouseout", tip.hide)
+        ;
 
     d3.select("#changeSort").on("change", change);
 
@@ -187,25 +246,42 @@ function drawChart(query) {
     }
 }
 
-// $("form").submit(function() {
-//     // get query string
-//     var query = document.getElementById("updateForm").elements.namedItem("queryString").value;
-//     var newLetterCounts = cleanString(query);
+// when the button is clicked, get the new string from the text input, and redraw the chart
+function redrawChart() {
+    // get new query string
+    var newLetterArray = d3.entries(cleanString(document.getElementById("queryString").value));
 
+    // rescale ranges for data
+    x.domain(newLetterArray.map(function(d) { return d.key; }));
+    y.domain([0, d3.max(newLetterArray, function(d) { return d.value; })]);
 
-// });
+    // select rectangles (array of objects)
+    var svg = d3.select("#chart").selectAll("svg").selectAll("rect").transition()
+        .data(newLetterArray, function(d) {return d; });
 
+    // rescale x-axis
+    svg.selectAll("g.x.axis")
+        .duration(300)
+        .call(xAxis);
 
-function updateData() {
-    // get query string
-    var query = document.getElementById("updateForm").elements.namedItem("queryString").value;
-    // process query string to remove non-alphabet characters
-    var letterCounts = cleanString(query);
+    // rescale y-axis
+    svg.selectAll("g.y.axis")
+        .duration(300)
+        .call(yAxis);
 
-    drawChart(letterCounts)
-    return false;
+    
+    svg.enter().append("rect")
+        .style("fill", "green");
+
+    svg.attr("class", "bar")
+    .attr("x", function(d) { return x(d.key); })
+    .attr("y", function(d) { return y(d.value); })
+    .attr("width", x.rangeBand())
+    .attr("height", function(d) { return height - y(d.value); });
+
+    svg.exit().remove();
+
 }
-
 
 function type(d) {
   d.value = +d.value;
@@ -214,5 +290,37 @@ function type(d) {
 
 window.onload = drawChart(query);
 
-
 </script>
+
+<div id="writeup">
+    <h2>Submission Details</h2>
+    <h3>Functionality List</h3>
+    <div>The following features were implemented in order to reach each corresponding grade level. Corresponding line numbers from the code are added for reference. </div>
+    <br>
+    <span id="c-level" style="font-size: 18"><b>C-Level</b></span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In addition to the required basic functionality, the following features were added: 
+        <ul>
+          <li>Tick label formatting: Changed decimal precision (integers only) - lines 105</li>
+          <li>Tick label formatting: Changed frequency (ticks every 5 units) - line 105</li>
+          <li>Tick label formatting: Removed x-axis ticks - line 98</li>
+          <li>Grid &amp; axis lines: Changed color of y-axis to dark gray - line 26</li>
+          <li>Grid &amp; axis lines: Moved y-axis label to read horizontally above axis - line 204</li>
+          <li>Bar colors:  Colored vowels differently from consonants - line 222 (overwritten by B-level features)</li>
+          <li>Sorting: Sorted bars alphabetically - line 163 (overwritten by B-level functionality)</li>
+        </ul>
+    <span id="b-level" style="font-size: 18"><b>B-Level</b></span><br>
+        <ul>
+          <li>Sorting: Added a checkbox that changes sorting from alphabetically to sorting by value - input @ line 75, function @ line 233 </li>
+          <li>Tooltip: shows the exact value of a bar when hovering over it - line 114, function calls @ line 226</li>
+        </ul>
+    <span id="a-level" style="font-size: 18"><b>A-Level</b></span><br>
+        <ul>
+          <li></li>
+          <li></li>
+        </ul>
+
+</div>
+
+
+
+
