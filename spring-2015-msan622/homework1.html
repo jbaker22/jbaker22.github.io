@@ -67,7 +67,7 @@
     <br><br>
 <p>Query string: <br>
     <input id="queryString" type="text" placeholder="Enter string&hellip;">
-    <button id="recount" onClick="redrawChart()">Count letters</button>
+    <button id="recount" onClick="query_textbox()">Count letters</button>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input name="sorting" id="changeSort" type="checkbox">Change sort</label>
 </p>
 <svg class="chart" height="1" width="1"></svg>
@@ -112,7 +112,8 @@ var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    return "<span style='font: 11px sans-serif;'><strong>" + d.key.toUpperCase() + "<br>Frequency: </strong></span> <span style='font-size: 11px; color: red'>" + d.value + "</span>";
+    return "<span style='font: 11px sans-serif;'><strong>" + d.key.toUpperCase() + 
+    "<br>Frequency: </strong></span> <span style='font-size: 11px; color: red'>" + d.value + "</span>";
   })
 
 function cleanString(query) {
@@ -137,10 +138,24 @@ function cleanString(query) {
 }
 
 
-function drawChart(query) {
-
+function query_window() {
+    // get query string from the URI
     // process query string to remove non-alphabet characters; create list of objects to store letter counts
-    var letterArray = d3.entries(cleanString(query));
+    var letters = d3.entries(cleanString(decodeURI(window.location.search)));
+    drawChart(letters);
+}
+
+function query_textbox() {
+    d3.selectAll("svg")
+    .remove(); 
+    // get query string from the input box instead of the window
+    var letters = d3.entries(cleanString(document.getElementById("queryString").value));
+    drawChart(letters);
+}
+
+function drawChart(qString) {
+    // process query string to remove non-alphabet characters; create list of objects to store letter counts
+    var letterArray = qString;
 
     // sort letters alphabetically (B-level #3)
     // letterArray = letterArray.sort(function(a,b) { 
@@ -198,9 +213,6 @@ function drawChart(query) {
         .attr("x", function(d) { return x(d.key); })
         .attr("y", function(d) { return y(d.value); })
         .attr("width", x.rangeBand())
-        // .transition()
-        //     .delay(function (d,i){ return i * 150;})
-        //     .duration(150)
         .attr("height", function(d) { return height - y(d.value); })
         // change color of bars that correspond to vowels (B-level #5)
         // .style("fill", function(d) {
@@ -212,8 +224,6 @@ function drawChart(query) {
         ;
 
     d3.select("#changeSort").on("change", change);
-
-    svg.exit().remove();
 
     var sortTimeout = setTimeout(function() {
         d3.select("#changeSort").property("checked", true).each(change);
@@ -256,7 +266,7 @@ function redrawChart() {
     y.domain([0, d3.max(newLetterArray, function(d) { return d.value; })]);
 
     // select rectangles (array of objects)
-    var svg = d3.select("#chart").selectAll("svg").selectAll("rect").transition()
+    var svg = d3.select("#chart").selectAll("svg").transition()
         .data(newLetterArray, function(d) {return d; });
 
     // rescale x-axis
@@ -288,7 +298,8 @@ function type(d) {
   return d;
 }
 
-window.onload = drawChart(query);
+// draw the chart with initial data when the window opens up
+window.onload = query_window();
 
 </script>
 
@@ -305,13 +316,14 @@ window.onload = drawChart(query);
           <li>Tick label formatting: Removed x-axis ticks - line 98</li>
           <li>Grid &amp; axis lines: Changed color of y-axis to dark gray - line 26</li>
           <li>Grid &amp; axis lines: Moved y-axis label to read horizontally above axis - line 204</li>
-          <li>Bar colors:  Colored vowels differently from consonants - line 222 (overwritten by B-level features)</li>
+          <li>Bar colors:  Colored vowels differently from consonants - line 222 (replaced with B-level features)</li>
           <li>Sorting: Sorted bars alphabetically - line 163 (overwritten by B-level functionality)</li>
         </ul>
     <span id="b-level" style="font-size: 18"><b>B-Level</b></span><br>
         <ul>
           <li>Sorting: Added a checkbox that changes sorting from alphabetically to sorting by value - input @ line 75, function @ line 233 </li>
           <li>Tooltip: shows the exact value of a bar when hovering over it - line 114, function calls @ line 226</li>
+          <li>Search box: added text input field (URI functionality remains intact) - line </li>
         </ul>
     <span id="a-level" style="font-size: 18"><b>A-Level</b></span><br>
         <ul>
