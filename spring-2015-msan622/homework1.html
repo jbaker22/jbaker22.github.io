@@ -7,9 +7,13 @@
   <meta name="description" content="MSAN 622 Submission Page - Homework 1">
 </head>
 <style>
+    #writeup {
+        width: 100%;
+    }
+
     #functionality {
-        width: 700px;
-        float: right;
+        width: 50%;
+        float: left;
         padding: 5px;
         margin-right: 15px;
     }
@@ -74,6 +78,7 @@
 </style>
 
 <h1>Homework 1: Bar Chart </h1>
+<h3>Enter some text in the URL bar above (after the "?"), or in the text box below.</h3>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="https://github.com/jbaker22/jbaker22.github.io/blob/master/spring-2015-msan622/homework1.html">Code on GitHub</a></small>
     <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="#writeup">Submission details (below)</a></small>
     <br><br>
@@ -298,7 +303,7 @@ window.onload = query_window();
 
 </script>
 
-<div id="writeup">
+<section id="writeup">
     <h2>Submission Details</h2>
     <section id="functionality">
         <h3>Functionality List</h3>
@@ -325,8 +330,9 @@ window.onload = query_window();
               <li>Search box: User can continue to update chart via text input and button combo - line 163</li>
             </ul>
     </section>
-    <section style="float: left;">
+    <section>
         <h3>Motivation</h3>
         <p>Similar to the rest of my pages here, I was aiming for a minimalistic design; it helped that the <a href="http://bl.ocks.org/mbostock/3885304">tutorial page</a> was similar in style. I wanted the information itself to stand out, so I chose blue bars on a simple, white plot area with minimal lines/tick marks, and a light gray y-axis so the numbers would pop out a bit. I made the y-axis mark ticks at larger intervals by setting the "sub-tick" count to 4; combined with integer counts, this spaced the ticks out quite well. This was to help unclutter the axis a bit when the counts got high. </p>
         <p>I didn't want any "loud" colors, but still wanted to emphasize what was important. In this vein, all of my <a href="http://colorbrewer2.org/?type=diverging&scheme=RdYlBu&n=5">exact colors</a> were intended to a) provide a good range of colors to see on screen, b) show clear contrast between chart elements, and c) minimize viewer irritation. Hovering over the bars de-emphasizes the bar with a light color, so the tooltip can stand out, and the information in the tooltip further highlights the letter and it's count in red.</p>
     </section>
+</section>
