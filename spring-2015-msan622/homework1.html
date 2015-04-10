@@ -179,10 +179,10 @@ function drawChart(qString) {
 
     // remove bars
     d3.selectAll("rect")
-        .transition()
-        .duration(500)
-        .attr("y", height)                              // set initial y to the height of the svg
-        .attr("height", 0)                              // set initial height to 0
+        // .transition()
+        // .duration(500)
+        // .attr("y", height)                              // set initial y to the height of the svg
+        // .attr("height", 0)                              // set initial height to 0
         .remove();
 
     // redraw the x-axis
