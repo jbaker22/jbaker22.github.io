@@ -88,7 +88,8 @@ var x = d3.scale.ordinal()
     .rangeRoundBands([0, width], .1);
 
 var y = d3.scale.linear()
-    .range([height, 0]);
+    .range([height, 0])
+    .nice();
 
 // remove x-axis tick marks for each letter (B-level #1)
 var xAxis = d3.svg.axis()
@@ -105,6 +106,20 @@ var yAxis = d3.svg.axis()
     .tickFormat(d3.format("d"))
     .tickSubdivide(0);
 
+// initialize chart margins and initial <g>
+var chart = d3.select("#chart")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// append a new SVG within the chart div
+var svg = chart.append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("id", "plot")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 var vowels = ["a", "e", "i", "o", "u"];
 
 // tooltip that includes the letter and frequency count on bar hover
@@ -119,7 +134,7 @@ var tip = d3.tip()
 function cleanString(query) {
     // function to clean the query string of everything but alphanumerics
     String.prototype.cleanup = function() {
-        return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '');
+        return this.toLowerCase().replace(/[^a-zA-Z]+/g, '');
     }
 
     // get cleaned-up string
@@ -128,7 +143,7 @@ function cleanString(query) {
     // init hash table of letters and their counts
     var letterCounts = Object();
 
-    // iterate through string to populate table
+    // iterate through string to populate hash table
     for (i = 0; i < cleanString.length; i++) {
         var l = cleanString.charAt(i);
         letterCounts[l] = (isNaN(letterCounts[l]) ? 1 : letterCounts[l] + 1);
@@ -146,55 +161,40 @@ function query_window() {
 }
 
 function query_textbox() {
-    d3.selectAll("svg")
-    .remove(); 
     // get query string from the input box instead of the window
-    var letters = d3.entries(cleanString(document.getElementById("queryString").value));
-    drawChart(letters);
+    var letterArray = d3.entries(cleanString(document.getElementById("queryString").value));
+    drawChart(letterArray);
 }
 
 function drawChart(qString) {
     // process query string to remove non-alphabet characters; create list of objects to store letter counts
     var letterArray = qString;
 
-    // sort letters alphabetically (B-level #3)
-    // letterArray = letterArray.sort(function(a,b) { 
-    //   if (a.key < b.key)
-    //     return -1
-    //   if (b.key < a.key)
-    //   return 1
-    //   return 0 
-    // });
-
     // set domain ranges for axes
     x.domain(letterArray.map(function(d) { return d.key; }));
     y.domain([0, d3.max(letterArray, function(d) { return d.value; })]);
 
-
-    var svg = d3.select("#chart").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        // hide the y-axis when the user hovers on the chart area
-        // .on("mouseover", function() { 
-        //     d3.select("y axis")
-        //     .transition()
-        //     .attr("opacity", 1)
-        // })
-        // .on("mouseout", function() { 
-        //     d3.select("y axis")
-        //     .transition()
-        //     .attr("opacity", 0) 
-        //   });
-    ;
     // calls the tooltip function
     svg.call(tip);
+
+    // remove bars
+    d3.selectAll("rect")
+        .transition()
+        .duration(500)
+        .attr("y", height)                              // set initial y to the height of the svg
+        .attr("height", 0)                              // set initial height to 0
+        .remove();
+
+    // redraw the x-axis
+    chart.select(".x.axis").remove();
 
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
+
+    // redraw the y-axis
+    chart.select(".y.axis").remove();
 
     svg.append("g")
         .attr("class", "y axis")
@@ -206,32 +206,38 @@ function drawChart(qString) {
         .style("text-anchor", "end")
         .text("Frequency");
 
-    svg.selectAll(".bar")
-        .data(letterArray)
-        .enter().append("rect")
+    // select all bars for updating 
+    var bar = svg.selectAll(".bar")
+        .data(letterArray, function(d) {return d.key;});
+
+    // add bars
+    bar.enter().append("rect")
         .attr("class", "bar")
         .attr("x", function(d) { return x(d.key); })
-        .attr("y", function(d) { return y(d.value); })
+        .attr("y", height)                              // set initial y to the height of the svg
+        .attr("height", 0)                              // set initial height to 0
         .attr("width", x.rangeBand())
-        .attr("height", function(d) { return height - y(d.value); })
+        // transitions to "grow" bars from 0
+        .transition()
+        .delay(function(d,i) {return i * 100; })
+        .duration(1000)
+        // post-transition values set as their actuals
+        .attr("y", function(d) {return y(d.value); })
+        .attr("height", function(d) { return height - y(d.value); });
         // change color of bars that correspond to vowels (B-level #5)
         // .style("fill", function(d) {
         //     if (vowels.indexOf(d.key) > -1) {return "#ef8a62"}
         //     else {return "steelblue"};
         // })
-        .on("mouseover", tip.show)
-        .on("mouseout", tip.hide)
-        ;
 
+    // tooltips on hover
+    bar.on("mouseover", tip.show)
+        .on("mouseout", tip.hide);
+
+    /* functions & call for alphabetic vs. count sort */
     d3.select("#changeSort").on("change", change);
 
-    var sortTimeout = setTimeout(function() {
-        d3.select("#changeSort").property("checked", true).each(change);
-    }, 1000);
-
     function change() {
-        clearTimeout(sortTimeout);
-
         // Copy-on-write since tweens are evaluated after a delay.
         var x0 = x.domain(letterArray.sort(this.checked
             ? function(a, b) { return b.value - a.value; }
@@ -254,42 +260,17 @@ function drawChart(qString) {
             .selectAll("g")
             .delay(delay);
     }
-}
 
-// when the button is clicked, get the new string from the text input, and redraw the chart
-function redrawChart() {
-    // get new query string
-    var newLetterArray = d3.entries(cleanString(document.getElementById("queryString").value));
-
-    // rescale ranges for data
-    x.domain(newLetterArray.map(function(d) { return d.key; }));
-    y.domain([0, d3.max(newLetterArray, function(d) { return d.value; })]);
-
-    // select rectangles (array of objects)
-    var svg = d3.select("#chart").selectAll("svg").transition()
-        .data(newLetterArray, function(d) {return d; });
-
-    // rescale x-axis
-    svg.selectAll("g.x.axis")
-        .duration(300)
-        .call(xAxis);
-
-    // rescale y-axis
-    svg.selectAll("g.y.axis")
-        .duration(300)
-        .call(yAxis);
-
-    
-    svg.enter().append("rect")
-        .style("fill", "green");
-
-    svg.attr("class", "bar")
-    .attr("x", function(d) { return x(d.key); })
-    .attr("y", function(d) { return y(d.value); })
-    .attr("width", x.rangeBand())
-    .attr("height", function(d) { return height - y(d.value); });
-
-    svg.exit().remove();
+/* OLD CODE: BASIC SORT
+    // sort letters alphabetically (B-level #3)
+    letterArray = letterArray.sort(function(a,b) { 
+      if (a.key < b.key)
+        return -1
+      if (b.key < a.key)
+      return 1
+      return 0 
+    });
+*/
 
 }
 
@@ -327,8 +308,8 @@ window.onload = query_window();
         </ul>
     <span id="a-level" style="font-size: 18"><b>A-Level</b></span><br>
         <ul>
-          <li></li>
-          <li></li>
+          <li>Grow bars: At the start of the visualization, show one bar at a time and smoothly grow each bar from the bottom up to its value - line </li>
+          <li>Search box: User can continue to update chart via text input and button combo, with smooth transitions - line </li>
         </ul>
 
 </div>
