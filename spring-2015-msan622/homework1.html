@@ -7,12 +7,24 @@
   <meta name="description" content="MSAN 622 Submission Page - Homework 1">
 </head>
 <style>
+    #functionality {
+        width: 700px;
+        float: right;
+        padding: 5px;
+        margin-right: 15px;
+    }
+
+    #plot {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     .bar {
-        fill: steelblue;
+        fill: rgba(44,123,182, .8);
     }
 
     .bar:hover {
-      fill: lightsteelblue;
+      fill: rgba(171,217,233, 1.0);
     }
 
     .axis text {
@@ -34,7 +46,7 @@
       line-height: 1;
       font-weight: bold;
       padding: 12px;
-      background: rgba(253,184,99, 0.8);
+      background: rgba(253,174,97, 0.8);
       color: #fff;
       border-radius: 2px;
     }
@@ -46,7 +58,7 @@
       font-size: 10px;
       width: 100%;
       line-height: 1;
-      color: rgba(253,184,99, 0.8);
+      color: rgba(253,174,97, 0.8);
       content: "\25BC";
       position: absolute;
       text-align: center;
@@ -116,8 +128,9 @@ var chart = d3.select("#chart")
 var svg = chart.append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    .append("g")
     .attr("id", "plot")
+    .attr("display", "block")
+    .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var vowels = ["a", "e", "i", "o", "u"];
@@ -128,8 +141,9 @@ var tip = d3.tip()
   .offset([-10, 0])
   .html(function(d) {
     return "<span style='font: 11px sans-serif;'><strong>" + d.key.toUpperCase() + 
-    "<br>Frequency: </strong></span> <span style='font-size: 11px; color: red'>" + d.value + "</span>";
+    "<br>Frequency: </strong></span> <span style='font-size: 11px; color: rgb(215,25,28)'>" + d.value + "</span>";
   })
+
 
 function cleanString(query) {
     // function to clean the query string of everything but alphanumerics
@@ -286,34 +300,33 @@ window.onload = query_window();
 
 <div id="writeup">
     <h2>Submission Details</h2>
-    <h3>Functionality List</h3>
-    <div>The following features were implemented in order to reach each corresponding grade level. Corresponding line numbers from the code are added for reference. </div>
-    <br>
-    <span id="c-level" style="font-size: 18"><b>C-Level</b></span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In addition to the required basic functionality, the following features were added: 
-        <ul>
-          <li>Tick label formatting: Changed decimal precision (integers only) - lines 105</li>
-          <li>Tick label formatting: Changed frequency (ticks every 5 units) - line 105</li>
-          <li>Tick label formatting: Removed x-axis ticks - line 98</li>
-          <li>Grid &amp; axis lines: Changed color of y-axis to dark gray - line 26</li>
-          <li>Grid &amp; axis lines: Moved y-axis label to read horizontally above axis - line 204</li>
-          <li>Bar colors:  Colored vowels differently from consonants - line 222 (replaced with B-level features)</li>
-          <li>Sorting: Sorted bars alphabetically - line 163 (overwritten by B-level functionality)</li>
-        </ul>
-    <span id="b-level" style="font-size: 18"><b>B-Level</b></span><br>
-        <ul>
-          <li>Sorting: Added a checkbox that changes sorting from alphabetically to sorting by value - input @ line 75, function @ line 233 </li>
-          <li>Tooltip: shows the exact value of a bar when hovering over it - line 114, function calls @ line 226</li>
-          <li>Search box: added text input field (URI functionality remains intact) - line </li>
-        </ul>
-    <span id="a-level" style="font-size: 18"><b>A-Level</b></span><br>
-        <ul>
-          <li>Grow bars: At the start of the visualization, show one bar at a time and smoothly grow each bar from the bottom up to its value - line </li>
-          <li>Search box: User can continue to update chart via text input and button combo, with smooth transitions - line </li>
-        </ul>
-
-</div>
-
-
-
-
+    <section id="functionality">
+        <h3>Functionality List</h3>
+        <p>The following features were implemented in order to reach each corresponding grade level. Corresponding line numbers from the code are added for reference. </p>
+        <span id="c-level" style="font-size: 18"><b>C-Level</b></span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In addition to the required basic functionality, the following features were added: 
+            <ul>
+              <li>Tick label formatting: Changed decimal precision (integers only) - line 102</li>
+              <li>Tick label formatting: Changed frequency (ticks every 4 units) - lines 102, 114</li>
+              <li>Tick label formatting: Removed x-axis ticks - line 95</li>
+              <li>Grid &amp; axis lines: Changed color of y-axis from black to dark gray - line 25</li>
+              <li>Grid &amp; axis lines: Moved y-axis label to read horizontally above axis - line 199</li>
+              <li>Sorting: Sorted bars alphabetically - line 265 (overwritten by B-level functionality)</li>
+            </ul>
+        <span id="b-level" style="font-size: 18"><b>B-Level</b></span><br>
+            <ul>
+              <li>Sorting: Added a checkbox that changes sort between alphabetical and counts - lines 71, 238-240 </li>
+              <li>Tooltip: shows the exact value of a bar when hovering over it - lines 114, 234</li>
+              <li>Search box: added text input field (URI functionality remains intact) - line 165</li>
+            </ul>
+        <span id="a-level" style="font-size: 18"><b>A-Level</b></span><br>
+            <ul>
+              <li>Grow bars: At the start of the visualization, show one bar at a time and smoothly grow each bar from the bottom up to its value - lines 217-226</li>
+              <li>Search box: User can continue to update chart via text input and button combo - line 163</li>
+            </ul>
+    </section>
+    <section style="float: left;">
+        <h3>Motivation</h3>
+        <p>Similar to the rest of my pages here, I was aiming for a minimalistic design; it helped that the <a href="http://bl.ocks.org/mbostock/3885304">tutorial page</a> was similar in style. I wanted the information itself to stand out, so I chose blue bars on a simple, white plot area with minimal lines/tick marks, and a light gray y-axis so the numbers would pop out a bit. I made the y-axis mark ticks at larger intervals by setting the "sub-tick" count to 4; combined with integer counts, this spaced the ticks out quite well. This was to help unclutter the axis a bit when the counts got high. </p>
+        <p>I didn't want any "loud" colors, but still wanted to emphasize what was important. In this vein, all of my <a href="http://colorbrewer2.org/?type=diverging&scheme=RdYlBu&n=5">exact colors</a> were intended to a) provide a good range of colors to see on screen, b) show clear contrast between chart elements, and c) minimize viewer irritation. Hovering over the bars de-emphasizes the bar with a light color, so the tooltip can stand out, and the information in the tooltip further highlights the letter and it's count in red.</p>
+    </section>
