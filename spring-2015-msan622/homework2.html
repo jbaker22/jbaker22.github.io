@@ -85,7 +85,7 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <body>
-<div id="chart"></div>
+<div id="bubbleChart"></div>
 <script>
 // modeled from http://bl.ocks.org/stumpyfr/0b3fdba40287a02ee9c8
 // http://bl.ocks.org/aaizemberg/78bd3dade9593896a59d
@@ -136,7 +136,7 @@ function drawBubbles(data) {
     var r = d3.scale.sqrt()
         .domain([d3.min(data, function (d) { return d.murder; }), 
                  d3.max(data, function (d) { return d.murder; })])
-        .range([3,30]);
+        .range([3,50]);
 
     // set fade levels to correspond to murder rates (r above)
     var opacity = d3.scale.sqrt()
@@ -155,7 +155,7 @@ function drawBubbles(data) {
 
     // set plotting area
     // append a new SVG within the chart div
-    var svg = d3.select("#chart").append("svg")
+    var svg = d3.select("#bubbleChart").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .attr("id", "plot")
