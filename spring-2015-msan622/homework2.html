@@ -79,6 +79,9 @@
 </style>
 
 <h1>Homework 2: Multivariate Data</h1>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jeff Baker<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="https://github.com/jbaker22/jbaker22.github.io/blob/master/spring-2015-msan622/homework1.html">Code on GitHub</a></small>
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="#writeup">Submission details (below)</a></small>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <body>
@@ -590,24 +593,19 @@ var svg = d3.select("body").append("svg")
     <h2>Submission Details</h2>
     <section id="functionality">
         <h3>Functionality List</h3>
-        <p>The following features were implemented in order to reach each corresponding grade level. Corresponding line numbers from the code are added for reference. </p>
+        <p>The following features were implemented in order to reach each corresponding grade level.</p>
         <span id="c-level" style="font-size: 18"><b>C-Level</b></span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In addition to the required basic functionality, the following features were added: 
-            <ul>
-              <li>Sorting: Sorted bars alphabetically - line 265 (overwritten by B-level functionality)</li>
-            </ul>
+            <p>Bubble Chart: Implemented with tooltips. </p>
         <span id="b-level" style="font-size: 18"><b>B-Level</b></span><br>
-            <ul>
-              <li>Search box: added text input field (URI functionality remains intact) - line 165</li>
-            </ul>
+            <p></p>
         <span id="a-level" style="font-size: 18"><b>A-Level</b></span><br>
-            <ul>
-              <li>Search box: User can continue to update chart via text input and button combo - line 163</li>
-            </ul>
+
     </section>
     <section>
         <h3>Motivation</h3>
-        <p></p>
+        <p>My goal was to examine state income against life expectancy, murder rates, and region. I chose the bubble chart since it felt easier to compare these four dimensions more clearly than a heatmap. State regions are color-coded, while the X, Y, and bubble sizes reflect income, life expectancy, and murder rates, respectively. </p>
+        <p>I made most of the shapes non-opaque, since things were overlapping substantially. I added some outline to the circles, and enabled mouseover of regional bubbles to leverage the Gestalt principle of "foreground vs. background."</p>
+        </p>
     </section>
 </section>
 </body>
