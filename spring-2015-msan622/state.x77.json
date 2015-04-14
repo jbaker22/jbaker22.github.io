@@ -1,352 +1,902 @@
 [
 	{
 		"state_abb" : "AL",
-		"state_income" : 3624,
-		"life_exp" : 69.05,
-		"murder" : 15.1,
-		"state_division" : "East South Central"
+		"state_division" : "East South Central",
+		"variable" : "state_income",
+		"value" : 3624
 	},
 	{
 		"state_abb" : "AK",
-		"state_income" : 6315,
-		"life_exp" : 69.31,
-		"murder" : 11.3,
-		"state_division" : "Pacific"
+		"state_division" : "Pacific",
+		"variable" : "state_income",
+		"value" : 6315
 	},
 	{
 		"state_abb" : "AZ",
-		"state_income" : 4530,
-		"life_exp" : 70.55,
-		"murder" : 7.8,
-		"state_division" : "Mountain"
+		"state_division" : "Mountain",
+		"variable" : "state_income",
+		"value" : 4530
 	},
 	{
 		"state_abb" : "AR",
-		"state_income" : 3378,
-		"life_exp" : 70.66,
-		"murder" : 10.1,
-		"state_division" : "West South Central"
+		"state_division" : "West South Central",
+		"variable" : "state_income",
+		"value" : 3378
 	},
 	{
 		"state_abb" : "CA",
-		"state_income" : 5114,
-		"life_exp" : 71.71,
-		"murder" : 10.3,
-		"state_division" : "Pacific"
+		"state_division" : "Pacific",
+		"variable" : "state_income",
+		"value" : 5114
 	},
 	{
 		"state_abb" : "CO",
-		"state_income" : 4884,
-		"life_exp" : 72.06,
-		"murder" : 6.8,
-		"state_division" : "Mountain"
+		"state_division" : "Mountain",
+		"variable" : "state_income",
+		"value" : 4884
 	},
 	{
 		"state_abb" : "CT",
-		"state_income" : 5348,
-		"life_exp" : 72.48,
-		"murder" : 3.1,
-		"state_division" : "New England"
+		"state_division" : "New England",
+		"variable" : "state_income",
+		"value" : 5348
 	},
 	{
 		"state_abb" : "DE",
-		"state_income" : 4809,
-		"life_exp" : 70.06,
-		"murder" : 6.2,
-		"state_division" : "South Atlantic"
+		"state_division" : "South Atlantic",
+		"variable" : "state_income",
+		"value" : 4809
 	},
 	{
 		"state_abb" : "FL",
-		"state_income" : 4815,
-		"life_exp" : 70.66,
-		"murder" : 10.7,
-		"state_division" : "South Atlantic"
+		"state_division" : "South Atlantic",
+		"variable" : "state_income",
+		"value" : 4815
 	},
 	{
 		"state_abb" : "GA",
-		"state_income" : 4091,
-		"life_exp" : 68.54,
-		"murder" : 13.9,
-		"state_division" : "South Atlantic"
+		"state_division" : "South Atlantic",
+		"variable" : "state_income",
+		"value" : 4091
 	},
 	{
 		"state_abb" : "HI",
-		"state_income" : 4963,
-		"life_exp" : 73.6,
-		"murder" : 6.2,
-		"state_division" : "Pacific"
+		"state_division" : "Pacific",
+		"variable" : "state_income",
+		"value" : 4963
 	},
 	{
 		"state_abb" : "ID",
-		"state_income" : 4119,
-		"life_exp" : 71.87,
-		"murder" : 5.3,
-		"state_division" : "Mountain"
+		"state_division" : "Mountain",
+		"variable" : "state_income",
+		"value" : 4119
 	},
 	{
 		"state_abb" : "IL",
-		"state_income" : 5107,
-		"life_exp" : 70.14,
-		"murder" : 10.3,
-		"state_division" : "East North Central"
+		"state_division" : "East North Central",
+		"variable" : "state_income",
+		"value" : 5107
 	},
 	{
 		"state_abb" : "IN",
-		"state_income" : 4458,
-		"life_exp" : 70.88,
-		"murder" : 7.1,
-		"state_division" : "East North Central"
+		"state_division" : "East North Central",
+		"variable" : "state_income",
+		"value" : 4458
 	},
 	{
 		"state_abb" : "IA",
-		"state_income" : 4628,
-		"life_exp" : 72.56,
-		"murder" : 2.3,
-		"state_division" : "West North Central"
+		"state_division" : "West North Central",
+		"variable" : "state_income",
+		"value" : 4628
 	},
 	{
 		"state_abb" : "KS",
-		"state_income" : 4669,
-		"life_exp" : 72.58,
-		"murder" : 4.5,
-		"state_division" : "West North Central"
+		"state_division" : "West North Central",
+		"variable" : "state_income",
+		"value" : 4669
 	},
 	{
 		"state_abb" : "KY",
-		"state_income" : 3712,
-		"life_exp" : 70.1,
-		"murder" : 10.6,
-		"state_division" : "East South Central"
+		"state_division" : "East South Central",
+		"variable" : "state_income",
+		"value" : 3712
 	},
 	{
 		"state_abb" : "LA",
-		"state_income" : 3545,
-		"life_exp" : 68.76,
-		"murder" : 13.2,
-		"state_division" : "West South Central"
+		"state_division" : "West South Central",
+		"variable" : "state_income",
+		"value" : 3545
 	},
 	{
 		"state_abb" : "ME",
-		"state_income" : 3694,
-		"life_exp" : 70.39,
-		"murder" : 2.7,
-		"state_division" : "New England"
+		"state_division" : "New England",
+		"variable" : "state_income",
+		"value" : 3694
 	},
 	{
 		"state_abb" : "MD",
-		"state_income" : 5299,
-		"life_exp" : 70.22,
-		"murder" : 8.5,
-		"state_division" : "South Atlantic"
+		"state_division" : "South Atlantic",
+		"variable" : "state_income",
+		"value" : 5299
 	},
 	{
 		"state_abb" : "MA",
-		"state_income" : 4755,
-		"life_exp" : 71.83,
-		"murder" : 3.3,
-		"state_division" : "New England"
+		"state_division" : "New England",
+		"variable" : "state_income",
+		"value" : 4755
 	},
 	{
 		"state_abb" : "MI",
-		"state_income" : 4751,
-		"life_exp" : 70.63,
-		"murder" : 11.1,
-		"state_division" : "East North Central"
+		"state_division" : "East North Central",
+		"variable" : "state_income",
+		"value" : 4751
 	},
 	{
 		"state_abb" : "MN",
-		"state_income" : 4675,
-		"life_exp" : 72.96,
-		"murder" : 2.3,
-		"state_division" : "West North Central"
+		"state_division" : "West North Central",
+		"variable" : "state_income",
+		"value" : 4675
 	},
 	{
 		"state_abb" : "MS",
-		"state_income" : 3098,
-		"life_exp" : 68.09,
-		"murder" : 12.5,
-		"state_division" : "East South Central"
+		"state_division" : "East South Central",
+		"variable" : "state_income",
+		"value" : 3098
 	},
 	{
 		"state_abb" : "MO",
-		"state_income" : 4254,
-		"life_exp" : 70.69,
-		"murder" : 9.3,
-		"state_division" : "West North Central"
+		"state_division" : "West North Central",
+		"variable" : "state_income",
+		"value" : 4254
 	},
 	{
 		"state_abb" : "MT",
-		"state_income" : 4347,
-		"life_exp" : 70.56,
-		"murder" : 5,
-		"state_division" : "Mountain"
+		"state_division" : "Mountain",
+		"variable" : "state_income",
+		"value" : 4347
 	},
 	{
 		"state_abb" : "NE",
-		"state_income" : 4508,
-		"life_exp" : 72.6,
-		"murder" : 2.9,
-		"state_division" : "West North Central"
+		"state_division" : "West North Central",
+		"variable" : "state_income",
+		"value" : 4508
 	},
 	{
 		"state_abb" : "NV",
-		"state_income" : 5149,
-		"life_exp" : 69.03,
-		"murder" : 11.5,
-		"state_division" : "Mountain"
+		"state_division" : "Mountain",
+		"variable" : "state_income",
+		"value" : 5149
 	},
 	{
 		"state_abb" : "NH",
-		"state_income" : 4281,
-		"life_exp" : 71.23,
-		"murder" : 3.3,
-		"state_division" : "New England"
+		"state_division" : "New England",
+		"variable" : "state_income",
+		"value" : 4281
 	},
 	{
 		"state_abb" : "NJ",
-		"state_income" : 5237,
-		"life_exp" : 70.93,
-		"murder" : 5.2,
-		"state_division" : "Middle Atlantic"
+		"state_division" : "Middle Atlantic",
+		"variable" : "state_income",
+		"value" : 5237
 	},
 	{
 		"state_abb" : "NM",
-		"state_income" : 3601,
-		"life_exp" : 70.32,
-		"murder" : 9.7,
-		"state_division" : "Mountain"
+		"state_division" : "Mountain",
+		"variable" : "state_income",
+		"value" : 3601
 	},
 	{
 		"state_abb" : "NY",
-		"state_income" : 4903,
-		"life_exp" : 70.55,
-		"murder" : 10.9,
-		"state_division" : "Middle Atlantic"
+		"state_division" : "Middle Atlantic",
+		"variable" : "state_income",
+		"value" : 4903
 	},
 	{
 		"state_abb" : "NC",
-		"state_income" : 3875,
-		"life_exp" : 69.21,
-		"murder" : 11.1,
-		"state_division" : "South Atlantic"
+		"state_division" : "South Atlantic",
+		"variable" : "state_income",
+		"value" : 3875
 	},
 	{
 		"state_abb" : "ND",
-		"state_income" : 5087,
-		"life_exp" : 72.78,
-		"murder" : 1.4,
-		"state_division" : "West North Central"
+		"state_division" : "West North Central",
+		"variable" : "state_income",
+		"value" : 5087
 	},
 	{
 		"state_abb" : "OH",
-		"state_income" : 4561,
-		"life_exp" : 70.82,
-		"murder" : 7.4,
-		"state_division" : "East North Central"
+		"state_division" : "East North Central",
+		"variable" : "state_income",
+		"value" : 4561
 	},
 	{
 		"state_abb" : "OK",
-		"state_income" : 3983,
-		"life_exp" : 71.42,
-		"murder" : 6.4,
-		"state_division" : "West South Central"
+		"state_division" : "West South Central",
+		"variable" : "state_income",
+		"value" : 3983
 	},
 	{
 		"state_abb" : "OR",
-		"state_income" : 4660,
-		"life_exp" : 72.13,
-		"murder" : 4.2,
-		"state_division" : "Pacific"
+		"state_division" : "Pacific",
+		"variable" : "state_income",
+		"value" : 4660
 	},
 	{
 		"state_abb" : "PA",
-		"state_income" : 4449,
-		"life_exp" : 70.43,
-		"murder" : 6.1,
-		"state_division" : "Middle Atlantic"
+		"state_division" : "Middle Atlantic",
+		"variable" : "state_income",
+		"value" : 4449
 	},
 	{
 		"state_abb" : "RI",
-		"state_income" : 4558,
-		"life_exp" : 71.9,
-		"murder" : 2.4,
-		"state_division" : "New England"
+		"state_division" : "New England",
+		"variable" : "state_income",
+		"value" : 4558
 	},
 	{
 		"state_abb" : "SC",
-		"state_income" : 3635,
-		"life_exp" : 67.96,
-		"murder" : 11.6,
-		"state_division" : "South Atlantic"
+		"state_division" : "South Atlantic",
+		"variable" : "state_income",
+		"value" : 3635
 	},
 	{
 		"state_abb" : "SD",
-		"state_income" : 4167,
-		"life_exp" : 72.08,
-		"murder" : 1.7,
-		"state_division" : "West North Central"
+		"state_division" : "West North Central",
+		"variable" : "state_income",
+		"value" : 4167
 	},
 	{
 		"state_abb" : "TN",
-		"state_income" : 3821,
-		"life_exp" : 70.11,
-		"murder" : 11,
-		"state_division" : "East South Central"
+		"state_division" : "East South Central",
+		"variable" : "state_income",
+		"value" : 3821
 	},
 	{
 		"state_abb" : "TX",
-		"state_income" : 4188,
-		"life_exp" : 70.9,
-		"murder" : 12.2,
-		"state_division" : "West South Central"
+		"state_division" : "West South Central",
+		"variable" : "state_income",
+		"value" : 4188
 	},
 	{
 		"state_abb" : "UT",
-		"state_income" : 4022,
-		"life_exp" : 72.9,
-		"murder" : 4.5,
-		"state_division" : "Mountain"
+		"state_division" : "Mountain",
+		"variable" : "state_income",
+		"value" : 4022
 	},
 	{
 		"state_abb" : "VT",
-		"state_income" : 3907,
-		"life_exp" : 71.64,
-		"murder" : 5.5,
-		"state_division" : "New England"
+		"state_division" : "New England",
+		"variable" : "state_income",
+		"value" : 3907
 	},
 	{
 		"state_abb" : "VA",
-		"state_income" : 4701,
-		"life_exp" : 70.08,
-		"murder" : 9.5,
-		"state_division" : "South Atlantic"
+		"state_division" : "South Atlantic",
+		"variable" : "state_income",
+		"value" : 4701
 	},
 	{
 		"state_abb" : "WA",
-		"state_income" : 4864,
-		"life_exp" : 71.72,
-		"murder" : 4.3,
-		"state_division" : "Pacific"
+		"state_division" : "Pacific",
+		"variable" : "state_income",
+		"value" : 4864
 	},
 	{
 		"state_abb" : "WV",
-		"state_income" : 3617,
-		"life_exp" : 69.48,
-		"murder" : 6.7,
-		"state_division" : "South Atlantic"
+		"state_division" : "South Atlantic",
+		"variable" : "state_income",
+		"value" : 3617
 	},
 	{
 		"state_abb" : "WI",
-		"state_income" : 4468,
-		"life_exp" : 72.48,
-		"murder" : 3,
-		"state_division" : "East North Central"
+		"state_division" : "East North Central",
+		"variable" : "state_income",
+		"value" : 4468
 	},
 	{
 		"state_abb" : "WY",
-		"state_income" : 4566,
-		"life_exp" : 70.29,
-		"murder" : 6.9,
-		"state_division" : "Mountain"
+		"state_division" : "Mountain",
+		"variable" : "state_income",
+		"value" : 4566
+	},
+	{
+		"state_abb" : "AL",
+		"state_division" : "East South Central",
+		"variable" : "life_exp",
+		"value" : 69.05
+	},
+	{
+		"state_abb" : "AK",
+		"state_division" : "Pacific",
+		"variable" : "life_exp",
+		"value" : 69.31
+	},
+	{
+		"state_abb" : "AZ",
+		"state_division" : "Mountain",
+		"variable" : "life_exp",
+		"value" : 70.55
+	},
+	{
+		"state_abb" : "AR",
+		"state_division" : "West South Central",
+		"variable" : "life_exp",
+		"value" : 70.66
+	},
+	{
+		"state_abb" : "CA",
+		"state_division" : "Pacific",
+		"variable" : "life_exp",
+		"value" : 71.71
+	},
+	{
+		"state_abb" : "CO",
+		"state_division" : "Mountain",
+		"variable" : "life_exp",
+		"value" : 72.06
+	},
+	{
+		"state_abb" : "CT",
+		"state_division" : "New England",
+		"variable" : "life_exp",
+		"value" : 72.48
+	},
+	{
+		"state_abb" : "DE",
+		"state_division" : "South Atlantic",
+		"variable" : "life_exp",
+		"value" : 70.06
+	},
+	{
+		"state_abb" : "FL",
+		"state_division" : "South Atlantic",
+		"variable" : "life_exp",
+		"value" : 70.66
+	},
+	{
+		"state_abb" : "GA",
+		"state_division" : "South Atlantic",
+		"variable" : "life_exp",
+		"value" : 68.54
+	},
+	{
+		"state_abb" : "HI",
+		"state_division" : "Pacific",
+		"variable" : "life_exp",
+		"value" : 73.6
+	},
+	{
+		"state_abb" : "ID",
+		"state_division" : "Mountain",
+		"variable" : "life_exp",
+		"value" : 71.87
+	},
+	{
+		"state_abb" : "IL",
+		"state_division" : "East North Central",
+		"variable" : "life_exp",
+		"value" : 70.14
+	},
+	{
+		"state_abb" : "IN",
+		"state_division" : "East North Central",
+		"variable" : "life_exp",
+		"value" : 70.88
+	},
+	{
+		"state_abb" : "IA",
+		"state_division" : "West North Central",
+		"variable" : "life_exp",
+		"value" : 72.56
+	},
+	{
+		"state_abb" : "KS",
+		"state_division" : "West North Central",
+		"variable" : "life_exp",
+		"value" : 72.58
+	},
+	{
+		"state_abb" : "KY",
+		"state_division" : "East South Central",
+		"variable" : "life_exp",
+		"value" : 70.1
+	},
+	{
+		"state_abb" : "LA",
+		"state_division" : "West South Central",
+		"variable" : "life_exp",
+		"value" : 68.76
+	},
+	{
+		"state_abb" : "ME",
+		"state_division" : "New England",
+		"variable" : "life_exp",
+		"value" : 70.39
+	},
+	{
+		"state_abb" : "MD",
+		"state_division" : "South Atlantic",
+		"variable" : "life_exp",
+		"value" : 70.22
+	},
+	{
+		"state_abb" : "MA",
+		"state_division" : "New England",
+		"variable" : "life_exp",
+		"value" : 71.83
+	},
+	{
+		"state_abb" : "MI",
+		"state_division" : "East North Central",
+		"variable" : "life_exp",
+		"value" : 70.63
+	},
+	{
+		"state_abb" : "MN",
+		"state_division" : "West North Central",
+		"variable" : "life_exp",
+		"value" : 72.96
+	},
+	{
+		"state_abb" : "MS",
+		"state_division" : "East South Central",
+		"variable" : "life_exp",
+		"value" : 68.09
+	},
+	{
+		"state_abb" : "MO",
+		"state_division" : "West North Central",
+		"variable" : "life_exp",
+		"value" : 70.69
+	},
+	{
+		"state_abb" : "MT",
+		"state_division" : "Mountain",
+		"variable" : "life_exp",
+		"value" : 70.56
+	},
+	{
+		"state_abb" : "NE",
+		"state_division" : "West North Central",
+		"variable" : "life_exp",
+		"value" : 72.6
+	},
+	{
+		"state_abb" : "NV",
+		"state_division" : "Mountain",
+		"variable" : "life_exp",
+		"value" : 69.03
+	},
+	{
+		"state_abb" : "NH",
+		"state_division" : "New England",
+		"variable" : "life_exp",
+		"value" : 71.23
+	},
+	{
+		"state_abb" : "NJ",
+		"state_division" : "Middle Atlantic",
+		"variable" : "life_exp",
+		"value" : 70.93
+	},
+	{
+		"state_abb" : "NM",
+		"state_division" : "Mountain",
+		"variable" : "life_exp",
+		"value" : 70.32
+	},
+	{
+		"state_abb" : "NY",
+		"state_division" : "Middle Atlantic",
+		"variable" : "life_exp",
+		"value" : 70.55
+	},
+	{
+		"state_abb" : "NC",
+		"state_division" : "South Atlantic",
+		"variable" : "life_exp",
+		"value" : 69.21
+	},
+	{
+		"state_abb" : "ND",
+		"state_division" : "West North Central",
+		"variable" : "life_exp",
+		"value" : 72.78
+	},
+	{
+		"state_abb" : "OH",
+		"state_division" : "East North Central",
+		"variable" : "life_exp",
+		"value" : 70.82
+	},
+	{
+		"state_abb" : "OK",
+		"state_division" : "West South Central",
+		"variable" : "life_exp",
+		"value" : 71.42
+	},
+	{
+		"state_abb" : "OR",
+		"state_division" : "Pacific",
+		"variable" : "life_exp",
+		"value" : 72.13
+	},
+	{
+		"state_abb" : "PA",
+		"state_division" : "Middle Atlantic",
+		"variable" : "life_exp",
+		"value" : 70.43
+	},
+	{
+		"state_abb" : "RI",
+		"state_division" : "New England",
+		"variable" : "life_exp",
+		"value" : 71.9
+	},
+	{
+		"state_abb" : "SC",
+		"state_division" : "South Atlantic",
+		"variable" : "life_exp",
+		"value" : 67.96
+	},
+	{
+		"state_abb" : "SD",
+		"state_division" : "West North Central",
+		"variable" : "life_exp",
+		"value" : 72.08
+	},
+	{
+		"state_abb" : "TN",
+		"state_division" : "East South Central",
+		"variable" : "life_exp",
+		"value" : 70.11
+	},
+	{
+		"state_abb" : "TX",
+		"state_division" : "West South Central",
+		"variable" : "life_exp",
+		"value" : 70.9
+	},
+	{
+		"state_abb" : "UT",
+		"state_division" : "Mountain",
+		"variable" : "life_exp",
+		"value" : 72.9
+	},
+	{
+		"state_abb" : "VT",
+		"state_division" : "New England",
+		"variable" : "life_exp",
+		"value" : 71.64
+	},
+	{
+		"state_abb" : "VA",
+		"state_division" : "South Atlantic",
+		"variable" : "life_exp",
+		"value" : 70.08
+	},
+	{
+		"state_abb" : "WA",
+		"state_division" : "Pacific",
+		"variable" : "life_exp",
+		"value" : 71.72
+	},
+	{
+		"state_abb" : "WV",
+		"state_division" : "South Atlantic",
+		"variable" : "life_exp",
+		"value" : 69.48
+	},
+	{
+		"state_abb" : "WI",
+		"state_division" : "East North Central",
+		"variable" : "life_exp",
+		"value" : 72.48
+	},
+	{
+		"state_abb" : "WY",
+		"state_division" : "Mountain",
+		"variable" : "life_exp",
+		"value" : 70.29
+	},
+	{
+		"state_abb" : "AL",
+		"state_division" : "East South Central",
+		"variable" : "murder",
+		"value" : 15.1
+	},
+	{
+		"state_abb" : "AK",
+		"state_division" : "Pacific",
+		"variable" : "murder",
+		"value" : 11.3
+	},
+	{
+		"state_abb" : "AZ",
+		"state_division" : "Mountain",
+		"variable" : "murder",
+		"value" : 7.8
+	},
+	{
+		"state_abb" : "AR",
+		"state_division" : "West South Central",
+		"variable" : "murder",
+		"value" : 10.1
+	},
+	{
+		"state_abb" : "CA",
+		"state_division" : "Pacific",
+		"variable" : "murder",
+		"value" : 10.3
+	},
+	{
+		"state_abb" : "CO",
+		"state_division" : "Mountain",
+		"variable" : "murder",
+		"value" : 6.8
+	},
+	{
+		"state_abb" : "CT",
+		"state_division" : "New England",
+		"variable" : "murder",
+		"value" : 3.1
+	},
+	{
+		"state_abb" : "DE",
+		"state_division" : "South Atlantic",
+		"variable" : "murder",
+		"value" : 6.2
+	},
+	{
+		"state_abb" : "FL",
+		"state_division" : "South Atlantic",
+		"variable" : "murder",
+		"value" : 10.7
+	},
+	{
+		"state_abb" : "GA",
+		"state_division" : "South Atlantic",
+		"variable" : "murder",
+		"value" : 13.9
+	},
+	{
+		"state_abb" : "HI",
+		"state_division" : "Pacific",
+		"variable" : "murder",
+		"value" : 6.2
+	},
+	{
+		"state_abb" : "ID",
+		"state_division" : "Mountain",
+		"variable" : "murder",
+		"value" : 5.3
+	},
+	{
+		"state_abb" : "IL",
+		"state_division" : "East North Central",
+		"variable" : "murder",
+		"value" : 10.3
+	},
+	{
+		"state_abb" : "IN",
+		"state_division" : "East North Central",
+		"variable" : "murder",
+		"value" : 7.1
+	},
+	{
+		"state_abb" : "IA",
+		"state_division" : "West North Central",
+		"variable" : "murder",
+		"value" : 2.3
+	},
+	{
+		"state_abb" : "KS",
+		"state_division" : "West North Central",
+		"variable" : "murder",
+		"value" : 4.5
+	},
+	{
+		"state_abb" : "KY",
+		"state_division" : "East South Central",
+		"variable" : "murder",
+		"value" : 10.6
+	},
+	{
+		"state_abb" : "LA",
+		"state_division" : "West South Central",
+		"variable" : "murder",
+		"value" : 13.2
+	},
+	{
+		"state_abb" : "ME",
+		"state_division" : "New England",
+		"variable" : "murder",
+		"value" : 2.7
+	},
+	{
+		"state_abb" : "MD",
+		"state_division" : "South Atlantic",
+		"variable" : "murder",
+		"value" : 8.5
+	},
+	{
+		"state_abb" : "MA",
+		"state_division" : "New England",
+		"variable" : "murder",
+		"value" : 3.3
+	},
+	{
+		"state_abb" : "MI",
+		"state_division" : "East North Central",
+		"variable" : "murder",
+		"value" : 11.1
+	},
+	{
+		"state_abb" : "MN",
+		"state_division" : "West North Central",
+		"variable" : "murder",
+		"value" : 2.3
+	},
+	{
+		"state_abb" : "MS",
+		"state_division" : "East South Central",
+		"variable" : "murder",
+		"value" : 12.5
+	},
+	{
+		"state_abb" : "MO",
+		"state_division" : "West North Central",
+		"variable" : "murder",
+		"value" : 9.3
+	},
+	{
+		"state_abb" : "MT",
+		"state_division" : "Mountain",
+		"variable" : "murder",
+		"value" : 5
+	},
+	{
+		"state_abb" : "NE",
+		"state_division" : "West North Central",
+		"variable" : "murder",
+		"value" : 2.9
+	},
+	{
+		"state_abb" : "NV",
+		"state_division" : "Mountain",
+		"variable" : "murder",
+		"value" : 11.5
+	},
+	{
+		"state_abb" : "NH",
+		"state_division" : "New England",
+		"variable" : "murder",
+		"value" : 3.3
+	},
+	{
+		"state_abb" : "NJ",
+		"state_division" : "Middle Atlantic",
+		"variable" : "murder",
+		"value" : 5.2
+	},
+	{
+		"state_abb" : "NM",
+		"state_division" : "Mountain",
+		"variable" : "murder",
+		"value" : 9.7
+	},
+	{
+		"state_abb" : "NY",
+		"state_division" : "Middle Atlantic",
+		"variable" : "murder",
+		"value" : 10.9
+	},
+	{
+		"state_abb" : "NC",
+		"state_division" : "South Atlantic",
+		"variable" : "murder",
+		"value" : 11.1
+	},
+	{
+		"state_abb" : "ND",
+		"state_division" : "West North Central",
+		"variable" : "murder",
+		"value" : 1.4
+	},
+	{
+		"state_abb" : "OH",
+		"state_division" : "East North Central",
+		"variable" : "murder",
+		"value" : 7.4
+	},
+	{
+		"state_abb" : "OK",
+		"state_division" : "West South Central",
+		"variable" : "murder",
+		"value" : 6.4
+	},
+	{
+		"state_abb" : "OR",
+		"state_division" : "Pacific",
+		"variable" : "murder",
+		"value" : 4.2
+	},
+	{
+		"state_abb" : "PA",
+		"state_division" : "Middle Atlantic",
+		"variable" : "murder",
+		"value" : 6.1
+	},
+	{
+		"state_abb" : "RI",
+		"state_division" : "New England",
+		"variable" : "murder",
+		"value" : 2.4
+	},
+	{
+		"state_abb" : "SC",
+		"state_division" : "South Atlantic",
+		"variable" : "murder",
+		"value" : 11.6
+	},
+	{
+		"state_abb" : "SD",
+		"state_division" : "West North Central",
+		"variable" : "murder",
+		"value" : 1.7
+	},
+	{
+		"state_abb" : "TN",
+		"state_division" : "East South Central",
+		"variable" : "murder",
+		"value" : 11
+	},
+	{
+		"state_abb" : "TX",
+		"state_division" : "West South Central",
+		"variable" : "murder",
+		"value" : 12.2
+	},
+	{
+		"state_abb" : "UT",
+		"state_division" : "Mountain",
+		"variable" : "murder",
+		"value" : 4.5
+	},
+	{
+		"state_abb" : "VT",
+		"state_division" : "New England",
+		"variable" : "murder",
+		"value" : 5.5
+	},
+	{
+		"state_abb" : "VA",
+		"state_division" : "South Atlantic",
+		"variable" : "murder",
+		"value" : 9.5
+	},
+	{
+		"state_abb" : "WA",
+		"state_division" : "Pacific",
+		"variable" : "murder",
+		"value" : 4.3
+	},
+	{
+		"state_abb" : "WV",
+		"state_division" : "South Atlantic",
+		"variable" : "murder",
+		"value" : 6.7
+	},
+	{
+		"state_abb" : "WI",
+		"state_division" : "East North Central",
+		"variable" : "murder",
+		"value" : 3
+	},
+	{
+		"state_abb" : "WY",
+		"state_division" : "Mountain",
+		"variable" : "murder",
+		"value" : 6.9
 	}
 ]
