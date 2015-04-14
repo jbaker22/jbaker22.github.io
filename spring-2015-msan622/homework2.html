@@ -85,456 +85,95 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <body>
+<div id="chart"></div>
 <script>
 // modeled from http://bl.ocks.org/stumpyfr/0b3fdba40287a02ee9c8
 // http://bl.ocks.org/aaizemberg/78bd3dade9593896a59d
-
-function fade(state_division, opacity) {
-    svg.selectAll("circle")
-        .filter(function (d) {
-            return d.state_division != state_division;
-        })
-        .style("opacity", opacity);
-}
-
-function fadeOut() {
-    svg.selectAll("circle")
-    .style("opacity", function (d) { opacity(d.murder); });
-}
-
-var data = [
-  {
-    "state_abb" : "AL",
-    "state_income" : 3624,
-    "life_exp" : 69.05,
-    "murder" : 15.1,
-    "state_division" : "East South Central"
-  },
-  {
-    "state_abb" : "AK",
-    "state_income" : 6315,
-    "life_exp" : 69.31,
-    "murder" : 11.3,
-    "state_division" : "Pacific"
-  },
-  {
-    "state_abb" : "AZ",
-    "state_income" : 4530,
-    "life_exp" : 70.55,
-    "murder" : 7.8,
-    "state_division" : "Mountain"
-  },
-  {
-    "state_abb" : "AR",
-    "state_income" : 3378,
-    "life_exp" : 70.66,
-    "murder" : 10.1,
-    "state_division" : "West South Central"
-  },
-  {
-    "state_abb" : "CA",
-    "state_income" : 5114,
-    "life_exp" : 71.71,
-    "murder" : 10.3,
-    "state_division" : "Pacific"
-  },
-  {
-    "state_abb" : "CO",
-    "state_income" : 4884,
-    "life_exp" : 72.06,
-    "murder" : 6.8,
-    "state_division" : "Mountain"
-  },
-  {
-    "state_abb" : "CT",
-    "state_income" : 5348,
-    "life_exp" : 72.48,
-    "murder" : 3.1,
-    "state_division" : "New England"
-  },
-  {
-    "state_abb" : "DE",
-    "state_income" : 4809,
-    "life_exp" : 70.06,
-    "murder" : 6.2,
-    "state_division" : "South Atlantic"
-  },
-  {
-    "state_abb" : "FL",
-    "state_income" : 4815,
-    "life_exp" : 70.66,
-    "murder" : 10.7,
-    "state_division" : "South Atlantic"
-  },
-  {
-    "state_abb" : "GA",
-    "state_income" : 4091,
-    "life_exp" : 68.54,
-    "murder" : 13.9,
-    "state_division" : "South Atlantic"
-  },
-  {
-    "state_abb" : "HI",
-    "state_income" : 4963,
-    "life_exp" : 73.6,
-    "murder" : 6.2,
-    "state_division" : "Pacific"
-  },
-  {
-    "state_abb" : "ID",
-    "state_income" : 4119,
-    "life_exp" : 71.87,
-    "murder" : 5.3,
-    "state_division" : "Mountain"
-  },
-  {
-    "state_abb" : "IL",
-    "state_income" : 5107,
-    "life_exp" : 70.14,
-    "murder" : 10.3,
-    "state_division" : "East North Central"
-  },
-  {
-    "state_abb" : "IN",
-    "state_income" : 4458,
-    "life_exp" : 70.88,
-    "murder" : 7.1,
-    "state_division" : "East North Central"
-  },
-  {
-    "state_abb" : "IA",
-    "state_income" : 4628,
-    "life_exp" : 72.56,
-    "murder" : 2.3,
-    "state_division" : "West North Central"
-  },
-  {
-    "state_abb" : "KS",
-    "state_income" : 4669,
-    "life_exp" : 72.58,
-    "murder" : 4.5,
-    "state_division" : "West North Central"
-  },
-  {
-    "state_abb" : "KY",
-    "state_income" : 3712,
-    "life_exp" : 70.1,
-    "murder" : 10.6,
-    "state_division" : "East South Central"
-  },
-  {
-    "state_abb" : "LA",
-    "state_income" : 3545,
-    "life_exp" : 68.76,
-    "murder" : 13.2,
-    "state_division" : "West South Central"
-  },
-  {
-    "state_abb" : "ME",
-    "state_income" : 3694,
-    "life_exp" : 70.39,
-    "murder" : 2.7,
-    "state_division" : "New England"
-  },
-  {
-    "state_abb" : "MD",
-    "state_income" : 5299,
-    "life_exp" : 70.22,
-    "murder" : 8.5,
-    "state_division" : "South Atlantic"
-  },
-  {
-    "state_abb" : "MA",
-    "state_income" : 4755,
-    "life_exp" : 71.83,
-    "murder" : 3.3,
-    "state_division" : "New England"
-  },
-  {
-    "state_abb" : "MI",
-    "state_income" : 4751,
-    "life_exp" : 70.63,
-    "murder" : 11.1,
-    "state_division" : "East North Central"
-  },
-  {
-    "state_abb" : "MN",
-    "state_income" : 4675,
-    "life_exp" : 72.96,
-    "murder" : 2.3,
-    "state_division" : "West North Central"
-  },
-  {
-    "state_abb" : "MS",
-    "state_income" : 3098,
-    "life_exp" : 68.09,
-    "murder" : 12.5,
-    "state_division" : "East South Central"
-  },
-  {
-    "state_abb" : "MO",
-    "state_income" : 4254,
-    "life_exp" : 70.69,
-    "murder" : 9.3,
-    "state_division" : "West North Central"
-  },
-  {
-    "state_abb" : "MT",
-    "state_income" : 4347,
-    "life_exp" : 70.56,
-    "murder" : 5,
-    "state_division" : "Mountain"
-  },
-  {
-    "state_abb" : "NE",
-    "state_income" : 4508,
-    "life_exp" : 72.6,
-    "murder" : 2.9,
-    "state_division" : "West North Central"
-  },
-  {
-    "state_abb" : "NV",
-    "state_income" : 5149,
-    "life_exp" : 69.03,
-    "murder" : 11.5,
-    "state_division" : "Mountain"
-  },
-  {
-    "state_abb" : "NH",
-    "state_income" : 4281,
-    "life_exp" : 71.23,
-    "murder" : 3.3,
-    "state_division" : "New England"
-  },
-  {
-    "state_abb" : "NJ",
-    "state_income" : 5237,
-    "life_exp" : 70.93,
-    "murder" : 5.2,
-    "state_division" : "Middle Atlantic"
-  },
-  {
-    "state_abb" : "NM",
-    "state_income" : 3601,
-    "life_exp" : 70.32,
-    "murder" : 9.7,
-    "state_division" : "Mountain"
-  },
-  {
-    "state_abb" : "NY",
-    "state_income" : 4903,
-    "life_exp" : 70.55,
-    "murder" : 10.9,
-    "state_division" : "Middle Atlantic"
-  },
-  {
-    "state_abb" : "NC",
-    "state_income" : 3875,
-    "life_exp" : 69.21,
-    "murder" : 11.1,
-    "state_division" : "South Atlantic"
-  },
-  {
-    "state_abb" : "ND",
-    "state_income" : 5087,
-    "life_exp" : 72.78,
-    "murder" : 1.4,
-    "state_division" : "West North Central"
-  },
-  {
-    "state_abb" : "OH",
-    "state_income" : 4561,
-    "life_exp" : 70.82,
-    "murder" : 7.4,
-    "state_division" : "East North Central"
-  },
-  {
-    "state_abb" : "OK",
-    "state_income" : 3983,
-    "life_exp" : 71.42,
-    "murder" : 6.4,
-    "state_division" : "West South Central"
-  },
-  {
-    "state_abb" : "OR",
-    "state_income" : 4660,
-    "life_exp" : 72.13,
-    "murder" : 4.2,
-    "state_division" : "Pacific"
-  },
-  {
-    "state_abb" : "PA",
-    "state_income" : 4449,
-    "life_exp" : 70.43,
-    "murder" : 6.1,
-    "state_division" : "Middle Atlantic"
-  },
-  {
-    "state_abb" : "RI",
-    "state_income" : 4558,
-    "life_exp" : 71.9,
-    "murder" : 2.4,
-    "state_division" : "New England"
-  },
-  {
-    "state_abb" : "SC",
-    "state_income" : 3635,
-    "life_exp" : 67.96,
-    "murder" : 11.6,
-    "state_division" : "South Atlantic"
-  },
-  {
-    "state_abb" : "SD",
-    "state_income" : 4167,
-    "life_exp" : 72.08,
-    "murder" : 1.7,
-    "state_division" : "West North Central"
-  },
-  {
-    "state_abb" : "TN",
-    "state_income" : 3821,
-    "life_exp" : 70.11,
-    "murder" : 11,
-    "state_division" : "East South Central"
-  },
-  {
-    "state_abb" : "TX",
-    "state_income" : 4188,
-    "life_exp" : 70.9,
-    "murder" : 12.2,
-    "state_division" : "West South Central"
-  },
-  {
-    "state_abb" : "UT",
-    "state_income" : 4022,
-    "life_exp" : 72.9,
-    "murder" : 4.5,
-    "state_division" : "Mountain"
-  },
-  {
-    "state_abb" : "VT",
-    "state_income" : 3907,
-    "life_exp" : 71.64,
-    "murder" : 5.5,
-    "state_division" : "New England"
-  },
-  {
-    "state_abb" : "VA",
-    "state_income" : 4701,
-    "life_exp" : 70.08,
-    "murder" : 9.5,
-    "state_division" : "South Atlantic"
-  },
-  {
-    "state_abb" : "WA",
-    "state_income" : 4864,
-    "life_exp" : 71.72,
-    "murder" : 4.3,
-    "state_division" : "Pacific"
-  },
-  {
-    "state_abb" : "WV",
-    "state_income" : 3617,
-    "life_exp" : 69.48,
-    "murder" : 6.7,
-    "state_division" : "South Atlantic"
-  },
-  {
-    "state_abb" : "WI",
-    "state_income" : 4468,
-    "life_exp" : 72.48,
-    "murder" : 3,
-    "state_division" : "East North Central"
-  },
-  {
-    "state_abb" : "WY",
-    "state_income" : 4566,
-    "life_exp" : 70.29,
-    "murder" : 6.9,
-    "state_division" : "Mountain"
-  }
-];
-
-
-// d3.json("state.x77.json", function(error, stateData) {
-//     var something = blah;
-// }); 
-
-// var data = d3.json("state.x77.json", function(json) {data = json;})
-// console.log("data: ", data)
 
 var margin = {top: 50, right: 20, bottom: 40, left: 70},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-// var data = d3.json("file:///Users/jrbaker/GitHub/jbaker22.github.io/spring-2015-msan622/state.x77.json", function(error, data) {
-
-    // var svg = d3.select("#chart")
-    //       .append("svg")
-    //       .attr("width", 500)
-    //       .attr("height", 300);
-
-// });
-
-// set X domain to state income
-var x = d3.scale.linear()
-    .domain([0, d3.max(data, function (d) { return d.state_income; })]).nice()
-    .range([0, width]);
-// console.log("x: ", x.domain)
-
-// set Y domain to life expectancy
-var y = d3.scale.linear()
-    .domain([d3.min(data, function (d) { return d.life_exp; }), 
-             d3.max(data, function (d) { return d.life_exp; })]).nice()
-    .range([height, 0]);
-
-// set radius domain for murder rates
-var r = d3.scale.sqrt()
-    .domain([d3.min(data, function (d) { return d.murder; }), 
-             d3.max(data, function (d) { return d.murder; })])
-    .range([3,30]);
-
-// set fade levels to correspond to murder rates (r above)
-var opacity = d3.scale.sqrt()
-    .domain([d3.min(data, function (d) { return d.murder; }), 
-             d3.max(data, function (d) { return d.murder; })])
-    .range([1, .5]);
+var formatting = d3.format(",.0f");
 
 // set color scale for regions
 var color = d3.scale.category10();
 
-// init x-axis
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom"); 
-// init y-axis
-var yAxis = d3.svg.axis()
-     .scale(y)
-    .orient("left");
+// load json file and call draw function
+d3.json("state.x77.json", function(error, json) {
+  data = json;
+  drawBubbles(data);
 
-var formatting = d3.format(",.0f");
+});
 
-var tip = d3.tip()
-  .attr('class', 'd3-tip')
-  .offset([0, -15])
-  .direction('w')
-  .html(function(d) {
-    return "<span style='font: 14px sans-serif;'>" +
-            "State: " + d.state_abb + "<br>" + 
-            "<span style='font: 11px sans-serif;'>Income (per capita): $" + formatting(d.state_income) + "<br>" +
-            "Region: "  + d.state_division + "<br>" + 
-            "Murder Rate (per 100K pop): <strong><span style='font-size: 14px; color: #fdae61;'>" + d.murder + "</span></strong>" + "</span>";
-  })
+// function to draw all chart contents into chart div tag
+function drawBubbles(data) {
+    function fade(state_division, opacity) {
+        svg.selectAll("circle")
+            .filter(function (d) {
+                return d.state_division != state_division;
+            })
+            .style("opacity", opacity);
+    }
 
-// set plotting area
-// append a new SVG within the chart div
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .attr("id", "plot")
-    .attr("display", "block")
-    .append("g")
-    .attr("transform", "translate(60,15)"); // move base coordinates over/down a bit so lines start at 0,0
+    function fadeOut() {
+        svg.selectAll("circle")
+        .style("opacity", function (d) { opacity(d.murder); });
+    }
+
+    // set X domain to state income
+    var x = d3.scale.linear()
+        .domain([0, d3.max(data, function (d) { return d.state_income; })]).nice()
+        .range([0, width]);
+
+    // set Y domain to life expectancy
+    var y = d3.scale.linear()
+        .domain([d3.min(data, function (d) { return d.life_exp; }), 
+                 d3.max(data, function (d) { return d.life_exp; })]).nice()
+        .range([height, 0]);
+
+    // set radius domain for murder rates
+    var r = d3.scale.sqrt()
+        .domain([d3.min(data, function (d) { return d.murder; }), 
+                 d3.max(data, function (d) { return d.murder; })])
+        .range([3,30]);
+
+    // set fade levels to correspond to murder rates (r above)
+    var opacity = d3.scale.sqrt()
+        .domain([d3.min(data, function (d) { return d.murder; }), 
+                 d3.max(data, function (d) { return d.murder; })])
+        .range([1, .5]);
+
+    // init x-axis
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom"); 
+    // init y-axis
+    var yAxis = d3.svg.axis()
+         .scale(y)
+        .orient("left");
+
+    // set plotting area
+    // append a new SVG within the chart div
+    var svg = d3.select("#chart").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("id", "plot")
+        .attr("display", "block")
+        .append("g")
+        .attr("transform", "translate(60,15)"); // move base coordinates over/down a bit so lines start at 0,0
+
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset([0, -15])
+      .direction('w')
+      .html(function(d) {
+        return "<span style='font: 14px sans-serif;'>" +
+                "State: " + d.state_abb + "<br>" + 
+                "<span style='font: 11px sans-serif;'>Income (per capita): $" + formatting(d.state_income) + "<br>" +
+                "Region: "  + d.state_division + "<br>" + 
+                "Murder Rate (per 100K pop): <strong><span style='font-size: 14px; color: #fdae61;'>" + d.murder + "</span></strong>" + "</span>";
+      })
 
     // add x-axis to plot
     svg.append("g")
@@ -583,11 +222,8 @@ var svg = d3.select("body").append("svg")
           tip.hide(d);
           fadeOut(d);
       });
+}
 </script>
-
-
-
-
 
 <section id="writeup">
     <h2>Submission Details</h2>
