@@ -49,7 +49,8 @@
         display: none;
     }
     .axis2 text {
-        font: 10px sans-serif;
+        font-family: "Lucida Console", Monaco, monospace;
+        font-size: 12px;
     }
     .axis3 line,
     .axis3 path {
@@ -105,7 +106,7 @@
       font-size: 10px;
       width: 100%;
       line-height: 1;
-      color: rgba(44,123,182, 0.9);
+      color: rgba(37,37,37, 0.9);
       content: "\25BC";
       position: absolute;
       text-align: center;
@@ -175,7 +176,7 @@
 <body>
 <div id="bubbleChart"><br><h2>Bubble Chart</h2></div>
 <div id="smallMultiples"><h2>Small Multiples</h2></div>
-<div id="parallelCoords"><h2>Parallel Coordinates</h2></div>
+<div id="parallelCoords"><h2>Parallel Coordinates</h2><p>Drag axes to reorder. Brush sections of each axis to highlight specific lines.</p></div>
 <script>
 
 var margin = {top: 50, right: 20, bottom: 40, left: 70},
@@ -190,8 +191,8 @@ var color = d3.scale.category10();
 d3.json("state.x77.json", function(error, json) {
 
   data = json;
-  // drawBubbles(data);
-  // smallMultiples(data);
+  drawBubbles(data);
+  smallMultiples(data);
   parallels(data);
 });
 
@@ -530,6 +531,7 @@ function smallMultiples(data) {
 
 function parallels(data) {
     // http://bl.ocks.org/mbostock/7586334
+    // http://bl.ocks.org/chrisbrich/4173826
 
     // update dimensions
     var margin = {top: 30, right: 30, bottom: 10, left: 30},
@@ -680,17 +682,17 @@ function parallels(data) {
         <h3>Functionality List</h3>
         <p>The following features were implemented in order to reach each corresponding grade level.</p>
         <span id="c-level" style="font-size: 18"><b>C-Level</b></span><br>
-            <p>Bubble Chart: income, life expectancy, and murder rates, colored by region. Implemented with tooltips. </p>
+            <p>Tooltips implemented to show state-specific data. </p>
         <span id="b-level" style="font-size: 18"><b>B-Level</b></span><br>
-            <p>Small Multiples: bar charts of state data by statistic. Implemented with tooltips. </p>
+            <p>Small Multiples: hovering highlights all states in the same region across charts. </p>
         <span id="a-level" style="font-size: 18"><b>A-Level</b></span><br>
-            <p>Parallel Coordinates: lines colored consistently across state divisions.</p>
+            <p>Parallel Coordinates: lines colored consistently across state divisions. Axes are draggable and brushable. </p>
 
     </section>
     <section>
         <h3>Motivation</h3>
         <p>For the bubble chart, my goal was to examine state income against life expectancy, murder rates, and region. I chose the bubble chart since it felt easier to compare these four dimensions more clearly than a heatmap. I made most of the shapes non-opaque, since things were overlapping substantially. I outlined the circles, and enabled mouseover of regional bubbles to leverage the Gestalt principle of "foreground vs. background." </p>
-        <p>For the small multiples, I made the bars the same color to more easily compare levels. On mouseover, details on the state selected pop up, with other regional states highlighted as well (again, with a focus on foreground vs. background). Additionally, for parallel coordinates, I wanted to ensure the lines were colored by region, to stay consistent throughout each plot. </p>
+        <p>For the small multiples, I made the bars the same color to more easily compare levels. On mouseover, details on the state selected pop up, with other regional states highlighted as well (again, with a focus on foreground vs. background). I also wanted the axis labels to be fixed-width monospace, so that each label was spaced evenly. For parallel coordinates, I wanted to ensure the lines were brushable and colored by region, to stay consistent throughout each plot. Additionally, the axis text has a white outline, so that the text is easy to read. </p>
     </section>
 </section>
 </body>
