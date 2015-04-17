@@ -25,7 +25,7 @@
     }
 
     .axis text {
-        font: 12px sans-serif;
+        font: 10px sans-serif;
     }
 
     .axis path,
@@ -38,9 +38,19 @@
     .x.axis path {
         fill: none;
         stroke: darkgray;
-        shape-rendering: crispEdges;
+        shape-rendering: crispEdges; 
+        /*display: none;*/
     }
 
+    .x.axis2 path {
+/*        fill: none;
+        stroke: darkgray;
+        shape-rendering: crispEdges; */
+        display: none;
+    }
+    .axis2 text {
+        font: 10px sans-serif;
+    }
     .d3-tip {
       line-height: 1;
       font-weight: bold;
@@ -62,8 +72,6 @@
       position: absolute;
       text-align: center;
     }
-
-    /* Westward tooltips */
     .d3-tip.w:after {
       content: "\25B6";
       margin: -4px 0 0 -1px;
@@ -71,11 +79,55 @@
       left: 10px;
       position: absolute;
     }
-      .legend rect {
-      fill:white;
-      stroke:black;
-      opacity:0.8;
+
+    .d3-tip2 {
+      line-height: 1;
+      font-weight: bold;
+      padding: 12px;
+      background: rgba(37,37,37, 0.9);
+      color: #fff;
+      border-radius: 5px;
     }
+    .d3-tip2:after {
+      box-sizing: border-box;
+      display: inline;
+      font-size: 10px;
+      width: 100%;
+      line-height: 1;
+      color: rgba(44,123,182, 0.9);
+      content: "\25BC";
+      position: absolute;
+      text-align: center;
+    }
+
+
+    /* Westward tooltips */
+    .d3-tip2.n:after {
+        margin: -3px 0 0 0;
+        top: 100%;
+        left: 0;
+    }
+
+    .legend circle {
+      fill: none;
+      stroke: #ccc;
+    }
+
+    .legend text {
+      fill: #777;
+      font: 10px sans-serif;
+      text-anchor: middle;
+    }
+    
+    .chart {
+      float: left;
+      padding-right: 5px;
+      padding-bottom: 5px;
+      padding-top:0;
+      padding-left:0;
+    }
+
+
 </style>
 
 <h1>Homework 2: Multivariate Data</h1>
@@ -85,28 +137,34 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <body>
-<div id="bubbleChart"></div>
+<div id="bubbleChart"><br><h2>Bubble Chart</h2></div>
+<div id="smallMultiples"><h2>Small Multiples</h2></div>
+<div id="parallelCoords"><h2>Parallel Coordinates</h2></div>
 <script>
-// modeled from http://bl.ocks.org/stumpyfr/0b3fdba40287a02ee9c8
-// http://bl.ocks.org/aaizemberg/78bd3dade9593896a59d
 
 var margin = {top: 50, right: 20, bottom: 40, left: 70},
-    width = 960 - margin.left - margin.right,
+    width = 1000 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
 var formatting = d3.format(",.0f");
 
-// set color scale for regions
-var color = d3.scale.category10();
 
 // load json file and call draw function
 d3.json("state.x77.json", function(error, json) {
+
   data = json;
   drawBubbles(data);
+  smallMultiples(data);
+  parallels(data);
 });
 
-// function to draw all chart contents into chart div tag
+// function to draw all bubble chart contents into "bubbleChart" div tag
 function drawBubbles(data) {
+    // modeled from:  
+    // http://bl.ocks.org/stumpyfr/0b3fdba40287a02ee9c8
+    // http://bl.ocks.org/aaizemberg/78bd3dade9593896a59d
+
+    // functions to fade in and fade out the bubbles on mouseover
     function fade(state_division, opacity) {
         svg.selectAll("circle")
             .filter(function (d) {
@@ -119,6 +177,8 @@ function drawBubbles(data) {
         svg.selectAll("circle")
         .style("opacity", function (d) { opacity(d.murder); });
     }
+    // set color scale for regions
+    var color = d3.scale.category10();
 
     // set X domain to state income
     var x = d3.scale.linear()
@@ -127,7 +187,7 @@ function drawBubbles(data) {
 
     // set Y domain to life expectancy
     var y = d3.scale.linear()
-        .domain([d3.min(data, function (d) { return d.life_exp; }), 
+        .domain([d3.min(data, function (d) { return d.life_exp; }) - .5, 
                  d3.max(data, function (d) { return d.life_exp; })]).nice()
         .range([height, 0]);
 
@@ -197,12 +257,47 @@ function drawBubbles(data) {
         .attr("transform", "translate(60," + 10 + "), rotate(-90)")
         .text("Life Expectancy (years)");
 
-    // svg.selectAll(".y.axis text")
-    //     .call(wrap, 10);
+    // add color legend
+    color_div = {}
+    // assign a color for each state division
+    for  (var i = 0; i < data.length; i++) {
+        color_div[data[i].state_division] = color(data[i].state_division);
+    };
+
+    var legendSize = 20;  // size of the color boxes
+    var legendSpace = 5;  // space between boxes
+    var colors = d3.entries(color_div);
+
+    // add legend to the plot
+    var legend = svg.selectAll(".legend")
+        .data(colors)
+        .enter()
+        .append("g")
+        .attr("class", "legend")
+        .attr("transform", function(d, i) {
+          return "translate(30," + (i * (legendSize + legendSpace)) + ")";
+          });
+
+    // add legend color boxes
+    legend.append("rect")
+      .attr("width", legendSize)
+      .attr("height", legendSize)
+      .style("fill", function(d) { return d.value; })
+      .style("opacity", .8)
+      .style("stroke", "#000");
+
+    // add legend text
+    legend.append("text")
+      .attr("x", legendSize + legendSpace)
+      .attr("y", legendSize - legendSpace)
+      .style("text-anchor", "start")
+      .text(function(d) { return d.key; });
+
 
     // calls the tooltip function
     svg.call(tip);
 
+    // draw your bubbles
     var circles = svg.selectAll("circle")
       .data(data)
       .enter()
@@ -213,6 +308,7 @@ function drawBubbles(data) {
       .style("fill", function (d) { return color(d.state_division); })
       .style("stroke", "black")
       .attr("opacity", function (d) { return opacity(d.murder); })
+      .sort(order)
       .on('mouseover', function (d, i) {
           tip.show(d);
           fade(d.state_division, .1);
@@ -221,7 +317,175 @@ function drawBubbles(data) {
           tip.hide(d);
           fadeOut(d);
       });
+
+      // function to ensure smaller circles are not overlapped by bigger ones
+      function order(a,b) {
+          return b.murder - a.murder;
+      }
 }
+
+// function to draw small multiple bar graphs
+function smallMultiples(data) {
+  // http://flowingdata.com/2014/10/15/linked-small-multiples/
+  // http://bl.ocks.org/officeofjane/7315455
+  // http://bl.ocks.org/mbostock/9490313
+  // gist.github.com/mbostock/1157787
+
+    // reset margins for small multiples
+    var margin = {top: 20, right: 130, bottom: 20, left: 20},
+    width = 960 - margin.left - margin.right,
+    height = 120 - margin.top - margin.bottom;
+
+    var cat_list = ["state_pop", "state_income", "murder", "frost", "life_exp"];
+        // set fade levels to correspond to values
+    var opacity = d3.scale.linear()
+        .domain([d3.min(data, function (d) { return d[name]; }), 
+                 d3.max(data, function (d) { return d[name]; })])
+        .range([1, .5]);
+
+    // set color scale for regions
+    var color = d3.scale.category10();
+
+    // functions to fade in and fade out the bars on mouseover
+    function fade(state_division, opacity) {
+        svg.selectAll("rect")
+            .style("fill", function(d) {return color(d.state_division);})
+            .filter(function (d) {
+                return d.state_division != state_division;
+            })
+            .style("opacity", opacity);
+    }
+
+    function fadeOut() {
+        svg.selectAll("rect")
+        .style("fill", "steelblue")
+        .style("opacity", function (d) { opacity(d.state_division); });
+    }
+    
+    var mult_data = [];
+    var cat_data = {};
+    // for each category... 
+    for (var i = 0; i < cat_list.length; i++) {
+        // set key: category
+        var cat_data = d3.nest()
+            .key(function(d) {return cat_list[i];})
+            .entries(data);
+        // update dictionary of category & state values
+        mult_data.push(cat_data[0]);
+    }
+
+    var x = d3.scale.ordinal()
+        .rangeRoundBands([0, width + 10], .1);
+
+    // Scales. Note the inverted domain fo y-scale: bigger is up!
+    var y = d3.scale.linear()
+        .range([height, 0.5]);
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom")
+        .outerTickSize(0)
+        .innerTickSize(0);
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left");
+
+      // Compute the minimum and maximum year and percent across symbols.
+      x.domain(data.map(function(d) { return d.state_abb; }));
+      // y.domain([0, d3.max(mult_data, function(s) { return s.values[0].state_pop; })]);
+
+      // Add an SVG element for each category, with the desired dimensions and margin.
+      var svg = d3.select("#smallMultiples").selectAll("svg")
+        .data(mult_data)
+        .enter()
+        .append("svg:svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("id", "plot")
+        .attr("display", "block")
+        .append("g")
+        .attr("transform", "translate(10,"  + margin.top + ")")
+        // function to change the y-domain based on the statistic
+        .each(multiple);
+
+      svg.append("g")
+          .attr("class", "x axis2")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
+
+      svg.append("g")
+        .append("text")
+        .attr("x", width + 30)
+        .attr("y", height/2)
+        .attr("dy", ".71em")
+        .attr("text-anchor", "start")
+        .attr("font-size", "1.1em")
+        .text(function(d) { 
+            switch (d.key) {
+                case "state_pop": return "Population"; 
+                case "state_income": return "Income"; 
+                case "murder": return "Murder"; 
+                case "frost": return "Frost Days"; 
+                case "life_exp": return "Life Expectancy"; 
+            }
+        });
+
+    var tip2 = d3.tip()
+      .attr('class', 'd3-tip2')
+      .offset([-10, 0])
+      .direction('n')
+      .html(function(d) {
+        return "<span style='font: 11px sans-serif;'><span style='color: " + color(d.state_division) + ";'>" + 
+                d.state_division + "</span><br>" + 
+                "State: <span style='color: orange;'>" + d.state_abb + "</span><br>" + 
+                "Population (000): <span style='color: orange;'>" + formatting(d.state_pop) + "</span><br>" +
+                "Income (per capita): <span style='color: orange;'>$" + formatting(d.state_income) + "</span><br>" + 
+                "Murder: <span style='color: orange;'>" + d.murder + "</span><br>" + 
+                "Frost Days: <span style='color: orange;'>" + d.frost + "</span><br>" + 
+                "Life Expectancy: <span style='color: orange;'>" + d.life_exp + "</span>";
+      })
+
+      svg.call(tip2);
+
+      function multiple(category) {
+          var svg = d3.select(this);
+          // console.log(svg)
+          name = category.key;
+          // console.log("name: ", name);
+          // svg.attr("class", name)
+          y.domain(d3.extent(category.values, function(d) { return d[name]; }) );
+
+          svg.selectAll(".bar")
+              .data(function(d) {return d.values;})
+              .enter()
+              .append("rect")
+              .attr("class", "bar")
+              .attr("x", function(d) { return x(d.state_abb); })
+              .attr("width", x.rangeBand())
+              .attr("y", function(d) { return y(d[name]); })
+              .attr("height", function(d) { return height - y(d[name]); })
+              .attr("opacity", function (d) { return opacity(name); })
+              .style("fill", "steelblue")
+              // .style("fill", function (d) { return color(d.state_division); })
+              .on('mouseover', function (d) {
+                  tip2.show(d);
+                  fade(d.state_division, .1);
+              })
+              .on('mouseout', function (d) {
+                  tip2.hide(d);
+                  fadeOut(d);
+              });
+        }
+}
+
+function parallels(data) {
+
+
+
+}
+
+
 </script>
 
 <section id="writeup">
@@ -238,9 +502,8 @@ function drawBubbles(data) {
     </section>
     <section>
         <h3>Motivation</h3>
-        <p>My goal was to examine state income against life expectancy, murder rates, and region. I chose the bubble chart since it felt easier to compare these four dimensions more clearly than a heatmap. State regions are color-coded, while the X, Y, and bubble sizes reflect income, life expectancy, and murder rates, respectively. </p>
-        <p>I made most of the shapes non-opaque, since things were overlapping substantially. I added some outline to the circles, and enabled mouseover of regional bubbles to leverage the Gestalt principle of "foreground vs. background."</p>
-        </p>
+        <p>For the bubble chart, my goal was to examine state income against life expectancy, murder rates, and region. I chose the bubble chart since it felt easier to compare these four dimensions more clearly than a heatmap. I made most of the shapes non-opaque, since things were overlapping substantially. I outlined the circles, and enabled mouseover of regional bubbles to leverage the Gestalt principle of "foreground vs. background." </p>
+        <p>For the small multiples, I made the bars the same color to more easily compare levels. On mouseover, details on the state selected pop up, with other regional states highlighted as well, again, with a focus on foreground vs. background. </p>
     </section>
 </section>
 </body>
