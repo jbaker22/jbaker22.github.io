@@ -535,7 +535,7 @@ function parallels(data) {
     // https://dexvis.wordpress.com/2013/01/28/d3js-parallel-lines-and-football/
 
     // update dimensions
-    var margin = {top: 30, right: 30, bottom: 10, left: 30},
+    var margin = {top: 30, right: 30, bottom: 10, left: 60},
         width = 960 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
@@ -590,6 +590,7 @@ function parallels(data) {
         .data(data)
         .enter().append("path")
         .style("stroke", function (d) { return color(d.state_division); })
+        .style("stroke-width", 1.25)
         .attr("d", path);
 
     // Add a group element for each dimension
@@ -633,9 +634,23 @@ function parallels(data) {
       .append("text")
         .attr("text-anchor", "middle")
         .attr("y", -9)
-        .text(String);
-        console.log("string:", String);
-
+        .text(
+          function(d) {
+            switch (d) {
+                case "state_pop": return "Population"; 
+                case "state_income": return "Income"; 
+                case "murder": return "Murder"; 
+                case "frost": return "Frost Days"; 
+                case "life_exp": return "Life Expectancy";
+                case "illiteracy_rate": return "Illiteracy Rate";
+                case "hs_grad": return "HS Grad Rate";
+                case "state_region": return "Region";
+                case "state_division": return "State Division";
+                case "state_name": return "State";
+                case "area": return "Area";
+            }
+            return d;
+        });
     // Add and store a brush for each axis
     g.append("g")
         .attr("class", "brush")
@@ -664,16 +679,6 @@ function parallels(data) {
     }
 
     // Handles a brush event, toggling the display of foreground lines.
-    // function brush() {
-    //   var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
-    //       extents = actives.map(function(p) { return y[p].brush.extent(); });
-    //   foreground.style("display", function(d) {
-    //     return actives.every(function(p, i) {
-    //       return extents[i][0] <= d[p] && d[p] <= extents[i][1];
-    //     }) ? null : "none";
-    //   });
-    // }
-
     function brush() {
       var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
           extents = actives.map(function(p) { return y[p].brush.extent(); });
@@ -702,11 +707,23 @@ function parallels(data) {
         <h3>Functionality List</h3>
         <p>The following features were implemented in order to reach each corresponding grade level.</p>
         <span id="c-level" style="font-size: 18"><b>C-Level</b></span><br>
-            <p>Tooltips implemented to show state-specific data. </p>
+            <ul>
+              <li>Tooltips implemented to show state-specific data</li>
+              <li>Color legend added for each state region</li>
+              <li>Sorted values to ensure smaller bubbles are on top</li>
+              <li>Adjusted margins to prevent bubbles from overlapping with axes</li>
+            </ul>
         <span id="b-level" style="font-size: 18"><b>B-Level</b></span><br>
-            <p>Small Multiples: hovering highlights all states in the same region across charts. </p>
+            <ul>
+              <li>Hovering over bars highlights all states in the same division, across fields</li>
+              <li>Changed state labels to fixed width font, to keep labels evenly spaced</li>
+              <li>State division text (within the tooltip) colored to match the bar fill color</li>
+            </ul>
         <span id="a-level" style="font-size: 18"><b>A-Level</b></span><br>
-            <p>Parallel Coordinates: lines colored consistently across state divisions. Axes are draggable and brushable. </p>
+            <ul>
+              <li>Lines colored consistently across state divisions</li>
+              <li>Axes are draggable and brushable, including categorical values</li>
+            </ul>
 
     </section>
     <section>
