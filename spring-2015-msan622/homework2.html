@@ -502,10 +502,7 @@ function smallMultiples(data) {
           var svg = d3.select(this);
           // console.log(svg)
           name = category.key;
-          // console.log("name: ", name);
-          // svg.attr("class", name)
-          y.domain(d3.extent(category.values, function(d) { return d[name]; }) );
-
+          y.domain([0, d3.max(category.values, function(d) { return d[name]; })]);
           svg.selectAll(".bar")
               .data(function(d) {return d.values;})
               .enter()
