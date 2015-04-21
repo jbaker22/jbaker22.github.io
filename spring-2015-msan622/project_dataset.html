@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<head>    
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="pygment_trac.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="description" content="MSAN 622 Submission Page - Project Dataset">
+</head>
+<style>
+    #writeup {
+        width: 100%;
+    }
+
+    #functionality {
+        width: 50%;
+        float: left;
+        padding: 5px;
+        margin-right: 15px;
+    }
+
+    #plot {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .axis text {
+        font: 10px sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: darkgray;
+        shape-rendering: crispEdges;
+    }
+
+    .x.axis path {
+        fill: none;
+        stroke: darkgray;
+        shape-rendering: crispEdges; 
+        /*display: none;*/
+    }
+
+    .x.axis2 path {
+/*        fill: none;
+        stroke: darkgray;
+        shape-rendering: crispEdges; */
+        display: none;
+    }
+    .axis2 text {
+        font-family: "Lucida Console", Monaco, monospace;
+        font-size: 12px;
+    }
+    .axis3 line,
+    .axis3 path {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+    }
+    
+    .axis3 text {
+        font: 10px sans-serif;
+        text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+    }
+    .d3-tip {
+      line-height: 1;
+      font-weight: bold;
+      padding: 12px;
+      background: rgba(44,123,182, 0.9);
+      color: #fff;
+      border-radius: 5px;
+    }
+
+    /* Creates a small triangle extender for the tooltip */
+    .d3-tip:after {
+      box-sizing: border-box;
+      display: inline;
+      font-size: 10px;
+      width: 100%;
+      line-height: 1;
+      color: rgba(44,123,182, 0.9);
+      content: "\25B6";
+      position: absolute;
+      text-align: center;
+    }
+    .d3-tip.w:after {
+      content: "\25B6";
+      margin: -4px 0 0 -1px;
+      top: 50%;
+      left: 10px;
+      position: absolute;
+    }
+
+    .d3-tip2 {
+      line-height: 1;
+      font-weight: bold;
+      padding: 12px;
+      background: rgba(37,37,37, 0.9);
+      color: #fff;
+      border-radius: 5px;
+    }
+    .d3-tip2:after {
+      box-sizing: border-box;
+      display: inline;
+      font-size: 10px;
+      width: 100%;
+      line-height: 1;
+      color: rgba(37,37,37, 0.9);
+      content: "\25BC";
+      position: absolute;
+      text-align: center;
+    }
+
+    .d3-tip2.n:after {
+        margin: -3px 0 0 0;
+        top: 100%;
+        left: 0;
+    }
+
+    .legend circle {
+      fill: none;
+      stroke: #ccc;
+    }
+
+    .legend text {
+      fill: #777;
+      font: 10px sans-serif;
+      text-anchor: middle;
+    }
+
+    .clegend circle {
+    fill: none;
+    stroke: #ccc;
+    }
+
+    .clegend text {
+      fill: #777;
+      font: 10px sans-serif;
+      text-anchor: middle;
+    }
+    
+    .chart {
+      float: left;
+      padding-right: 5px;
+      padding-bottom: 5px;
+      padding-top:0;
+      padding-left:0;
+    }
+
+    .background path {
+      fill: none;
+      stroke: #ddd;
+      shape-rendering: crispEdges;
+    }
+
+    .foreground path {
+      fill: none;
+      stroke: steelblue;
+    }
+
+    .brush .extent {
+      fill-opacity: .3;
+      stroke: #fff;
+      shape-rendering: crispEdges;
+    }
+
+</style>
+
+<h1>Project Dataset: Alcohol Consumption</h1>
+  Jeff Baker<br>
+<!--   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="https://github.com/jbaker22/jbaker22.github.io/blob/master/spring-2015-msan622/homework2.html">Code on GitHub</a></small>
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="#projectDetails">Submission details (below)</a></small>
+ --><script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<body>
+<div id="projectDetails"><br>
+<p>My project dataset is sourced from the World Health Organization (WHO), and consists of <a href="http://apps.who.int/gho/data/node.main.A1026?lang=en" target="_blank">recorded alcohol consumption (per capita) by country, from 2000-2013</a>. This data (with some formatting conducted) can be found on my repository <a href="booze.csv">here</a>. The data is <a href="http://www.who.int/about/copyright/en/">publicly available for distribution</a> if used for private use and research.</p>
+</div>
+<script>
+
+d3.csv("booze2000.csv", function(err, csv) {
+    data = csv;
+    console.log([data[0],data[1], data[2], data[3]])
+  });
+</script>

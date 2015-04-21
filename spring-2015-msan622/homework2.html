@@ -201,6 +201,7 @@ function drawBubbles(data) {
     // modeled from:  
     // http://bl.ocks.org/stumpyfr/0b3fdba40287a02ee9c8
     // http://bl.ocks.org/aaizemberg/78bd3dade9593896a59d
+    // http://bl.ocks.org/mbostock/9943478
 
     // functions to fade in and fade out the bubbles on mouseover
     function fade(state_division, opacity) {
@@ -329,10 +330,11 @@ function drawBubbles(data) {
       .style("text-anchor", "start")
       .text(function(d) { return d.key; });
 
+      console.log(1e6);
     // add circle size legend 
     // var clegend = svg.append("g")
     //     .attr("class", "clegend")
-    //     .attr("transform", "translate(" + (width - 50) + "," + (height - 20) + ")")
+    //     .attr("transform", "translate(" + (width + 20) + "," + (height - 20) + ")")
     //   .selectAll("g")
     //     .data([1e6, 3e6, 6e6])
     //   .enter().append("g");
