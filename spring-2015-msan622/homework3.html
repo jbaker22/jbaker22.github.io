@@ -44,15 +44,15 @@
     .line {
       stroke: black;
       fill: none;
-      stroke-width: 0.75px;
+      stroke-width: 1px;
     }
 
     .line.line0 {
-      stroke: steelblue;
+      stroke: #1b9e77;
     }
 
     .line.line1 {
-      stroke: indianred;
+      stroke: #d95f02;
     }
 
     .overlay {
@@ -65,11 +65,11 @@
     }
 
     .focus circle.y0 {
-      stroke: blue;
+      stroke: green;
     }
 
     .focus circle.y1 {
-      stroke: red;
+      stroke: orange;
     }
 
     .focus text {
@@ -131,7 +131,6 @@ var color = d3.scale.category10();
 d3.csv("seatbelts.csv", function(error, csv) {
 
   data = csv;
-  // console.log(data[0])
   multiline(data);
   // bubblePlot(data);
 });
@@ -156,9 +155,10 @@ function multiline(data) {
 
     var formatDate = d3.time.format("%b %Y"),
         parseDate = formatDate.parse,
+        formatting = d3.format(",.0f");
         bisectDate = d3.bisector(function(d) { return d.Month; }).left,
-        formatOutput0 = function(d) { return formatDate(d.Month) + " - " + d.DriversKilled; },
-        formatOutput1 = function(d) { return formatDate(d.Month) + " - " + d.kms; };
+        formatOutput0 = function(d) { return formatDate(d.Month) + " - " + "Killed: " + d.DriversKilled; },
+        formatOutput1 = function(d) { return formatDate(d.Month) + " - " + "Distance: " + formatting(d.kms); };
 
     data.forEach(function(d) {
         d.Month = parseDate(d.Month);
@@ -218,7 +218,6 @@ function multiline(data) {
     //     .y0(height2)
     //     .y1(function(d) { return y2(d.price); });
 
-    // draw lines from the 
     var focus_line0 = d3.svg.line()
         .interpolate("cardinal")
         .x(function(d) { return focus_x(d.Month); })
@@ -625,7 +624,6 @@ function bubblePlot(data) {
         <span id="a-level" style="font-size: 18"><b>Advanced Functionality</b></span><br>
             <ul>
               <li>Brushing: highlight a selection from the "context" chart</li>
-              <li>Axes are draggable and brushable, including categorical values</li>
             </ul>
 
     </section>
