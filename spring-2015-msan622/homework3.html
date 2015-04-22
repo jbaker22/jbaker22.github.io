@@ -275,12 +275,6 @@ function multiline(data) {
     context_y0.domain(focus_y0.domain()).nice();
     context_y1.domain(focus_y1.domain()).nice();
 
-    // append fill portion for time period when law was enacted
-    // main.selectAll("path").data(data).enter().append("path")
-    //             .attr("class", "area")
-    //             .attr("d", area)
-    //             .attr("fill",function(d) { return d.Month > 0 ? "orange" : "yellow"; });  
-
     // add clipping paths
     main.append("path")
         .datum(data)
@@ -629,7 +623,8 @@ function bubblePlot(data) {
     </section>
     <section>
         <h3>Motivation</h3>
-        <p>For the time series multi-line plot, I chose the template above because of it's multivariate possibilities: multiple lines</p>
+        <p>For the time series multi-line plot, I chose the template above because of it's multivariate possibilities. Multiple lines were drawn for different statistics, where shared units (here, different types of deaths) could leverage the same axis. This left the second axis to show another statistic (distance, in my case). I chose my colors using a <a href="http://colorbrewer2.org/?type=qualitative&scheme=Dark2&n=6">six-class qualitative palette</a>, just to mix it up from the typical red/blue/green.</p>
+        <p></p>
     </section>
 </section>
 </body>
