@@ -24,17 +24,15 @@
         margin-right: auto;
     }
 
-    body {
-      font: 11px sans-serif;
-    }
-
     .axis path,
     .axis line {
       fill: none;
       stroke: #000;
       shape-rendering: crispEdges;
     }
-
+    .axis text {
+        font: 11px sans-serif;
+    }
     /*
     .x.axis path {
       display: none;
@@ -116,7 +114,8 @@
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <body>
 <div id="multiseries"><br><h2>Multi-Series Line Chart</h2></div>
-<div id=""><h2>Animated Bubble Plot</h2></div>
+<br>
+<div id="bubbles"><h2>Animated Bubble Plot</h2></div>
 <script>
 
 var margin = {top: 50, right: 20, bottom: 40, left: 50},
