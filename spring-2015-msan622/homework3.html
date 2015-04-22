@@ -151,17 +151,18 @@ function multiline(data) {
 // "Month","DriversKilled","drivers","front","rear","kms","PetrolPrice","VanKilled","law"
 // "Jan 1969",107,1687,867,269,9059,0.102971811805368,12,0
 // "Feb 1969",97,1508,825,265,7685,0.102362995884646,6,0
+    var formatting = d3.format(",.0f");
 
     var formatDate = d3.time.format("%b %Y"),
         parseDate = formatDate.parse,
         formatting = d3.format(",.0f");
         bisectDate = d3.bisector(function(d) { return d.Month; }).left,
-        formatOutput0 = function(d) { return formatDate(d.Month) + " - " + "Killed: " + d.DriversKilled; },
-        formatOutput1 = function(d) { return formatDate(d.Month) + " - " + "Distance: " + formatting(d.kms); };
+        formatOutput0 = function(d) { return formatDate(d.Month) + " - " + "Drivers: " + formatting(d.drivers); },
+        formatOutput1 = function(d) { return formatDate(d.Month) + " - " + "Distance (km): " + formatting(d.kms); };
 
     data.forEach(function(d) {
         d.Month = parseDate(d.Month);
-        d.DriversKilled = +d.DriversKilled;
+        d.drivers = +d.drivers;
         d.kms = +d.kms;
         // console.log(d.Month);
     });
@@ -220,7 +221,7 @@ function multiline(data) {
     var focus_line0 = d3.svg.line()
         .interpolate("cardinal")
         .x(function(d) { return focus_x(d.Month); })
-        .y(function(d) { return focus_y0(d.DriversKilled); });
+        .y(function(d) { return focus_y0(d.drivers); });
 
     var focus_line1 = d3.svg.line()
         .interpolate("cardinal")
@@ -229,7 +230,7 @@ function multiline(data) {
 
     var context_line0 = d3.svg.line()
         .x(function(d) { return context_x(d.Month); })
-        .y(function(d) { return context_y0(d.DriversKilled); });
+        .y(function(d) { return context_y0(d.drivers); });
 
     var context_line1 = d3.svg.line()
         .x(function(d) { return context_x(d.Month); })
@@ -244,7 +245,7 @@ function multiline(data) {
     var area = d3.svg.area()
             .interpolate("linear")
             .x(function(d) { return x(d.Month); })
-            .y(function(d) { return y(d.DriversKilled); });
+            .y(function(d) { return y(d.drivers); });
             // .y0(function(d) { return y(0); });
 
 
@@ -268,7 +269,7 @@ function multiline(data) {
 
     // set domains for x, y1, and y2 for both context and focus plots
     focus_x.domain([data[0].Month, data[data.length - 1].Month]);
-    focus_y0.domain([0, d3.max(data, function(d) { return d.DriversKilled; })]).nice();
+    focus_y0.domain([0, d3.max(data, function(d) { return d.drivers; })]).nice();
     focus_y1.domain([0, d3.max(data, function(d) { return d.kms; })]).nice();
     context_x.domain(focus_x.domain());
     context_y0.domain(focus_y0.domain()).nice();
@@ -300,7 +301,7 @@ function multiline(data) {
         .attr("y", 6)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text("Drivers Killed");
+        .text("Drivers");
 
     main.append("g")
         .attr("class", "y axis axisRight")
@@ -389,14 +390,14 @@ function multiline(data) {
         d0 = data[i - 1],
         d1 = data[i],
         d = x0 - d0.Month > d1.Month - x0 ? d1 : d0;
-        focus.select("circle.y0").attr("transform", "translate(" + focus_x(d.Month) + "," + focus_y0(d.DriversKilled) + ")");
-        focus.select("text.y0").attr("transform", "translate(" + focus_x(d.Month) + "," + focus_y0(d.DriversKilled) + ")")
+        focus.select("circle.y0").attr("transform", "translate(" + focus_x(d.Month) + "," + focus_y0(d.drivers) + ")");
+        focus.select("text.y0").attr("transform", "translate(" + focus_x(d.Month) + "," + focus_y0(d.drivers) + ")")
             .text(formatOutput0(d));     // text for hover tooltip
         focus.select("circle.y1").attr("transform", "translate(" + focus_x(d.Month) + "," + focus_y1(d.kms) + ")");
         focus.select("text.y1").attr("transform", "translate(" + focus_x(d.Month) + "," + focus_y1(d.kms) + ")")
             .text(formatOutput1(d));   // text for hover tooltip
         focus.select(".x").attr("transform", "translate(" + focus_x(d.Month) + ",0)");
-        focus.select(".y0").attr("transform", "translate(" + focus_width * -1 + ", " + focus_y0(d.DriversKilled) + ")").attr("x2", focus_width + focus_x(d.Month));
+        focus.select(".y0").attr("transform", "translate(" + focus_width * -1 + ", " + focus_y0(d.drivers) + ")").attr("x2", focus_width + focus_x(d.Month));
         focus.select(".y1").attr("transform", "translate(0, " + focus_y1(d.kms) + ")").attr("x1", focus_x(d.Month));
     }
 
