@@ -157,12 +157,12 @@ d3.csv("seatbelts.csv", function(error, csv) {
 
 
 function areaseries(data) {
-    // http://bost.ocks.org/mike/nations/
+    // http://bl.ocks.org/mbostock/3883195
     // http://www.delimited.io/blog/2014/3/3/creating-multi-series-charts-in-d3-lines-bars-area-and-streamgraphs
     // http://jsfiddle.net/superboggly/XK53c/
 
     // console.log(data);
-    var margin = {top: 50, right: 20, bottom: 40, left: 50},
+    var margin = {top: 20, right: 20, bottom: 50, left: 50},
         width = 960 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
@@ -192,24 +192,34 @@ function areaseries(data) {
 
     var parseDate = d3.time.format("%b %Y").parse;
 
-    var x = d3.time.scale().range([0, width]),
-        y = d3.scale.linear().range([height, 0]);
+    var x = d3.time.scale()
+        .range([0, width]);
 
-    var xAxis = d3.svg.axis().scale(x).orient("bottom"),
-        yAxis = d3.svg.axis().scale(y).orient("left");
+    var y = d3.scale.linear()
+        .range([height, 0]);
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left");
 
     var area = d3.svg.area()
-        .interpolate("monotone")
         .x(function(d) { return x(d.date); })
-        .y0(function(d) { return height; })
-        .y(function(d) { return y(d.values); });
-
-    var stack = d3.layout.stack()
-        .values(function(d) { return d.values; });
+        .y0(height)
+        .y1(function(d) { return y(d.drivers); });
 
     var svg = d3.select("#areaseries").append("svg")
         .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom);
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    data.forEach(function(d) {
+        d.date = parseDate(d.Month);
+    });
 
     svg.append("defs").append("clipPath")
         .attr("id", "clip")
@@ -217,52 +227,47 @@ function areaseries(data) {
         .attr("width", width)
         .attr("height", height);
 
-    var focus = svg.append("g")
+    var main = svg.append("g")
         .attr("class", "focus")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
       
-    data.forEach(function(d) {
-        d.date = parseDate(d.Month);
-    });
-
     // console.log("data", data)
 
     // get fields from first data entry pertaining to drivers
-    colorfill.domain(d3.keys(data[0]).filter(function(key) { return (key == "DriversKilled" 
-      || key == "drivers" || key == "front" || key == "rear"); }));
+    // colorfill.domain(d3.keys(data[0]).filter(function(key) { return (key == "DriversKilled" 
+    //   || key == "drivers" || key == "front" || key == "rear"); }));
 
-    var drivers = stack(colorfill.domain().map(function(name) {
-        return {
-            name: name,
-            values: data.map(function(d) {
-                return {date: d.date, y: +d[name]};
-            })
-        };
-    }));
+    // var drivers = stack(colorfill.domain().map(function(name) {
+    //     return {
+    //         name: name,
+    //         values: data.map(function(d) {
+    //             return {date: d.date, y: +d[name]};
+    //         })
+    //     };
+    // }));
 
-    console.log("drivers", drivers);
+    // console.log("drivers", drivers);
     x.domain(d3.extent(data.map(function(d) { return d.date; }))).nice();
-    y.domain([0, 4800]).nice();
+    y.domain([0, 4000]).nice();
 
-    focus.selectAll("path")
-        .data(drivers)
-      .enter().append('path')
-        .attr('clip-path', 'url(#clip)')
-        .attr("d", function(d) {return area(d.values); })
-        .attr('class', 'focus')
-        .style("fill", function(d) { return colorfill(d.name); });
+    svg.append("path")
+        .datum(data)
+        .attr("class", "area")
+        .attr("d", area)
+        .attr("transform", "translate(1,20)");
 
-    focus.append("g")
+    main.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
-    focus.append("g")
+    main.append("g")
         .attr("class", "y axis")
         .call(yAxis);
 
 
     // legend color setup
+/*
     columns = d3.keys(data[0]).filter(function(key) { return key !== "Month"; })
     // console.log("cols: ",columns)
     color_div = {}
@@ -302,6 +307,7 @@ function areaseries(data) {
           else if (d.key == "rear"){ return "Rear-Seat Injuries/Casualties"; }
           else if (d.key == "DriversKilled"){ return "Drivers Killed"; }
           else { return "Drivers"; }; });
+*/
 
 }
 </script>
