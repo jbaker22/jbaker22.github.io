@@ -135,7 +135,7 @@
     </p>
 </div>
 <br>
-<div><h2>Area Plot</h2>
+<div id="plot2" display="block"><h2>Area Plot</h2>
     <span id="listanchor"></span>
     <div id="areaseries"></div>
 </div>
@@ -215,8 +215,6 @@ function areaseries(data) {
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
-        .attr("id", "plot2")
-        .attr("display", "block")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     data.forEach(function(d) {
