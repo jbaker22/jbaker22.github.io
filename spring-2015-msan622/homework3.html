@@ -120,9 +120,20 @@
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script src="multiline.js"></script>
 <body>
-<div id="multiseries"><br><h2>Multi-Series Line Chart</h2></div>
+<div id="multiseries"><br><h2>Multi-Series Line Chart</h2>
+    <p>Plot of data includes:
+        <ul>
+          <li>Total drivers</li>
+          <li>Front-seat passengers killed or seriously injured</li>
+          <li>Car drivers killed</li>
+        </ul>
+    </p>
+</div>
 <br>
-<div id="bubbles"><h2>Animated Bubble Plot</h2></div>
+<div><h2>Area Plot</h2>
+    <select id="select-list"></select>
+    <div id="areaseries"></div>
+</div>
 <script>
 
 var margin = {top: 50, right: 20, bottom: 40, left: 50},
@@ -130,233 +141,203 @@ var margin = {top: 50, right: 20, bottom: 40, left: 50},
     height = 500 - margin.top - margin.bottom;
 
 var formatting = d3.format(",.0f");
-// set color scale for regions
 var color = d3.scale.category10();
 
 // load csv file and call draw functions
+
+    // example data: 
+    // "Month",     "DriversKilled",  "drivers",  "front",  "rear", "kms",  "PetrolPrice",    "VanKilled",  "law"
+    // "Jan 1969",  107,              1687,       867,      269,    9059,   0.102971811805368,  12,          0
+    // "Feb 1969",  97,               1508,       825,      265,    7685,   0.102362995884646,  6,           0
 d3.csv("seatbelts.csv", function(error, csv) {
+    data = csv;
+    // multiline(data);
+    areaseries(data);
+})
 
-  data = csv;
-  multiline(data);
-  // bubblePlot(data);
-});
 
-
-function bubblePlot(data) {
+function areaseries(data) {
     // http://bost.ocks.org/mike/nations/
+    // http://www.delimited.io/blog/2014/3/3/creating-multi-series-charts-in-d3-lines-bars-area-and-streamgraphs
+    // http://jsfiddle.net/superboggly/XK53c/
 
-    // Various accessors that specify the four dimensions of data to visualize.
-    function x(d) { return d.income; }
-    function y(d) { return d.lifeExpectancy; }
-    function radius(d) { return d.population; }
-    function color(d) { return d.region; }
-    function key(d) { return d.name; }
-
-    // Chart dimensions.
-    var margin = {top: 19.5, right: 19.5, bottom: 19.5, left: 39.5},
-        width = 960 - margin.right,
+    // console.log(data);
+    var margin = {top: 50, right: 20, bottom: 40, left: 50},
+        width = 960 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
-    // Various scales. These domains make assumptions of data, naturally.
-    var xScale = d3.scale.log().domain([300, 1e5]).range([0, width]),
-        yScale = d3.scale.linear().domain([10, 85]).range([height, 0]),
-        radiusScale = d3.scale.sqrt().domain([0, 5e8]).range([0, 40]),
-        colorScale = d3.scale.category10();
+    var colorfill = d3.scale.category10();
 
-    // The x & y axes.
-    var xAxis = d3.svg.axis().orient("bottom").scale(xScale).ticks(12, d3.format(",d")),
-        yAxis = d3.svg.axis().scale(yScale).orient("left");
+    // DROPDOWN LIST: 
+    var select = document.getElementById("select-list");
+    optionlist = ["DriversKilled","drivers","front","rear"];
+    // populate dropdown list with available years in the data
+    o = "";
+    for(var i = 0; i < optionlist.length; i++) {
+        // get the year for this entry
+        // console.log(optionlist[i])
+        o = optionlist[i];
+        var option = document.createElement('option');    
+        option.text = option.value = o;
+        select.add(option, 0);
 
-    // Create the SVG container and set the origin.
-    var svg = d3.select("#chart").append("svg")
+        // switch (optionlist[i]) {
+        //     case "DriversKilled": o = "Drivers Killed"; 
+        //     case "drivers": o = "Total Drivers"; 
+        //     case "front": o =  "Front-Seat Injuries/Casualties"; 
+        //     case "rear": o =  "Rear-Seat Injuries/Casualties"; 
+        // }
+        // console.log(o)
+    }
+
+    var parseDate = d3.time.format("%b %Y").parse;
+
+    var x = d3.time.scale().range([0, width]),
+        y = d3.scale.linear().range([height, 0]);
+
+    var xAxis = d3.svg.axis().scale(x).orient("bottom"),
+        yAxis = d3.svg.axis().scale(y).orient("left");
+
+    var area = d3.svg.area()
+        .interpolate("monotone")
+        .x(function(d) { return x(d.date); })
+        .y0(function(d) { return height; })
+        .y(function(d) { return y(d.values); });
+
+    var stack = d3.layout.stack()
+        .values(function(d) { return d.values; });
+
+    var svg = d3.select("#areaseries").append("svg")
         .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("height", height + margin.top + margin.bottom);
 
-    // Add the x-axis.
-    svg.append("g")
+    svg.append("defs").append("clipPath")
+        .attr("id", "clip")
+        .append("rect")
+        .attr("width", width)
+        .attr("height", height);
+
+    var focus = svg.append("g")
+        .attr("class", "focus")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      
+    data.forEach(function(d) {
+        d.date = parseDate(d.Month);
+    });
+
+    // console.log("data", data)
+
+    // get fields from first data entry pertaining to drivers
+    colorfill.domain(d3.keys(data[0]).filter(function(key) { return (key == "DriversKilled" 
+      || key == "drivers" || key == "front" || key == "rear"); }));
+
+    var drivers = stack(colorfill.domain().map(function(name) {
+        return {
+            name: name,
+            values: data.map(function(d) {
+                return {date: d.date, y: +d[name]};
+            })
+        };
+    }));
+
+    console.log("drivers", drivers);
+    x.domain(d3.extent(data.map(function(d) { return d.date; }))).nice();
+    y.domain([0, 4800]).nice();
+
+    focus.selectAll("path")
+        .data(drivers)
+      .enter().append('path')
+        .attr('clip-path', 'url(#clip)')
+        .attr("d", function(d) {return area(d.values); })
+        .attr('class', 'focus')
+        .style("fill", function(d) { return colorfill(d.name); });
+
+    focus.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
-    // Add the y-axis.
-    svg.append("g")
+    focus.append("g")
         .attr("class", "y axis")
         .call(yAxis);
 
-    // Add an x-axis label.
-    svg.append("text")
-        .attr("class", "x label")
-        .attr("text-anchor", "end")
-        .attr("x", width)
-        .attr("y", height - 6)
-        .text("income per capita, inflation-adjusted (dollars)");
 
-    // Add a y-axis label.
-    svg.append("text")
-        .attr("class", "y label")
-        .attr("text-anchor", "end")
-        .attr("y", 6)
-        .attr("dy", ".75em")
-        .attr("transform", "rotate(-90)")
-        .text("life expectancy (years)");
+    // legend color setup
+    columns = d3.keys(data[0]).filter(function(key) { return key !== "Month"; })
+    // console.log("cols: ",columns)
+    color_div = {}
+    // assign a color for each state division
+    for  (var i = 0; i < 4; i++) {
+        color_div[columns[i]] = color(columns[i]);
+    };
 
-    // Add the year label; the value is set on transition.
-    var label = svg.append("text")
-        .attr("class", "year label")
-        .attr("text-anchor", "end")
-        .attr("y", height - 24)
-        .attr("x", width)
-        .text(1800);
+    var legendSize = 10;  // size of the color boxes
+    var legendSpace = 10;  // space between boxes
+    var colors = d3.entries(color_div);
 
-    // Load the data.
-    d3.csv("seatbelts.csv", function(seatbelts) {
+    // add legend to the plot
+    var legend = svg.selectAll(".legend")
+        .data(colors)
+        .enter()
+        .append("g")
+        .attr("class", "legend")
+        .attr("transform", function(d, i) {
+          return "translate(100," + (i * (legendSize + legendSpace)+60) + ")";
+          });
 
-      // A bisector since many nation's data is sparsely-defined.
-      var bisect = d3.bisector(function(d) { return d[0]; });
+    // add legend color boxes
+    legend.append("rect")
+      .attr("width", legendSize)
+      .attr("height", legendSize)
+      .style("fill", function(d) { return d.value; })
+      .style("opacity", .8)
+      .style("stroke", "#000");
 
-      // Add a dot per nation. Initialize the data at 1800, and set the colors.
-      var dot = svg.append("g")
-          .attr("class", "dots")
-        .selectAll(".dot")
-          .data(interpolateData(1800))
-        .enter().append("circle")
-          .attr("class", "dot")
-          .style("fill", function(d) { return colorScale(color(d)); })
-          .call(position)
-          .sort(order);
+    // add legend text
+    legend.append('text')
+        .attr('x', legendSize + 4)
+        .attr('y', legendSize)
+        .text(function(d) { 
+          if (d.key == "front"){ return "Front-Seat Injuries/Casualties"; }
+          else if (d.key == "rear"){ return "Rear-Seat Injuries/Casualties"; }
+          else if (d.key == "DriversKilled"){ return "Drivers Killed"; }
+          else { return "Drivers"; }; });
 
-      // Add a title.
-      dot.append("title")
-          .text(function(d) { return d.name; });
-
-      // Add an overlay for the year label.
-      var box = label.node().getBBox();
-
-      var overlay = svg.append("rect")
-            .attr("class", "overlay")
-            .attr("x", box.x)
-            .attr("y", box.y)
-            .attr("width", box.width)
-            .attr("height", box.height)
-            .on("mouseover", enableInteraction);
-
-      // Start a transition that interpolates the data based on year.
-      svg.transition()
-          .duration(30000)
-          .ease("linear")
-          .tween("year", tweenYear)
-          .each("end", enableInteraction);
-
-      // Positions the dots based on data.
-      function position(dot) {
-        dot .attr("cx", function(d) { return xScale(x(d)); })
-            .attr("cy", function(d) { return yScale(y(d)); })
-            .attr("r", function(d) { return radiusScale(radius(d)); });
-      }
-
-      // Defines a sort order so that the smallest dots are drawn on top.
-      function order(a, b) {
-        return radius(b) - radius(a);
-      }
-
-      // After the transition finishes, you can mouseover to change the year.
-      function enableInteraction() {
-        var yearScale = d3.scale.linear()
-            .domain([1800, 2009])
-            .range([box.x + 10, box.x + box.width - 10])
-            .clamp(true);
-
-        // Cancel the current transition, if any.
-        svg.transition().duration(0);
-
-        overlay
-            .on("mouseover", mouseover)
-            .on("mouseout", mouseout)
-            .on("mousemove", mousemove)
-            .on("touchmove", mousemove);
-
-        function mouseover() {
-          label.classed("active", true);
-        }
-
-        function mouseout() {
-          label.classed("active", false);
-        }
-
-        function mousemove() {
-          displayYear(yearScale.invert(d3.mouse(this)[0]));
-        }
-      }
-
-      // Tweens the entire chart by first tweening the year, and then the data.
-      // For the interpolated data, the dots and label are redrawn.
-      function tweenYear() {
-        var year = d3.interpolateNumber(1800, 2009);
-        return function(t) { displayYear(year(t)); };
-      }
-
-      // Updates the display to show the specified year.
-      function displayYear(year) {
-        dot.data(interpolateData(year), key).call(position).sort(order);
-        label.text(Math.round(year));
-      }
-
-      // Interpolates the dataset for the given (fractional) year.
-      function interpolateData(year) {
-        return seatbelts.map(function(d) {
-          return {
-            name: d.name,
-            region: d.region,
-            income: interpolateValues(d.income, year),
-            population: interpolateValues(d.population, year),
-            lifeExpectancy: interpolateValues(d.lifeExpectancy, year)
-          };
-        });
-      }
-
-      // Finds (and possibly interpolates) the value for the specified year.
-      function interpolateValues(values, year) {
-        var i = bisect.left(values, year, 0, values.length - 1),
-            a = values[i];
-        if (i > 0) {
-          var b = values[i - 1],
-              t = (year - a[0]) / (b[0] - a[0]);
-          return a[1] * (1 - t) + b[1] * t;
-        }
-        return a[1];
-      }
-    });
 }
-
 </script>
 
 <section id="writeup">
     <h2>Submission Details</h2>
     <section id="functionality">
+        <h3>Data Preprocessing</h3>
+        <p>The dataset, "<a href="https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/UKDriverDeaths.html" target="_blank">Road Casualties in Great Britain 1969–84</a>" was generated in <code>R</code>. While the data includes month/year for each row, that field was lost upon export. The only preprocessing done to the data was adding this "Month" field back in; all remaining data fields are included for this page.</p>
         <h3>Functionality List</h3>
         <p>The following features were implemented in order to reach each corresponding grade level.</p>
         <span id="c-level" style="font-size: 18"><b>Basic Functionality</b></span><br>
             <ul>
-              <li>Generated multi-series line plot of the data</li>
+              <li>Generated multi-series line plot</li>
               <li>Animated time series bubble plot</li>
             </ul>
         <span id="b-level" style="font-size: 18"><b>Moderate Functionality</b></span><br>
             <ul>
-              <li>Panning: click and drag the selection within "context" to shift the larger detail view</li>
-              <li>Details-on-Demand: hovering shows tooltip details</li>
+              <li>Panning enabled within "context" plot to shift the window of the larger "detail" view</li>
+              <li>Details-on-Demand enabled by hovering over the lines; tooltips show detailed values at each month</li>
             </ul>
         <span id="a-level" style="font-size: 18"><b>Advanced Functionality</b></span><br>
             <ul>
-              <li>Brushing: highlight a selection from the "context" chart</li>
+              <li>Brushing enabled on the "context" section of the line chart</li>
             </ul>
 
     </section>
-    <section>
+    <section id="motivation">
+      <h3>Interactivity</h3>
+        <h4>Multi-line Chart</h4>
+        <p>There are two sections to this plot: the large, "focus" area, and the smaller "context" area below that. Users can hover over the focus area to display date and numerical data for any point in time. Highlighting over areas of the context plot will limit that corresponding portion of the data in the focus plot. Once a selection is made, one can pan the window to the left or right, changing the view in the focus plot. Clicking on the context area outside of the selection will reset it. </p>
+        <h4>Area Chart</h4>
+        <p>For the area chart, my goal was to plot the area and filter by dimension in the data. This was simply to explore using pull-down menus in combination with time series filtering. </p>
         <h3>Motivation</h3>
-        <p>For the time series multi-line plot, I chose the template above because of it's multivariate possibilities. Multiple lines were drawn for different statistics, where shared units (here, different types of deaths) could leverage the same axis. This left the second axis to show another statistic (distance, in my case). I chose my colors using a <a href="http://colorbrewer2.org/?type=qualitative&scheme=Dark2&n=6">six-class qualitative palette</a>, just to mix it up from the typical red/blue/green.</p>
-        <p></p>
+        <p>For the time series multi-line plot, I chose the template above because of it's multivariate possibilities. Multiple lines were drawn here for different statistics related to drivers. I chose my colors using a <a href="http://colorbrewer2.org/?type=qualitative&scheme=Dark2&n=6">six-class qualitative palette</a>, just to mix it up from the typical red/blue/green.</p>
+        <p>For the area plot, I wanted to keep this relatively simple, and focus more on the interactivity. </p>
     </section>
 </section>
 </body>

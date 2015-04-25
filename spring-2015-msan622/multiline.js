@@ -15,7 +15,7 @@ function multiline(data) {
         bisectDate = d3.bisector(function(d) { return d.Month; }).left,
         formatOutput0 = function(d) { return formatDate(d.Month) + " - " + "Total Drivers: " + formatting(d.drivers); },
         formatOutput1 = function(d) { return formatDate(d.Month) + " - " + "Drivers Killed: " + d.DriversKilled; },
-        formatOutput2 = function(d) { return formatDate(d.Month) + " - " + "Front Seat Injuries: " + formatting(d.front); };
+        formatOutput2 = function(d) { return formatDate(d.Month) + " - " + "Front-Seat Casualties: " + formatting(d.front); };
 
     data.forEach(function(d) {
         d.Month = parseDate(d.Month);
