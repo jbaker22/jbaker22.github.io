@@ -131,7 +131,8 @@
 </div>
 <br>
 <div><h2>Area Plot</h2>
-    <select id="select-list"></select>
+    <span id="listanchor"></span>
+        <!-- <option text="DriversKilled" value="DriversKilled"></option> -->
     <div id="areaseries"></div>
 </div>
 <script>
@@ -160,6 +161,7 @@ function areaseries(data) {
     // http://bl.ocks.org/mbostock/3883195
     // http://www.delimited.io/blog/2014/3/3/creating-multi-series-charts-in-d3-lines-bars-area-and-streamgraphs
     // http://jsfiddle.net/superboggly/XK53c/
+    // http://mypage.iu.edu/~jlorince/projects/tagging/tagExplorer.html
 
     // console.log(data);
     var margin = {top: 20, right: 20, bottom: 50, left: 50},
@@ -169,18 +171,37 @@ function areaseries(data) {
     var colorfill = d3.scale.category10();
 
     // DROPDOWN LIST: 
-    var select = document.getElementById("select-list");
     optionlist = ["DriversKilled","drivers","front","rear"];
     // populate dropdown list with available years in the data
     o = "";
-    for(var i = 0; i < optionlist.length; i++) {
-        // get the year for this entry
-        // console.log(optionlist[i])
-        o = optionlist[i];
-        var option = document.createElement('option');    
-        option.text = option.value = o;
-        select.add(option, 0);
+    // for(var i = 0; i < optionlist.length; i++) {
+    //     // get the year for this entry
+    //     // console.log(optionlist[i])
+    //     o = optionlist[i];
+    //     var option = document.createElement('option');    
+    //     option.text = option.value = o;
+    //     select.add(option, i);
 
+    // }
+    // var select = d3.select("#select-list").append;
+
+    var select = d3.select("#listanchor")
+        .append("select")
+        .attr("class", "select")
+        .on("change",filterStat)
+ 
+    var options = select
+    .selectAll("option")
+    .data(optionlist).enter()
+    .append("option")
+    .text(function (d) { 
+        if (d=="DriversKilled") { return "Drivers Killed"; } 
+        else if (d=="rear")     { return "Rear-Seat Injuries & Casualties"; }
+        else if (d=="front")    { return "Front-Seat Injuries & Casualties"; }
+        else                    { return "Total Drivers"; }
+    });
+
+    // select.on("change", function() {updateArea(); });
         // switch (optionlist[i]) {
         //     case "DriversKilled": o = "Drivers Killed"; 
         //     case "drivers": o = "Total Drivers"; 
@@ -188,7 +209,6 @@ function areaseries(data) {
         //     case "rear": o =  "Rear-Seat Injuries/Casualties"; 
         // }
         // console.log(o)
-    }
 
     var parseDate = d3.time.format("%b %Y").parse;
 
@@ -209,7 +229,7 @@ function areaseries(data) {
     var area = d3.svg.area()
         .x(function(d) { return x(d.date); })
         .y0(height)
-        .y1(function(d) { return y(d.drivers); });
+        .y1(function(d) { return y(d.DriversKilled); });
 
     var svg = d3.select("#areaseries").append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -220,96 +240,57 @@ function areaseries(data) {
     data.forEach(function(d) {
         d.date = parseDate(d.Month);
     });
+    // console.log(data)
 
-    svg.append("defs").append("clipPath")
-        .attr("id", "clip")
-        .append("rect")
-        .attr("width", width)
-        .attr("height", height);
-
-    var main = svg.append("g")
-        .attr("class", "focus")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-      
-    // console.log("data", data)
-
-    // get fields from first data entry pertaining to drivers
-    // colorfill.domain(d3.keys(data[0]).filter(function(key) { return (key == "DriversKilled" 
-    //   || key == "drivers" || key == "front" || key == "rear"); }));
-
-    // var drivers = stack(colorfill.domain().map(function(name) {
-    //     return {
-    //         name: name,
-    //         values: data.map(function(d) {
-    //             return {date: d.date, y: +d[name]};
-    //         })
-    //     };
-    // }));
-
-    // console.log("drivers", drivers);
-    x.domain(d3.extent(data.map(function(d) { return d.date; }))).nice();
-    y.domain([0, 4000]).nice();
+    x.domain(d3.extent(data.map(function(d) { return d.date; })));
+    y.domain([0, 2800]).nice();
 
     svg.append("path")
-        .datum(data)
+        .data([data])
         .attr("class", "area")
-        .attr("d", area)
-        .attr("transform", "translate(1,20)");
+        .attr("d", area);
 
-    main.append("g")
+    svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
-    main.append("g")
+    svg.append("g")
         .attr("class", "y axis")
-        .call(yAxis);
+        .call(yAxis)
+        .append("text")
+        .attr("x", 5)
+        .attr("y", -52)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .attr("transform", "translate(60," + 10 + "), rotate(-90)")
+        .text("Casualties");
 
 
-    // legend color setup
-/*
-    columns = d3.keys(data[0]).filter(function(key) { return key !== "Month"; })
-    // console.log("cols: ",columns)
-    color_div = {}
-    // assign a color for each state division
-    for  (var i = 0; i < 4; i++) {
-        color_div[columns[i]] = color(columns[i]);
-    };
+    function filterStat() {
+        val = d3.select("select").property("value");
+        console.log(val)
+        if (val == "Rear-Seat Injuries & Casualties") {
+            area.y1(function(d) { return y(d.rear); });
+        } else if (val == "Drivers Killed") {
+            area.y1(function(d) { return y(d.DriversKilled); });
+        } else if (val == "Front-Seat Injuries & Casualties") {
+            area.y1(function(d) { return y(d.front); });
+        } else {area.y1(function(d) { return y(d.drivers); });}
 
-    var legendSize = 10;  // size of the color boxes
-    var legendSpace = 10;  // space between boxes
-    var colors = d3.entries(color_div);
+        var svg = d3.select("#areaseries").transition();
+        svg.select(".area")
+            .duration(750)
+            .attr("d", area); // update area
 
-    // add legend to the plot
-    var legend = svg.selectAll(".legend")
-        .data(colors)
-        .enter()
-        .append("g")
-        .attr("class", "legend")
-        .attr("transform", function(d, i) {
-          return "translate(100," + (i * (legendSize + legendSpace)+60) + ")";
-          });
+        svg.select(".y.axis") // change the y axis
+            .duration(750)
+            .call(yAxis);
 
-    // add legend color boxes
-    legend.append("rect")
-      .attr("width", legendSize)
-      .attr("height", legendSize)
-      .style("fill", function(d) { return d.value; })
-      .style("opacity", .8)
-      .style("stroke", "#000");
-
-    // add legend text
-    legend.append('text')
-        .attr('x', legendSize + 4)
-        .attr('y', legendSize)
-        .text(function(d) { 
-          if (d.key == "front"){ return "Front-Seat Injuries/Casualties"; }
-          else if (d.key == "rear"){ return "Rear-Seat Injuries/Casualties"; }
-          else if (d.key == "DriversKilled"){ return "Drivers Killed"; }
-          else { return "Drivers"; }; });
-*/
+    }
 
 }
+
 </script>
 
 <section id="writeup">
@@ -332,6 +313,7 @@ function areaseries(data) {
         <span id="a-level" style="font-size: 18"><b>Advanced Functionality</b></span><br>
             <ul>
               <li>Brushing enabled on the "context" section of the line chart</li>
+              <li>Filtering (via pull-down menu) on area plot</li>
             </ul>
 
     </section>
@@ -343,7 +325,7 @@ function areaseries(data) {
         <p>For the area chart, my goal was to plot the area and filter by dimension in the data. This was simply to explore using pull-down menus in combination with time series filtering. </p>
         <h3>Motivation</h3>
         <p>For the time series multi-line plot, I chose the template above because of it's multivariate possibilities. Multiple lines were drawn here for different statistics related to drivers. I chose my colors using a <a href="http://colorbrewer2.org/?type=qualitative&scheme=Dark2&n=6">six-class qualitative palette</a>, just to mix it up from the typical red/blue/green.</p>
-        <p>For the area plot, I wanted to keep this relatively simple, and focus more on the interactivity. </p>
+        <p>For the area plot, I wanted to keep it relatively simple, and focus more on the interactivity and smooth transitions with the pull-down menu. </p>
     </section>
 </section>
 </body>
