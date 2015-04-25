@@ -24,6 +24,11 @@
         margin-right: auto;
     }
 
+    #plot2 {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     .axis path,
     .axis line {
       fill: none;
@@ -106,7 +111,7 @@
     }
 
     .area {
-        fill: lightsteelblue;
+        fill: #ca0020;
         stroke-width: 0;
     }
 
@@ -132,7 +137,6 @@
 <br>
 <div><h2>Area Plot</h2>
     <span id="listanchor"></span>
-        <!-- <option text="DriversKilled" value="DriversKilled"></option> -->
     <div id="areaseries"></div>
 </div>
 <script>
@@ -145,15 +149,10 @@ var formatting = d3.format(",.0f");
 var color = d3.scale.category10();
 
 // load csv file and call draw functions
-
-    // example data: 
-    // "Month",     "DriversKilled",  "drivers",  "front",  "rear", "kms",  "PetrolPrice",    "VanKilled",  "law"
-    // "Jan 1969",  107,              1687,       867,      269,    9059,   0.102971811805368,  12,          0
-    // "Feb 1969",  97,               1508,       825,      265,    7685,   0.102362995884646,  6,           0
 d3.csv("seatbelts.csv", function(error, csv) {
     data = csv;
-    // multiline(data);
     areaseries(data);
+    multiline(data);
 })
 
 
@@ -163,7 +162,6 @@ function areaseries(data) {
     // http://jsfiddle.net/superboggly/XK53c/
     // http://mypage.iu.edu/~jlorince/projects/tagging/tagExplorer.html
 
-    // console.log(data);
     var margin = {top: 20, right: 20, bottom: 50, left: 50},
         width = 960 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
@@ -172,18 +170,6 @@ function areaseries(data) {
 
     // DROPDOWN LIST: 
     optionlist = ["DriversKilled","drivers","front","rear"];
-    // populate dropdown list with available years in the data
-    o = "";
-    // for(var i = 0; i < optionlist.length; i++) {
-    //     // get the year for this entry
-    //     // console.log(optionlist[i])
-    //     o = optionlist[i];
-    //     var option = document.createElement('option');    
-    //     option.text = option.value = o;
-    //     select.add(option, i);
-
-    // }
-    // var select = d3.select("#select-list").append;
 
     var select = d3.select("#listanchor")
         .append("select")
@@ -201,16 +187,10 @@ function areaseries(data) {
         else                    { return "Total Drivers"; }
     });
 
-    // select.on("change", function() {updateArea(); });
-        // switch (optionlist[i]) {
-        //     case "DriversKilled": o = "Drivers Killed"; 
-        //     case "drivers": o = "Total Drivers"; 
-        //     case "front": o =  "Front-Seat Injuries/Casualties"; 
-        //     case "rear": o =  "Rear-Seat Injuries/Casualties"; 
-        // }
-        // console.log(o)
-
     var parseDate = d3.time.format("%b %Y").parse;
+
+    var formatDate = d3.time.format("%b %Y"),
+        parseDate = formatDate.parse;
 
     var x = d3.time.scale()
         .range([0, width]);
@@ -235,12 +215,13 @@ function areaseries(data) {
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
+        .attr("id", "plot2")
+        .attr("display", "block")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     data.forEach(function(d) {
         d.date = parseDate(d.Month);
     });
-    // console.log(data)
 
     x.domain(d3.extent(data.map(function(d) { return d.date; })));
     y.domain([0, 2800]).nice();
