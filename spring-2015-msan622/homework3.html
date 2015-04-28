@@ -214,9 +214,9 @@ function areaseries(data) {
     var svg = d3.select("#areaseries").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
-        .append("g")
         .attr("id", "plot2")
         .attr("display", "block")
+        .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     data.forEach(function(d) {
