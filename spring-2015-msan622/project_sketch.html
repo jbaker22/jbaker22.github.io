@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<head>    
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="pygment_trac.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="description" content="MSAN 622 Submission Page - Project Skeetch">
+</head>
+<style>
+    #writeup {
+        width: 100%;
+    }
+
+    #functionality {
+        width: 50%;
+        float: left;
+        padding: 5px;
+        margin-right: 15px;
+    }
+
+    #plot {
+        margin-left: auto;
+        margin-right: auto;
+    }
+  .ref1 .popup{
+    display: none;
+  }
+  .ref1:hover .popup {
+    display: block;
+  }
+
+</style>
+
+<h1>Project Sketch</h1>
+  Jeff Baker<br><br>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<body>
+<div id="Planned Tools">
+  <h2>Planned Tools</h2>
+  <p>For this project, Python and R will likely be used to preprocess the data into a format suitable for use in D3. A prototype may be created in Tableau, in conjunction with Excel and/or other tools. Other JS libraries, such as <a href="http://dimplejs.org/index.html">dimple</a> and <a href="https://github.com/mbostock/topojson/wiki">TopoJSON</a> may also be investigated.  </p>
+  <h2>Planned Techniques</h2>
+  <p>My hope for the project is to implement the following techniques: 
+      <ol>
+          <li><u>Projections/Geography</u>: Given that the dataset scope encompasses 197 countries, I hope to make use of the global topographic projection files that are available online. This would provide exposure to using geo-location maps within the D3 framework--something that I feel will be of use after the program. Providing a way for users to interact with a map projection to access the data would be great; however, I plan to at least use these maps navigationally for the project. Whether this manifests as a choropleth or as a navigation section will depend on the amount of work needed to get the desired effect. </li>
+          <li><u>Small Multiples</u>: The data also has annual consumption by alcohol type. Given the number of data points and categories, I think small multiples would lend itself well here. Having a single view of all the countries' consumption rates will make understanding all the data much easier. My learning goal for this technique would be to balance the data:ink ratio while preventing user data overload. </li>
+          <li><u>Animated Bubble Chart</u>: Similar Bostock's infamous reproduction of Hans Rosling's <a href="http://bost.ocks.org/mike/nations/">Wealth &amp; Health of Nations</a> chart, I think this data lends itself well to this kind of representation over time. Whether through this technique or something similar, my plan is to animate the changes of consumption--by type and by country--over the provided time period. The WHO website has more historical data and, if the visualization makes sense, I may get more data specifically to expand on the time component. Here, the learning goal is to understand how to create an automatic time series animation that allows for interactivity. </li>
+      </ol>
+  </p>
+  <h2>Planned Interaction</h2>
+  <p>Of the many possible interactions, I intend to implement the following in a linked, unified fashion: 
+      <ul>
+          <li><u>Filtering</u>: by country, alcohol category, year, and/or continent</li>
+          <li><u>Zooming></u>: in order to zoom into a region of the globe/projection</li>
+          <li><u>Brushing</u>: if there are any time series components, it will include this for detail views</li>
+          <li><u>Sorting</u>: here, again, users should be able to sort by country, region, year, or category</li>
+      </ul>
+  </p>
+  <h2>Planned Interface</h2>
+  <p></p>
+
+</div>
+<script>
+
+d3.csv("booze2000.csv", function(err, csv) {
+    data = csv;
+    console.log([data[0],data[1], data[2], data[3]])
+  });
+
+
+</script>
