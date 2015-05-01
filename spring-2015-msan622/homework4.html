@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<head>    
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="pygment_trac.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="description" content="MSAN 622 Submission Page - Homework 4">
+</head>
+<style>
+    #writeup {
+        width: 100%;
+    }
+
+    #functionality {
+        width: 50%;
+        float: left;
+        padding: 5px;
+        margin-right: 15px;
+    }
+
+    #plot {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #plot2 {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+    .axis text {
+        font: 11px sans-serif;
+    }
+
+    .line {
+      stroke: black;
+      fill: none;
+      stroke-width: 1px;
+    }
+
+    .line.line0 {
+      stroke: #1b9e77;
+    }
+
+    .line.line1 {
+      stroke: #d95f02;
+    }
+
+    .line.line2 {
+      stroke: #7570b3;
+    }
+
+    .overlay {
+      fill: none;
+      pointer-events: all;
+    }
+
+    .focus circle {
+      fill: none;
+    }
+
+    .focus circle.y0 {
+      stroke: darkgreen;
+    }
+
+    .focus circle.y1 {
+      stroke: orangered;
+    }
+    .focus circle.y2 {
+      stroke: purple;
+    }
+
+    .focus text {
+        font: 11px sans-serif;
+        text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+    }
+
+
+    .focus line {
+      stroke: purple;
+      shape-rendering: crispEdges;
+    }
+
+    .focus line.y0 {
+      stroke: steelblue;
+      stroke-dasharray: 3 3;
+      opacity: .5;
+    }
+
+    .focus line.y1 {
+      stroke: indianred;
+      stroke-dasharray: 3 3;
+      opacity: .5;
+    }
+    .focus line.y2 {
+      stroke: purple;
+      stroke-dasharray: 3 3;
+      opacity: .5;
+    }
+    .brush .extent {
+      stroke: #fff;
+      fill-opacity: .125;
+      shape-rendering: crispEdges;
+    }
+
+    .area {
+        fill: #ca0020;
+        stroke-width: 0;
+    }
+
+</style>
+
+<h1>Homework 4: Movies Dashboard</h1>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jeff Baker<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="https://github.com/jbaker22/jbaker22.github.io/blob/master/spring-2015-msan622/homework4.html">Code on GitHub</a></small>
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="#writeup">Submission details (below)</a></small>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script src="multiline.js"></script>
+<body>
+<div id="dashboard"><br><h2>Movies Dashboard</h2>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="http://jbaker22.github.io/spring-2015-msan622/tableau_movies_dashboard.html" target="_blank">View dashboard mock-up here</a></small>
+</div>
+<br>
+<script>
+
+
+
+</script>
+
+<section id="writeup">
+    <h2>Submission Details</h2>
+    <section id="functionality">
+        <h3>Data Preprocessing</h3>
+        <p>Holy crap, so much pre-processing!</p>
+        <h3>Functionality List</h3>
+        <p>The following features were implemented in order to reach each corresponding grade level.</p>
+        <span id="c-level" style="font-size: 18"><b>Basic Functionality</b></span><br>
+            <ul>
+              <li>Generated multi-series line plot</li>
+              <li>Animated time series bubble plot</li>
+            </ul>
+        <span id="b-level" style="font-size: 18"><b>Moderate Functionality</b></span><br>
+            <ul>
+              <li>Panning enabled within "context" plot to shift the window of the larger "detail" view</li>
+              <li>Details-on-Demand enabled by hovering over the lines; tooltips show detailed values at each month</li>
+            </ul>
+        <span id="a-level" style="font-size: 18"><b>Advanced Functionality</b></span><br>
+            <ul>
+              <li>Brushing enabled on the "context" section of the line chart</li>
+              <li>Filtering (via pull-down menu) on area plot</li>
+            </ul>
+
+    </section>
+    <section id="motivation">
+      <h3>Interactivity</h3>
+        <h4>Multi-line Chart</h4>
+        <p>There are three sections for this dashboard: </p>
+        <h4>Bar Chart: </h4>
+        <p>For the area chart, my goal was to plot the area and filter by dimension in the data. This was simply to explore using pull-down menus in combination with time series filtering. </p>
+        <h3>Motivation</h3>
+        <p>For the time series multi-line plot, I chose the template above because of it's multivariate possibilities. Multiple lines were drawn here for different statistics related to drivers. I chose my colors using a <a href="http://colorbrewer2.org/?type=qualitative&scheme=Dark2&n=6">six-class qualitative palette</a>, just to mix it up from the typical red/blue/green.</p>
+        <p>For the area plot, I wanted to keep it relatively simple, and focus more on the interactivity and smooth transitions with the pull-down menu. </p>
+    </section>
+</section>
+</body>
