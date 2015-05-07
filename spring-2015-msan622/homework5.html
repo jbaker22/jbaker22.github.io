@@ -43,7 +43,10 @@
     }
 
     #block {
+        float: left;
         max-width: 950px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     #log {
@@ -105,14 +108,13 @@
 
 <h1>Homework 5: Earthquake Data</h1>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jeff Baker<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="https://github.com/jbaker22/jbaker22.github.io/blob/master/spring-2015-msan622/homework4.html">Code on GitHub</a></small>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="https://github.com/jbaker22/jbaker22.github.io/blob/master/spring-2015-msan622/homework5.html">Code on GitHub</a></small>
   <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="#writeup">Submission details (below)</a></small>
 <script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <body>
     <br>
     <h2>Earthquake Data</h2>
-    <div id="block" style="float: left; margin: auto;">
+    <div id="block">
         <svg id="map" width="940" height="480"></svg>
         <p id="log">Loading map... please wait.</p>
     </div>
@@ -158,31 +160,21 @@ d3.json(url.world, function(mapError, mapJSON) {
 <section id="writeup">
     <h2>Submission Details</h2>
     <section id="functionality">
-        <h3>Data Preprocessing</h3>
-        <p>For the Tableau mock-up, I created a new column called "Genre," per Sophie's suggestion. This is an indicator field that contains the dummy variables of the films. Once this was done, another data table was created for the heat map, calculating the average rating per film, by genre. </p>
         <h3>Functionality List</h3>
         <p>The following features were implemented in order to reach each corresponding grade level.</p>
         <span id="c-level" style="font-size: 18"><b>Basic Functionality</b></span><br>
             <ul>
-              <li>Created mock-up in Tableau</li>
+              <li>Generated world map using equirectangular projection. </li>
             </ul>
         <span id="b-level" style="font-size: 18"><b>Moderate Functionality</b></span><br>
             <ul>
-              <li>Created bar chart and heatmap in D3 with basic hover-over tooltips for additional information. </li>
+              <li>Filled circles with color based on depth values.</li>
             </ul>
         <span id="a-level" style="font-size: 18"><b>Advanced Functionality</b></span><br>
-<!--             <ul>
-              <li>Brushing enabled on the "context" section of the line chart</li>
-              <li>Filtering (via pull-down menu) on area plot</li>
-            </ul>
- -->
     </section>
     <section id="motivation">
       <h3>Interactivity</h3>
-        <p>The bars in the bar chart have tooltips enabled. </p>
-        <h3>Motivation</h3>
-        <p>The goal for me was to select unifying dimensions by which to change the visualizations on. In this case, I was focusing on MPAA rating, genre, and user ratings of each film. The colors are meant to show divergence in the heatmap as well. </p>
-        <p>Unfortunately, I ran out of time due to troubles with Tableau and getting the data in a format that Tableau would take. I also spent more time than I should using JavaScript to do my data manipulation. While I learned more JS, I ran out of time to push further with this assignment. </p>
+        <p>Mousing over the bubbles will update the information at the bottom of the plot. The information will show the location (country), magnitude, and depth of the various earthquakes in the data.</p>
     </section>
 </section>
 </body>
