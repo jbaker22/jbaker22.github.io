@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<head>    
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="pygment_trac.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="description" content="MSAN 622 Submission Page - Homework 4">
+  <title>Homework 5</title>
+
+    <!-- load D3 and TopoJSON //-->
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+    <script src="hw5.js"></script>
+
+</head>
+<style>
+    #writeup {
+        width: 100%;
+    }
+
+    #functionality {
+        width: 50%;
+        float: left;
+        padding: 5px;
+        margin-right: 15px;
+    }
+
+    #plot {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    body {
+        margin: 8px 10px;
+        padding: 0px;
+    }
+
+    svg {
+        background-color: white;
+        margin: 0px;
+        float: left;
+    }
+
+    #block {
+        max-width: 950px;
+    }
+
+    #log {
+        color: dimgray;
+
+        font-size: 10px;
+        font-style: italic;
+        text-align: center;
+
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .country {
+        fill: gainsboro;
+    }
+
+    .state {
+        fill: none;
+    }
+
+    /*
+     * Setting "opacity" can affect both
+     * fill and stroke. We want to set
+     * both of those separately.
+     */
+
+    .symbol {
+        /*fill: royalblue;*/
+        fill-opacity: 1;
+
+/*        stroke: royalblue;
+        stroke-width: 1px;
+        stroke-opacity: 1.0;
+*/    }
+
+    /*
+     * We can specify how to highlight based
+     * on the type of underlying object.
+     */
+    circle {
+        stroke: lightgray;
+        stroke-width: 1px;
+    }
+
+    circle.highlight {
+        stroke: orangered;
+        stroke-width: 2px;
+    }
+
+    path.highlight {
+        fill: whitesmoke;
+
+        stroke: tomato;
+        stroke-width: 1px;
+    }
+
+</style>
+
+<h1>Homework 5: Earthquake Data</h1>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jeff Baker<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="https://github.com/jbaker22/jbaker22.github.io/blob/master/spring-2015-msan622/homework4.html">Code on GitHub</a></small>
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="#writeup">Submission details (below)</a></small>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<body>
+    <br>
+    <h2>Earthquake Data</h2>
+    <div id="block" style="float: left; margin: auto;">
+        <svg id="map" width="940" height="480"></svg>
+        <p id="log">Loading map... please wait.</p>
+    </div>
+<br>
+<script>
+
+/*
+ * For sample TopoJSON files, go to:
+ * https://gist.github.com/mbostock/4090846
+ */
+var base = "https://gist.githubusercontent.com/mbostock/4090846/raw/";
+var url = {
+    world: base + "world-50m.json",
+    earthquakes: "4.5_month.csv"
+};
+
+// Uses reusable chart model
+// See http://bost.ocks.org/mike/chart/
+var chart = symbolMap();
+
+// Update how we access data (need the precip property)
+chart = chart.value(function(d) { return d.mag; });
+
+// Nested calls to trigger drawing in proper order
+d3.json(url.world, function(mapError, mapJSON) {
+    if (processError(mapError)) return;
+
+    // update map data
+    chart = chart.map(mapJSON);
+
+    // Wait until the map is drawn before loading
+    // and drawing the data values
+    d3.csv(url.earthquakes, function(dataError, dataJSON) {
+        if (processError(dataError)) return;
+
+        chart = chart.values(dataJSON);
+        chart("map");
+    });
+});
+
+</script>
+
+<section id="writeup">
+    <h2>Submission Details</h2>
+    <section id="functionality">
+        <h3>Data Preprocessing</h3>
+        <p>For the Tableau mock-up, I created a new column called "Genre," per Sophie's suggestion. This is an indicator field that contains the dummy variables of the films. Once this was done, another data table was created for the heat map, calculating the average rating per film, by genre. </p>
+        <h3>Functionality List</h3>
+        <p>The following features were implemented in order to reach each corresponding grade level.</p>
+        <span id="c-level" style="font-size: 18"><b>Basic Functionality</b></span><br>
+            <ul>
+              <li>Created mock-up in Tableau</li>
+            </ul>
+        <span id="b-level" style="font-size: 18"><b>Moderate Functionality</b></span><br>
+            <ul>
+              <li>Created bar chart and heatmap in D3 with basic hover-over tooltips for additional information. </li>
+            </ul>
+        <span id="a-level" style="font-size: 18"><b>Advanced Functionality</b></span><br>
+<!--             <ul>
+              <li>Brushing enabled on the "context" section of the line chart</li>
+              <li>Filtering (via pull-down menu) on area plot</li>
+            </ul>
+ -->
+    </section>
+    <section id="motivation">
+      <h3>Interactivity</h3>
+        <p>The bars in the bar chart have tooltips enabled. </p>
+        <h3>Motivation</h3>
+        <p>The goal for me was to select unifying dimensions by which to change the visualizations on. In this case, I was focusing on MPAA rating, genre, and user ratings of each film. The colors are meant to show divergence in the heatmap as well. </p>
+        <p>Unfortunately, I ran out of time due to troubles with Tableau and getting the data in a format that Tableau would take. I also spent more time than I should using JavaScript to do my data manipulation. While I learned more JS, I ran out of time to push further with this assignment. </p>
+    </section>
+</section>
+</body>
