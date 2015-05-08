@@ -4,8 +4,9 @@
 <head>    
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="pygment_trac.css">
+  <link rel="stylesheet" href="mapStyle.css">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <meta name="description" content="MSAN 622 Submission Page - Homework 2">
+  <meta name="description" content="MSAN 622 Submission Page - Project Prototype">
 </head>
 <style>
     #writeup {
@@ -164,19 +165,30 @@
       stroke: #fff;
       shape-rendering: crispEdges;
     }
+    .country {
+        fill: gainsboro;
+    }
+
 
 </style>
 
-<h1>Homework 2: Multivariate Data</h1>
+<h1>Project Prototype</h1>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jeff Baker<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="https://github.com/jbaker22/jbaker22.github.io/blob/master/spring-2015-msan622/homework2.html">Code on GitHub</a></small>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="https://github.com/jbaker22/jbaker22.github.io/blob/master/spring-2015-msan622/project_prototype.html">Code on GitHub</a></small>
   <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="#writeup">Submission details (below)</a></small>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <body>
-<div id="bubbleChart"><br><h2>Bubble Chart</h2></div>
+  <div id="map" width="100%"><h2>Map</h2>
+    <!-- http://bl.ocks.org/KoGor/7024546 -->
+    <script src="prototype_map.js"></script>
+  </div>
+<br>
+<!-- <div id="bubbleChart"><br><h2>Bubble Chart</h2></div>
 <div id="smallMultiples"><h2>Small Multiples</h2></div>
-<div id="parallelCoords"><h2>Parallel Coordinates</h2><p>Drag axes to reorder. Brush sections of each axis to highlight specific lines.</p></div>
+ <div id="parallelCoords"><h2>Parallel Coordinates</h2><p>Drag axes to reorder. Brush sections of each axis to highlight specific lines.</p></div>-->
 <script>
 
 var margin = {top: 50, right: 20, bottom: 40, left: 70},
@@ -483,20 +495,14 @@ function smallMultiples(data) {
             }
         });
 
-    var tip2 = d3.tip()
-      .attr('class', 'd3-tip2')
-      .offset([-10, 0])
-      .direction('n')
-      .html(function(d) {
-        return "<span style='font: 11px sans-serif;'><span style='color: " + color(d.state_division) + ";'>" + 
-                d.state_division + "</span><br>" + 
-                "State: <span style='color: orange;'>" + d.state_abb + "</span><br>" + 
-                "Population (000): <span style='color: orange;'>" + formatting(d.state_pop) + "</span><br>" +
-                "Income (per capita): <span style='color: orange;'>$" + formatting(d.state_income) + "</span><br>" + 
-                "Murder: <span style='color: orange;'>" + d.murder + "</span><br>" + 
-                "Frost Days: <span style='color: orange;'>" + d.frost + "</span><br>" + 
-                "Life Expectancy: <span style='color: orange;'>" + d.life_exp + "</span>";
-      })
+// tooltip that includes the letter and frequency count on bar hover
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return "<span style='font: 11px sans-serif;'><strong>" + d.key.toUpperCase() + 
+    "<br>Frequency: </strong></span> <span style='font-size: 11px; color: rgb(215,25,28)'>" + d.values + "</span>";
+  })
 
       svg.call(tip2);
 
