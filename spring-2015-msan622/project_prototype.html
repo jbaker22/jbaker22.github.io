@@ -181,7 +181,7 @@
 <script src="http://d3js.org/queue.v1.min.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <body>
-  <div id="map" width="100%"><h2>Map</h2>
+  <div id="map" width="100%"><h2>Alcohol Consumption: Map</h2>
     <!-- http://bl.ocks.org/KoGor/7024546 -->
     <script src="prototype_map.js"></script>
   </div>
@@ -200,13 +200,13 @@ var formatting = d3.format(",.0f");
 var color = d3.scale.category10();
 
 // load json file and call draw function
-d3.json("state.x77.json", function(error, json) {
+// d3.json("state.x77.json", function(error, json) {
 
-  data = json;
-  drawBubbles(data);
-  smallMultiples(data);
-  parallels(data);
-});
+//   data = json;
+//   drawBubbles(data);
+//   smallMultiples(data);
+//   parallels(data);
+// });
 
 // function to draw all bubble chart contents into "bubbleChart" div tag
 function drawBubbles(data) {
@@ -708,33 +708,15 @@ function parallels(data) {
 
 <section id="writeup">
     <h2>Submission Details</h2>
-    <section id="functionality">
-        <h3>Functionality List</h3>
-        <p>The following features were implemented in order to reach each corresponding grade level.</p>
-        <span id="c-level" style="font-size: 18"><b>C-Level</b></span><br>
-            <ul>
-              <li>Tooltips implemented to show state-specific data</li>
-              <li>Color legend added for each state region</li>
-              <li>Sorted values to ensure smaller bubbles are on top</li>
-              <li>Adjusted margins to prevent bubbles from overlapping with axes</li>
-            </ul>
-        <span id="b-level" style="font-size: 18"><b>B-Level</b></span><br>
-            <ul>
-              <li>Hovering over bars highlights all states in the same division, across fields</li>
-              <li>Changed state labels to fixed width font, to keep labels evenly spaced</li>
-              <li>State division text (within the tooltip) colored to match the bar fill color</li>
-            </ul>
-        <span id="a-level" style="font-size: 18"><b>A-Level</b></span><br>
-            <ul>
-              <li>Lines colored consistently across state divisions</li>
-              <li>Axes are draggable and brushable, including categorical values</li>
-            </ul>
-
-    </section>
-    <section>
-        <h3>Motivation</h3>
-        <p>For the bubble chart, my goal was to examine state income against life expectancy, murder rates, and region. I chose the bubble chart since it felt easier to compare these four dimensions more clearly than a heatmap. I made most of the shapes non-opaque, since things were overlapping substantially. I outlined the circles, and enabled mouseover of regional bubbles to leverage the Gestalt principle of "foreground vs. background." </p>
-        <p>For the small multiples, I made the bars the same color to more easily compare levels. On mouseover, details on the state selected pop up, with other regional states highlighted as well (again, with a focus on foreground vs. background). I also wanted the axis labels to be fixed-width monospace, so that each label was spaced evenly. For parallel coordinates, I wanted to ensure the lines were brushable and colored by region, to stay consistent throughout each plot. Additionally, the axis text has a white outline, so that the text is easy to read. </p>
-    </section>
+        <h3>Dataset Summary</h3>
+        <p>The dataset I've chosen consists of alcohol consumption across 197 countries worldwide (more information available on my <a href="http://jbaker22.github.io/spring-2015-msan622/project_dataset.html" target="_blank">Project Dataset page</a>). Each country has data on consumption of beer, wine, spirits, "other," and "all types." Data points are available (on most countries) for every year from 2010-2013. </p>
+        <p>Per my <a href="http://jbaker22.github.io/spring-2015-msan622/project_sketch.html" target="_blank">project sketch</a>, I plan to include three panels: 
+          <ol>
+              <li>A world map, to directly select or reference each country's annual statistics. </li>
+              <li>A bubble chart, displaying each country's alcohol consumption. The chart would be animated to show changes year over year, with regions/continents grouped together by color. </li>
+              <li>Small multiples, showing alcohol consumption (filtered by type) across all countries. This might show all 197 countries, or I may break this out by region/continent as well. </li>
+          </ol>
+          For functionality, I'd like the page set up in a way that would allow users to click on a country, and quickly compare it to other nearby countries. 
+        </p>
 </section>
 </body>

@@ -4,7 +4,7 @@ focused = false,
 sens = 0.25;
 
 var projection = d3.geo.equirectangular()
-.scale(150)
+.scale(100)
 .translate([mapWidth / 2, mapHeight / 2])
 
 var path = d3.geo.path()
