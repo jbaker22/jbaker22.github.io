@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<head>    
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="pygment_trac.css">
+  <link rel="stylesheet" href="final/mapStyle.css">
+  <link rel="stylesheet" href="final/finalStyles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="description" content="MSAN 622 Submission Page - Final Project">
+</head>
+<style>
+
+</style>
+
+<h1>Final Project: Alcohol Consumption Worldwide, 2000-2013</h1>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jeff Baker<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="https://github.com/jbaker22/jbaker22.github.io/blob/master/spring-2015-msan622/project_prototype.html">Code on GitHub</a></small>
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="#writeup">Submission details (below)</a></small>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<body>
+    <div id="plots" width="1000" style="border: 1px;">
+          <!-- http://bl.ocks.org/KoGor/7024546 -->
+          <svg id="map"></svg>
+          <svg id="multiples" class="smallMultiples"></svg>
+          <span id="listanchor" width="630" height="50"></span>
+          <svg id="lines"></svg>
+    </div>
+<script>
+d3.select("svg#map")
+    .attr("width", 630)
+    .attr("height", 300);
+
+// select SVGs by Class
+d3.select("svg#multiples")
+    .attr("width", 370)
+    .attr("height", 600);
+
+d3.select("svg#lines")
+    .attr("width", 630)
+    .attr("height", 300);
+
+
+// data pulled from the following sources: 
+// populations: http://data.worldbank.org/indicator/SP.POP.TOTL
+// alcohol consumption: http://apps.who.int/gho/data/node.main.A1026?lang=en
+
+
+
+</script>
+<script src="final/final.js"></script>
+<!-- <script src="final/final_lines.js"></script>
+<script src="final/final_map.js"></script>
+<script src="final/final_multiples.js"></script>
+ -->
+<section id="writeup">
+    <h2>Submission Details</h2>
+        <h3>Dataset Summary</h3>
+        <p>The dataset I've chosen consists of alcohol consumption across 197 countries worldwide (more information available on my <a href="http://jbaker22.github.io/spring-2015-msan622/project_dataset.html" target="_blank">Project Dataset page</a>). Each country has data on consumption of beer, wine, spirits, "other," and "all types." Data points are available (on most countries) for every year from 2010-2013. </p>
+        <p>Per my <a href="http://jbaker22.github.io/spring-2015-msan622/project_sketch.html" target="_blank">project sketch</a>, I plan to include three panels: 
+          <ol>
+              <li>A world map, to directly select or reference each country's annual statistics. </li>
+              <li>A bubble chart, displaying each country's alcohol consumption. The chart would be animated to show changes year over year, with regions/continents grouped together by color. </li>
+              <li>Small multiples, showing alcohol consumption (filtered by type) across all countries. This might show all 197 countries, or I may break this out by region/continent as well. </li>
+          </ol>
+          For functionality, I'd like the page set up in a way that would allow users to click on a country, and quickly compare it to other nearby countries. 
+        </p>
+</section>
+</body>
