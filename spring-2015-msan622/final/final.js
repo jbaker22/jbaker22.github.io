@@ -52,7 +52,7 @@ function plotEverything(error, world, countryData) {
         var select = d3.select("#listanchor")
             .append("select")
             .attr("class", "select")
-            .on("change",filterStat);
+            .on("change",getCountryCatData);
 
         var options = select
         .selectAll("option")
@@ -82,6 +82,7 @@ function plotEverything(error, world, countryData) {
             .orient("left");
 
         var line = d3.svg.line()
+            // only draw the line for years that have entries
             .defined(function(d) { return !isNaN(d.val); })
             .x(function(d) { return x(d.year); })
             .y(function(d) { return y(d.val); });
@@ -98,7 +99,7 @@ function plotEverything(error, world, countryData) {
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis);
 
-        console.log("more data: ", data)
+        // console.log("more data: ", data)
         //Drawing countries on the globe
         var world = g.selectAll("path").data(countries);
         world.enter().append("path")
@@ -147,6 +148,7 @@ function plotEverything(error, world, countryData) {
             .style("top", (d3.event.pageY - 15) + "px");
         })
         .on("click", function(d) {
+            // zoom in on the focused country
             var bounds = path.bounds(d),
                   dx = bounds[1][0] - bounds[0][0],
                   dy = bounds[1][1] - bounds[0][1],
@@ -156,9 +158,10 @@ function plotEverything(error, world, countryData) {
                   translate = [width / 2 - scale * x, height / 2 - scale * y];
 
               svgMap.transition()
-                  .duration(750)
+                  .duration(1200)
                   .call(zoom.translate(translate).scale(scale).event);
 
+            // remove any lines in the chart
             var svgLine = d3.select("svg#lines").transition();
             svgLine.selectAll(".line")
                 .duration(100)
@@ -176,9 +179,11 @@ function plotEverything(error, world, countryData) {
             infoLabel.text(function(g) {
                 var results = data.filter(function(entry) {
                     return entry.name === countryById[d.id];
-                })  
-                console.log("results", results);
-                lineseries(results);
+                })
+                // console.log("results", results);
+                // pass the selected country's object to the line draw function
+                lineseries(results[0]);
+
                 return countryById[d.id] + " (" + results[0].region + ")";
             }) 
             .style("display", "inline");
@@ -216,7 +221,26 @@ function plotEverything(error, world, countryData) {
     }
 
     function getCountryCatData(data) {
-        // some stuff here
+        console.log("getting country data from:", data)
+        w = d3.select(this).classed("focused");
+        console.log("w is", w);
+        var results = data.filter(function(entry) {
+            return entry.name === countryById[d.id];
+        })
+        // get the category that's selected
+        cat = d3.select("select").property("value");
+        var linedata = data[cat];
+        console.log("linedata:", linedata);
+        var newdata = linedata.map(function(d) {
+            return {
+                year: +d[0],
+                val: +d[1]
+            };
+        });    
+        console.log("newdata:", newdata);
+
+        return newdata;
+
     }
 
     function lineseries(data) {
@@ -226,16 +250,14 @@ function plotEverything(error, world, countryData) {
         // http://mypage.iu.edu/~jlorince/projects/tagging/tagExplorer.html
         // http://bl.ocks.org/mbostock/3035090
 
-        // console.log("got the data: ", data[0])
-        data = data[0]
+        console.log("got the data: ", data)
+        // data = data[0]
 
         // get the category that's selected
         cat = d3.select("select").property("value");
 
-        linedata = data[cat];
-        console.log("line data:", linedata);
-
-        var newdata = linedata.map(function(d) {
+        newdata = data[cat];
+        var linedata = newdata.map(function(d) {
             return {
                 year: +d[0],
                 val: +d[1]
@@ -243,7 +265,7 @@ function plotEverything(error, world, countryData) {
         });    
         // data.forEach(newdata);
 
-        // console.log("new data! ", newdata);
+        console.log("new data! ", linedata);
         svgLine.select(".y.axis")
             .transition() // change the y axis
             .duration(750)
@@ -267,7 +289,7 @@ function plotEverything(error, world, countryData) {
             .on("change",filterStat);
 
         svgLine.append("path")
-            .datum(newdata)
+            .datum(linedata)
             .attr("class", "line")
             .attr("d", line);
         console.log("line added")
@@ -288,20 +310,14 @@ function plotEverything(error, world, countryData) {
     function filterStat() {
         console.log("data I'm working with: ", data)
         cat = d3.select("select").property("value");
-        console.log("menu change:", cat)
-
+        console.log("menu change:", cat, countryById[d.id])
+        d3.select(this).classed("focused");
+        var results = data.filter(function(entry) {
+            return entry.name === countryById[d.id];
+        })
+        console.log("filterstat results:", results)
 
         line.y(function(d) {return y(d[cat]); })
-        // if (cat == "Other alcoholic beverages") {
-        //     line.y(function(d) { return y(d["Other alcoholic beverages"]); });
-        // } else if (cat == "Beer") {
-        //     line.y(function(d) { return y(d["Beer"]); });
-        // } else if (cat == "Wine") {
-        //     line.y(function(d) { return y(d["Wine"]); });
-        // } else if (cat == "Spirits") {
-        //     line.y(function(d) { return y(d["Spirits"]); });
-        // } else {line.y(function(d) { return y(d["All types"]); });}
-
         var svgLine = d3.select("svg#lines").transition();
         svgLine.select(".line")
             .duration(750)
