@@ -44,13 +44,13 @@ function plotEverything(error, world, countryData) {
 
     country_data = d3.json("alcohol_consumption.json", function(data) {
 
-        var margin = {top: 30, right: 20, bottom: 20, left: 50},
+        var margin = {top: 30, right: 30, bottom: 40, left: 20},
             width = 600 - margin.left - margin.right,
             height = 300 - margin.top - margin.bottom;
 
-        var linemargin = {top: 30, right: 20, bottom: 20, left: 50},
-            linewidth = 400 - margin.left - margin.right,
-            lineheight = 300 - margin.top - margin.bottom;
+        var linemargin = {top: 30, right: 15, bottom: 20, left: 50},
+            linewidth = 400 - linemargin.left - linemargin.right,
+            lineheight = 300 - linemargin.top - linemargin.bottom;
 
 
         var colorfill = d3.scale.category10();
@@ -99,15 +99,15 @@ function plotEverything(error, world, countryData) {
             .y(function(d) { return y(d.val); });
 
         var svgLine = d3.select("svg#lines")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+            .attr("width", linewidth + linemargin.left + linemargin.right)
+            .attr("height", lineheight + linemargin.top + linemargin.bottom)
             .attr("display", "block")
             .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            .attr("transform", "translate(" + linemargin.left + "," + linemargin.top + ")");
 
         svgLine.append("g")
             .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
+            .attr("transform", "translate(0," + lineheight + ")")
             .call(xAxis);
 
         //Drawing countries on the globe

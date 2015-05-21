@@ -1,8 +1,5 @@
 #map {
-  position: relative;
-}
-
-#map {
+    position: relative;
     float: left; 
     margin: 0 auto;
     display: block;

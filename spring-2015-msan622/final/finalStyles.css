@@ -48,7 +48,6 @@
 }
 
 #plots {
-    position: relative;
     width: 1050px;
     margin: auto;
     float: left;
@@ -66,7 +65,7 @@
     float: left;
     width: 1000px;
     height: 600px;
-    margin: 30px;
+    margin-top: 50px;
     padding: 30px;
 }
 
@@ -109,6 +108,7 @@
   font-size: 16px; 
   font-weight: bold;
   display: block;
+  margin-top: 50px;
 }
 
 .overlay {
