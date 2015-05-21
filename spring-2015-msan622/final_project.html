@@ -24,31 +24,37 @@
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <body>
     <br>
-    <section id="plots"><br>
+    <section id="plots" width="1100px"><br>
         <h4>Select a country, and choose an alcohol type:</h4>
-        <div id="lhs">
-        <span id="listanchor" height="80"></span>
-        <span id="countryName" height="80"></span>
-          <!-- http://bl.ocks.org/KoGor/7024546 -->
-          <svg id="map"></svg>
-          <svg id="lines"></svg>
+        <div id="top">
+          <div id="lhs">
+            <div id="headline" height="80" style="display: block;">
+                <span id="countryName" height="80" style="float: left; display: block;"></span></div>
+            <svg id="map" style="vertical-align: bottom;"></svg>
+          </div>
+            <div id="rhs">
+              <div id="listanchor" height="80" style="float: right;"></div>
+              <svg id="lines"></svg>
+            </div>
         </div>
+
           <div id="multiples">
-              <div width="100%" height="80" id="rHeader">Regional Data</div>
+              <div width="100%" height="80" id="miniHeader">Regional Data</div>
           </div>
     </section>
+
 <script>
 d3.select("svg#map")
-    .attr("width", 630)
+    .attr("width", 600)
     .attr("height", 300);
 
 // select SVGs by Class
 d3.select("div#multiples")
-    .attr("width", 360)
+    .attr("width", 1000)
     .attr("height", 600);
 
 d3.select("svg#lines")
-    .attr("width", 630)
+    .attr("width", 400)
     .attr("height", 300);
 
 // data pulled from the following sources: 
@@ -70,16 +76,22 @@ d3.select("svg#lines")
         </p>
 
         <h3>Interactivity</h3>
-        <p>stuff I did</p>
+        <p>Interactivity with my project</p>
 
         <h3>Feedback</h3>
-        <p>I received feedback from my initial prototype. </p>
+        <p>I received two primary points of feedback on <a href="http://jbaker22.github.io/spring-2015-msan622/project_sketch.html" target="_blank">my sketch</a>: 
+            <ul>
+              <li>The tooltips were way off on the country mouseovers (they would appear near the bottom of the plot); this was fixed by changing the <code>position</code> style from <code>relative</code> to <code>absolute</code></li>
+              <li>Patrick suggested that, instead of horizontal "lollipops" for my small multiples, I make them vertical; this feedback was incorporated into my final design</li>
+              </ul>
+              Since my project sketch and prototype were incomplete at the time of our group reviews, there was not much feedback to receive. 
+        </p>
 
         <h3>Challenges</h3>
         <p>There were quite a few issues to deal with in developing this page. Namely: 
             <ol>
-                <li><u>Data</u>: The data was not very clean. Observations could have both null AND "No data" values. Some countries had no data at all. Country names were often spelled differently, depending on the source. Additionally, data that I wanted to include (namely population figures, country codes, and the topoJSON codes) had to be merged together in some fashion. Ultimately, I managed to stitch a JSON file together of the various disparate sources to get the final, usable data set for use in D3. </li>
-                <li><u>Interactivity</u>: It was a big problem trying to get each of the three plots to have linked interactivity. The map had it's own "mapping" between the drawn paths for each country, the country's ID and name, then linking those keys to the raw data plotted in the line and small multiples charts (a separate data set altogether from the data needed to plot the map alone). Additionally, it was hard to get changes in one plot (or from the pull-down menu) to reflect changes in the other plots appropriately. All-in-all, this was an interesting challenge, requiring careful use of scoping to allow each of the other plots to access the same data, while connecting actions between plots through country and/or region name. </li>
+                <li><u>Data</u>: The data was not very clean. Observations could have both <code>null</code> AND "No data" values. Some countries had no consumption data at all, and had to be handled appropriately. Country names were often spelled differently, depending on the source (for example, "Korea, Republic of" versus "Korea (Republic of)" or "Republic of Korea"). Additionally, other data that I wanted to include--namely population figures, country codes, and the topoJSON codes--had to be merged together in some fashion. Ultimately, I managed to stitch a JSON file together of the various disparate sources to get the final, usable data set for use in D3. This step took, by far, the longest to address. </li>
+                <li><u>Interactivity</u>: It was a big problem trying to get each of the three plots to have linked interactivity. The map had it's own "mapping" between the drawn paths for each country, the country's ID and name, then linking those keys to the raw data plotted in the line and small multiples charts (a separate data set altogether from the data needed to plot the map alone). Additionally, it was hard to get changes in one plot or from the pull-down menu to reflect changes in the other plots appropriately. All-in-all, this was an interesting challenge, requiring careful use of scoping to allow each of the other plots to access the same data, while connecting actions between plots through country and/or region name. As part of this hurdle, another issue that came up related to transitions within the individual SVGs in the small multiples. Each of the plots have circles, and updating each of them with transitions at once (rather than deleting and redrawing) took some thinking through. </li>
                 <li><u>Bubble plot</u>: Originally, I wanted to replicate <a href="http://bost.ocks.org/mike/nations/" target="_blank">Mike Bostock's "The Wealth &amp; Health of Nations"</a> design using my data set. However, as I developed the page and interactions further, I felt like there was too much going on with that chart (13 years of data, 190+ countries, multiple regions, etc.) to glean any learnings. So, instead, I decided to create a line chart that clearly focused on the alcohol type and consumption levels for the selected country. </li>
                 <li><u>Small multiples design</u>: Horizontal bars were not going to work for the number of multiples I envisioned (I wanted to fit a lot of data into a smaller space), so I needed to custom-make the bars to be vertical. Thankfully, with some input from Griffin, I was able to come up with a way to develop a design from <a href="http://gokamoto.github.io/MSAN622-InformationVisualization/HW2/final.html#smallMultLegend" target="_blank">a previous homework she did</a>, but turned the multiples vertically. I felt this would be better than the typical bar chart we've done thus far. </li>
             </ol>

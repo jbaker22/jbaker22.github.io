@@ -1,4 +1,4 @@
-var mapWidth = 630,
+var mapWidth = 600,
 mapHeight = 300,
 focused = false;
 
@@ -16,7 +16,7 @@ var svgMap = d3.select("svg#map")
 
 var zoneTooltip = d3.select("section#plots").append("div").attr("class", "zoneTooltip"),
 miniTooltip = d3.select("div#multiples").append("div").attr("class", "zoneTooltip"),
-infoLabel = d3.select("span#countryName").attr("class", "infoLabel");
+infoLabel = d3.select("#countryName").attr("class", "infoLabel");
 
 var g = svgMap.append("g");
 
@@ -45,8 +45,13 @@ function plotEverything(error, world, countryData) {
     country_data = d3.json("alcohol_consumption.json", function(data) {
 
         var margin = {top: 30, right: 20, bottom: 20, left: 50},
-            width = 630 - margin.left - margin.right,
+            width = 600 - margin.left - margin.right,
             height = 300 - margin.top - margin.bottom;
+
+        var linemargin = {top: 30, right: 20, bottom: 20, left: 50},
+            linewidth = 400 - margin.left - margin.right,
+            lineheight = 300 - margin.top - margin.bottom;
+
 
         var colorfill = d3.scale.category10();
 
@@ -69,10 +74,10 @@ function plotEverything(error, world, countryData) {
         });
 
         var x = d3.time.scale()
-        .range([0, width]);
+        .range([0, linewidth]);
 
         var y = d3.scale.linear()
-            .range([height, 0]);
+            .range([lineheight, 0]);
 
         x.domain([2000, 2013]);
         y.domain([0, 15]).nice();
@@ -177,7 +182,7 @@ function plotEverything(error, world, countryData) {
             if (focused === d) return reset();
             g.selectAll(".focused").classed("focused", false);
             d3.select(this).classed("focused", focused = d);
-            // update text on info label
+            // update map title with country name
             infoLabel.transition().duration(750).style('opacity', 0);
             infoLabel.transition().duration(750).text(function(g) {
                 results = data.filter(function(entry) {
@@ -186,15 +191,17 @@ function plotEverything(error, world, countryData) {
                 // pass the selected country's object to the line draw function
                 lineseries(results[0]);
                 smallMultiples(results[0]);
-                header = d3.select("#rHeader");
+
+                // update the header for small multiples
+                header = d3.select("#miniHeader");
                 header.transition().duration(750).style('opacity', 0);
                 header.transition().delay(750).duration(750)
-                    .text("Average Liters per Capita, 2010-2013: " + results[0].region)
+                    .text("Average Liters Consumed per Capita, 2010-2013: " + results[0].region)
                     .style('opacity', 1);
-                return "Country: " + countryById[d.id] + " (" + results[0].region + ")";
+                return countryById[d.id] + " (" + results[0].region + ")";
             })
-            .style("opacity",1)
-            .style("display", "inline");
+            .style("opacity", 1)
+            .style("display", "block");
         });
     //Adding extra data when focused
 
@@ -236,12 +243,14 @@ function plotEverything(error, world, countryData) {
             .duration(750)
             .style("opacity", 0)
             .remove();
-    header = d3.select("#rHeader");
+    header = d3.select("#miniHeader");
     header.transition().duration(750).style('opacity', 0);
     header.transition()
         .delay(750)
         .duration(750)
-        .text("Regional Data ").style('opacity', 1);
+        .text("Regional Data ")
+        .style('opacity', 1)
+        .style("display", "block");
 
         // svgLine.selectAll(".dot")
         //     .duration(100)
@@ -432,17 +441,16 @@ function plotEverything(error, world, countryData) {
                 }
           }
         });
-        // console.log("filtered:", filtered)
+
+        // order multiples highest to lowest
+        filtered.sort(function(a, b) {
+            return b.avg - a.avg;
+        });
+
 
         miniDomain = d3.extent(filtered, function(d) { return d.avg; });
         miniScale = d3.scale.linear()
             .domain(miniDomain).range([height2+5, 0]);
-
-        // var svgMinis = d3.select("div#multiples").selectAll("svg").transition();
-        //     svgMinis
-        //     .duration(750)
-        //     .style("opacity", 0)
-        //     .remove();
 
         // add svgs for each country that meets the criteria
         var svgMinis = d3.select("div#multiples").selectAll("svg")
@@ -479,10 +487,6 @@ function plotEverything(error, world, countryData) {
             .attr("height", 85)
             .style("fill", colors(0));
 
-        // miniDomain = d3.extent(filtered, function(d) { return d.avg; });
-        // miniScale = d3.scale.linear()
-        //     .domain(miniDomain).range([height2+5, 0]);
-
         dots = svgMinis.append("g")
             .attr("class", "circles");
 
@@ -493,14 +497,14 @@ function plotEverything(error, world, countryData) {
             .style("fill", "orangered");
 
         svgMinis.append("text")
-            .attr("class", "countryName")
+            .attr("class", "countryCode")
             .attr("text-anchor", "middle")
             .attr("x", (margin2.left+width2+margin2.right)/2)
             .attr("y", 15)
             .text(function(d) { return d.code; });
 
         var svgMinis = d3.select("div#multiples").selectAll("svg").transition()
-            .delay(800)
+            .delay(755)
             .duration(750)
         .style("opacity", 1);
 

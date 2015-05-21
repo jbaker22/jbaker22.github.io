@@ -2,10 +2,20 @@
   position: relative;
 }
 
+#map {
+    float: left; 
+    margin: 0 auto;
+    display: block;
+    height: auto !important;
+    width: auto !important;
+    max-width: 600px;
+}
+
 svg#map {
   background: #deebf7;
   pointer-events: all;
   float: left;
+  margin-top: 30px;
 }
 
 .zone {
@@ -35,7 +45,7 @@ svg#map {
   top: 0px;
   left: 20px;
   float: left;
-  display: none;
+  display: block;
   /*color: #666;*/
   background: #FFFFFF;    
   text-align: left;            
