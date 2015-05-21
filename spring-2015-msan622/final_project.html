@@ -14,59 +14,74 @@
 </style>
 
 <h1>Final Project: Alcohol Consumption Worldwide, 2000-2013</h1>
+<h2>Recorded alcohol per capita (15+) consumption; measured in liters of pure alcohol</h2>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jeff Baker<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="https://github.com/jbaker22/jbaker22.github.io/blob/master/spring-2015-msan622/project_prototype.html">Code on GitHub</a></small>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="https://github.com/jbaker22/jbaker22.github.io/blob/master/spring-2015-msan622/final_project.html">Code on GitHub</a></small>
   <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="#writeup">Submission details (below)</a></small>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 <script src="http://d3js.org/queue.v1.min.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <body>
-    <div id="plots" width="1000" style="border: 1px;">
+    <br>
+    <section id="plots"><br>
+        <h4>Select a country:</h4>
+        <span id="listanchor" height="50"></span>
+        <div id="lhs">
           <!-- http://bl.ocks.org/KoGor/7024546 -->
           <svg id="map"></svg>
-          <svg id="multiples" class="smallMultiples"></svg>
-          <span id="listanchor" width="630" height="50"></span>
           <svg id="lines"></svg>
-    </div>
+        </div>
+          <div id="multiples"></div>
+    </section>
 <script>
 d3.select("svg#map")
     .attr("width", 630)
     .attr("height", 300);
 
 // select SVGs by Class
-d3.select("svg#multiples")
-    .attr("width", 370)
+d3.select("div#multiples")
+    .attr("width", 360)
     .attr("height", 600);
 
 d3.select("svg#lines")
     .attr("width", 630)
     .attr("height", 300);
 
-
 // data pulled from the following sources: 
 // populations: http://data.worldbank.org/indicator/SP.POP.TOTL
 // alcohol consumption: http://apps.who.int/gho/data/node.main.A1026?lang=en
 
-
-
 </script>
 <script src="final/final.js"></script>
-<!-- <script src="final/final_lines.js"></script>
-<script src="final/final_map.js"></script>
-<script src="final/final_multiples.js"></script>
- -->
 <section id="writeup">
     <h2>Submission Details</h2>
-        <h3>Dataset Summary</h3>
-        <p>The dataset I've chosen consists of alcohol consumption across 197 countries worldwide (more information available on my <a href="http://jbaker22.github.io/spring-2015-msan622/project_dataset.html" target="_blank">Project Dataset page</a>). Each country has data on consumption of beer, wine, spirits, "other," and "all types." Data points are available (on most countries) for every year from 2010-2013. </p>
-        <p>Per my <a href="http://jbaker22.github.io/spring-2015-msan622/project_sketch.html" target="_blank">project sketch</a>, I plan to include three panels: 
+        <h3>Techniques</h3>
+        <p>I chose to use three visualization techniques: 
           <ol>
-              <li>A world map, to directly select or reference each country's annual statistics. </li>
-              <li>A bubble chart, displaying each country's alcohol consumption. The chart would be animated to show changes year over year, with regions/continents grouped together by color. </li>
-              <li>Small multiples, showing alcohol consumption (filtered by type) across all countries. This might show all 197 countries, or I may break this out by region/continent as well. </li>
+              <li><u>World map</u>: This consists of a world map using an equirectangular projection type. While data density and data-ink ratio is high, there is some inherent lie factor with the projection. Additionally, when selecting a country, the zoom function enlarges the borders of the country, further skewing this (more on the interactivity below). Since I had space requirements for the view of this page, I chose to use the equirectangular projection to A) keep lie factor low (Greenland is the appropriate size), and B) to allow a clear "window" of the world view. The other projection types did not really have this combination of features to my liking. </li>
+              <li><u>Line chart</u>: A simple line chart, indicating the alcohol consumption per capita for each country between 2000-2013. The goal of this plot is to show the trend over time for a given country's alcohol consumption, so I felt that the line chart was best suited for this goal. Lie factor is a minor issue, since the y-axis changes depending on the selected alcohol type. Data density is moderate, since some countries have missing and/or zero-value data, making it less informative. Data-ink ratio is also moderate, since there could be added information into this particular plot--however, having too many lines would make it harder to interpret when the values range significantly (as is the case for many of these countries). </li>
+              <li><u>Small multiples</u>: Displays a unified view of all other countries (that have data) in the same region as the selected country, to give users a way to view, with context, how the selected country compares to other neighboring countries. Since the data is displayed across all countries in the same region, I feel this plot scores high in data density and data-ink ratio, while doing well with respect to lie factor, since all of the plots are set to the same domain of values. While a histogram might have worked here, I wanted the display to adjust depending on how many countries were displayed at a time. Having individual SVGs for each country meant having to change the technique, allowing for wrapping within the small space allocated for the data. </li>
           </ol>
-          For functionality, I'd like the page set up in a way that would allow users to click on a country, and quickly compare it to other nearby countries. 
+        </p>
+
+        <h3>Interactivity</h3>
+        <p>stuff I did</p>
+
+        <h3>Feedback</h3>
+        <p>I received feedback from my initial prototype. </p>
+
+        <h3>Challenges</h3>
+        <p>There were quite a few issues to deal with in developing this page. Namely: 
+            <ol>
+                <li><u>Data</u>: The data was not very clean. Observations could have both null AND "No data" values. Some countries had no data at all. Country names were often spelled differently, depending on the source. Additionally, data that I wanted to include (namely population figures, country codes, and the topoJSON codes) had to be merged together in some fashion. Ultimately, I managed to stitch a JSON file together of the various disparate sources to get the final, usable data set for use in D3. </li>
+                <li><u>Interactivity</u>: It was a big problem trying to get each of the three plots to have linked interactivity. The map had it's own "mapping" between the drawn paths for each country, the country's ID and name, then linking those keys to the raw data plotted in the line and small multiples charts (a separate data set altogether from the data needed to plot the map alone). Additionally, it was hard to get changes in one plot (or from the pull-down menu) to reflect changes in the other plots appropriately. All-in-all, this was an interesting challenge, requiring careful use of scoping to allow each of the other plots to access the same data, while connecting actions between plots through country and/or region name. </li>
+                <li><u>Bubble plot</u>: Originally, I wanted to replicate <a href="http://bost.ocks.org/mike/nations/" target="_blank">Mike Bostock's "The Wealth &amp; Health of Nations"</a> design using my data set. However, as I developed the page and interactions further, I felt like there was too much going on with that chart (13 years of data, 190+ countries, multiple regions, etc.) to glean any learnings. So, instead, I decided to create a line chart that clearly focused on the alcohol type and consumption levels for the selected country. </li>
+                <li><u>Small multiples design</u>: Horizontal bars were not going to work for the number of multiples I envisioned (I wanted to fit a lot of data into a smaller space), so I needed to custom-make the bars to be vertical. Thankfully, with some input from Griffin, I was able to come up with a way to develop a design from <a href="http://gokamoto.github.io/MSAN622-InformationVisualization/HW2/final.html#smallMultLegend" target="_blank">a previous homework she did</a>, but turned the multiples vertically. I felt this would be better than the typical bar chart we've done thus far. </li>
+            </ol>
+        </p>
+        <h3>Conclusion</h3>
+        <p>
         </p>
 </section>
 </body>

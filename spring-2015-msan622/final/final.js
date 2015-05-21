@@ -41,7 +41,7 @@ function plotEverything(error, world, countryData) {
 
     country_data = d3.json("alcohol_consumption.json", function(data) {
 
-        var margin = {top: 30, right: 20, bottom: 20, left: 40},
+        var margin = {top: 30, right: 20, bottom: 20, left: 50},
             width = 630 - margin.left - margin.right,
             height = 300 - margin.top - margin.bottom;
 
@@ -222,7 +222,8 @@ function plotEverything(error, world, countryData) {
             .remove();
     var svgMinis = d3.select("#multiples").transition();
         svgMinis.selectAll("svg")
-            .duration(100)
+            .duration(500)
+            .delay(500)
             .remove();
 
             console.log("results are still here:", results)
@@ -284,7 +285,7 @@ function plotEverything(error, world, countryData) {
             .attr("y", -52)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
-            .attr("transform", "translate(15," + 10 + "), rotate(-90)")
+            .attr("transform", "translate(20," + 10 + "), rotate(-90)")
             .text(function(d) {
                 val = d3.select("select").property("value");
                 return val;
@@ -341,11 +342,9 @@ function plotEverything(error, world, countryData) {
         var colors = d3.scale.category10();
 
         var margin2 = {top: 20, right: 10, bottom: 20, left: 10},
-            width2 = 30 - margin2.right - margin2.left,
-            height2 = 120 - margin2.top - margin2.bottom;
-        // lines will be 100 tall, 2 wide
-        // Legend
-        between2 = 10;
+            width2 = 31 - margin2.right - margin2.left,
+            height2 = 110 - margin2.top - margin2.bottom;
+        // lines will be 90 tall, 4 wide
 
         // identify the region the country is in
         region = country["region"]
@@ -362,7 +361,7 @@ function plotEverything(error, world, countryData) {
 
         // retrieve category data from each country
         filtered = otherCountries.map(function(d) {
-          console.log(d.name, d.code, cat, ": ", d[cat])
+          // console.log(d.name, d.code, cat, ": ", d[cat])
             if (typeof d[cat] != 'undefined') {
                 return {
                     name: d.name,
@@ -377,7 +376,7 @@ function plotEverything(error, world, countryData) {
             .data(filtered)
             .enter().append("svg")
             .attr("class", function(d) { return d.name; })
-            .attr("style", "outline: thin solid red;")  
+            // .attr("style", "outline: thin solid red;")  
             .attr("width", width2 + margin2.left + margin2.right)
             .attr("height", height2 + margin2.top + margin2.bottom);
 
@@ -385,31 +384,31 @@ function plotEverything(error, world, countryData) {
             .attr("class", "lines");
 
         lines2.append("rect")
-            .attr("x", width2)
-            .attr("y", margin2.top+(1/3)*height2)
-            .attr("width", 4)
-            .attr("height", 100)
+            .attr("x", width2+1.5)
+            .attr("y", margin2.top)
+            .attr("width", 3)
+            .attr("height", 85)
             .style("fill", colors(0));
 
         miniDomain = d3.extent(filtered, function(d) { return d.avg; });
         miniScale = d3.scale.linear()
-            .domain(miniDomain).range([0, height2]);
+            .domain(miniDomain).range([0, height2+5]);
 
         // Circles indicating where the state falls for each variable
         dots = svgMinis.append("g")
             .attr("class", "circles");
 
         dots.append("circle")
-            .attr("cx", margin2.top+(1/3)*height2+1)
-            .attr("cy", function(d) { return margin2.left + miniScale(d.avg); })
-            .attr("r", 8)
+            .attr("cx", width2+3)
+            .attr("cy", function(d) { return miniScale(d.avg) + margin2.top; })
+            .attr("r", 5)
             .style("fill", "steelblue");
 
         svgMinis.append("text")
             .attr("class", "countryName")
             .attr("text-anchor", "middle")
             .attr("x", (margin2.left+width2+margin2.right)/2)
-            .attr("y", margin2.top+10)
+            .attr("y", 15)
             .text(function(d) { return d.code; });
 
     // Maximum and minimum values for each variable at end of lines
