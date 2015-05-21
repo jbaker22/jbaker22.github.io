@@ -196,7 +196,7 @@ function plotEverything(error, world, countryData) {
                 header = d3.select("#miniHeader");
                 header.transition().duration(750).style('opacity', 0);
                 header.transition().delay(750).duration(750)
-                    .text("Average Liters Consumed per Capita, 2010-2013: " + results[0].region)
+                    .text("Average Liters of " + cat + " Consumed per Capita, 2010-2013: " + results[0].region)
                     .style('opacity', 1);
                 return countryById[d.id] + " (" + results[0].region + ")";
             })
@@ -366,6 +366,14 @@ function plotEverything(error, world, countryData) {
         var margin2 = {top: 20, right: 10, bottom: 20, left: 10},
             width2 = 31 - margin2.right - margin2.left,
             height2 = 110 - margin2.top - margin2.bottom;
+
+        header = d3.select("#miniHeader");
+        header.transition().duration(750).style('opacity', 0);
+        header.transition().delay(750).duration(750)
+            .text("Average Liters of " + cat + " Consumed per Capita, 2010-2013: " + results[0].region)
+            .style('opacity', 1);
+        // return countryById[d.id] + " (" + results[0].region + ")";
+
 
         filtered = otherCountries.map(function(d) {
             if (typeof d[cat] != 'undefined') {
