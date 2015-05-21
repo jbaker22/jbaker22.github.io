@@ -1,5 +1,5 @@
 #writeup {
-  margin-top: 10px;
+  margin-top: 20px;
     width: 100%;
 }
 
@@ -42,6 +42,7 @@
 
 #listanchor {
   position: relative;
+  float: left;
 /*  top: 470px;
   left: 500px;*/
 }
@@ -136,6 +137,12 @@
 
 .countryName {
     font: 12px sans-serif;
+}
+
+#rHeader {
+  text-align: left; 
+  font-size: 16px; 
+  font-weight: bold;
 }
 
 .overlay {

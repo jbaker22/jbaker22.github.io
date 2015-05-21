@@ -15,7 +15,8 @@ var svgMap = d3.select("svg#map")
 .attr("height", mapHeight);
 
 var zoneTooltip = d3.select("section#plots").append("div").attr("class", "zoneTooltip"),
-infoLabel = d3.select("section#plots").append("div").attr("class", "infoLabel");
+miniTooltip = d3.select("div#multiples").append("div").attr("class", "zoneTooltip"),
+infoLabel = d3.select("span#countryName").attr("class", "infoLabel");
 
 var g = svgMap.append("g");
 
@@ -25,6 +26,8 @@ queue()
 .await(plotEverything);
 
 var results = {}
+var region = ""
+var otherCountries = {}
 
 function plotEverything(error, world, countryData) {
 // http://bl.ocks.org/mbostock/9656675
@@ -46,6 +49,8 @@ function plotEverything(error, world, countryData) {
             height = 300 - margin.top - margin.bottom;
 
         var colorfill = d3.scale.category10();
+
+        formatting = d3.format(".2f");
 
         // DROPDOWN LIST: 
         optionlist = ["All types", "Beer", "Wine", "Spirits", "Other alcoholic beverages"];
@@ -100,7 +105,6 @@ function plotEverything(error, world, countryData) {
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis);
 
-        // console.log("more data: ", data)
         //Drawing countries on the globe
         var world = g.selectAll("path").data(countries);
         world.enter().append("path")
@@ -111,7 +115,7 @@ function plotEverything(error, world, countryData) {
         var zoom = d3.behavior.zoom()
             .scaleExtent([1, 50])
             .on("zoom",function() {
-                  // the "zoom" event populates d3.event with an object that has
+            // the "zoom" event populates d3.event with an object that has
             // a "translate" property (a 2-element Array in the form [x, y])
             // and a numeric "scale" property
                 var e = d3.event,
@@ -133,9 +137,7 @@ function plotEverything(error, world, countryData) {
     svgMap.call(zoom);
 
     //Events processing
-
     world.on("mouseover", function(d) {
-        // console.log(data[0])
         zoneTooltip.text(countryById[d.id])
         .style("left", (d3.event.pageX + 70) + "px")
         .style("top", (d3.event.pageY - 15) + "px")
@@ -163,31 +165,35 @@ function plotEverything(error, world, countryData) {
                   .call(zoom.translate(translate).scale(scale).event);
 
             // remove any lines in the chart
-            var svgLine = d3.select("svg#lines").transition();
-            svgLine.selectAll(".line")
-                .duration(100)
+            var svgLine = d3.select("svg#lines").select(".line").transition();
+            svgLine
+                .duration(750)
                 .remove(); // update line
 
             // svgLine.selectAll(".dot")
-            //     .duration(100)
+            //     .duration(1000)
             //     .remove();
-
 
             if (focused === d) return reset();
             g.selectAll(".focused").classed("focused", false);
             d3.select(this).classed("focused", focused = d);
             // update text on info label
-            infoLabel.text(function(g) {
+            infoLabel.transition().duration(750).style('opacity', 0);
+            infoLabel.transition().duration(750).text(function(g) {
                 results = data.filter(function(entry) {
                     return entry.name === countryById[d.id];
                 })
-                // console.log("results", results);
                 // pass the selected country's object to the line draw function
                 lineseries(results[0]);
                 smallMultiples(results[0]);
-
-                return countryById[d.id] + " (" + results[0].region + ")";
-            }) 
+                header = d3.select("#rHeader");
+                header.transition().duration(750).style('opacity', 0);
+                header.transition().delay(750).duration(750)
+                    .text("Average Liters per Capita, 2010-2013: " + results[0].region)
+                    .style('opacity', 1);
+                return "Country: " + countryById[d.id] + " (" + results[0].region + ")";
+            })
+            .style("opacity",1)
             .style("display", "inline");
         });
     //Adding extra data when focused
@@ -200,33 +206,43 @@ function plotEverything(error, world, countryData) {
 
     function reset() {
       g.selectAll(".focused").classed("focused", focused = false);
+
+      // reset the results
+      results = {};
+
       infoLabel.style("display", "none");
       zoneTooltip.style("display", "none");
-      // svgLine.select(".y.axis")
-      //     .transition() // change the y axis
-      //     .duration(750)
-      //     .remove();
+      var svgLine = d3.select(".y.axis").transition() // change the y axis
+          .duration(750)
+          .style("opacity", 0)
+          .remove();
 
     svgMap.transition()
       .duration(750)
       .call(zoom.translate([0, 0]).scale(1).event);
 
-
-    var svgLine = d3.select("svg#lines").transition();
-        svgLine.selectAll(".line")
-            .duration(100)
+    var svgLine = d3.select("svg#lines").selectAll(".line").transition();
+        svgLine
+            .duration(750)
+            .style("opacity", 0)
             .remove(); // update line
         svgLine.select(".y.axis")
             .transition() // change the y axis
-            .duration(100)
-            .remove();
-    var svgMinis = d3.select("#multiples").transition();
-        svgMinis.selectAll("svg")
-            .duration(500)
-            .delay(500)
+            .duration(750)
             .remove();
 
-            console.log("results are still here:", results)
+    var svgMinis = d3.select("#multiples").selectAll("svg").transition();
+        svgMinis
+            .duration(750)
+            .style("opacity", 0)
+            .remove();
+    header = d3.select("#rHeader");
+    header.transition().duration(750).style('opacity', 0);
+    header.transition()
+        .delay(750)
+        .duration(750)
+        .text("Regional Data ").style('opacity', 1);
+
         // svgLine.selectAll(".dot")
         //     .duration(100)
         //     .remove();
@@ -237,7 +253,7 @@ function plotEverything(error, world, countryData) {
 
         // get the category that's selected
         // var linedata = data[cat];
-        console.log("linedata:", entryData);
+        // console.log("linedata:", entryData);
         var newdata = entryData.map(function(d) {
             return {
                 year: +d[0],
@@ -268,12 +284,11 @@ function plotEverything(error, world, countryData) {
             };
         });    
 
-        console.log("new data! ", linedata);
+        // console.log("new data! ", linedata);
         y.domain([d3.min(linedata, function(d) { return d.val; })*.9, 
                   d3.max(linedata, function(d) { return d.val; })*1.1]).nice();
 
-        svgLine.select(".y.axis")
-            .transition() // change the y axis
+        svgLine.select(".y.axis").transition()
             .duration(750)
             .remove();
 
@@ -281,23 +296,19 @@ function plotEverything(error, world, countryData) {
             .attr("class", "y axis")
             .call(yAxis)
             .append("text")
-            .attr("x", 5)
+            .attr("x", 10)
             .attr("y", -52)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
-            .attr("transform", "translate(20," + 10 + "), rotate(-90)")
-            .text(function(d) {
-                val = d3.select("select").property("value");
-                return val;
-            })
-            .on("change",filterStat);
+            .attr("transform", "translate(5,10), rotate(-90)")
+            .text("Liters Consumed per Capita");
 
         svgLine.append("path")
             .datum(linedata)
             .attr("class", "line")
             .attr("d", line);
 
-        console.log("line added")
+        console.log("line added:", linedata)
 
         // add dots
         // svgLine.selectAll(".dot")
@@ -315,27 +326,77 @@ function plotEverything(error, world, countryData) {
     function filterStat() {
         cat = d3.select("select").property("value");
 
-        newdata = convertData(results[0][cat])
-        console.log("new line data", newdata)
+        // get data for the new category
+        filterData = results[0][cat];
+        console.log("filterData:", filterData);
 
-        lineseries(newdata);
-        // line.y(function(d) {return y(newdata); })
+        // convert array data types
+        var linedata = filterData.map(function(d) {
+            return {
+                year: +d[0],
+                val: +d[1]
+            };
+        });    
 
-        // var svgLine = d3.select("svg#lines").transition();
-        // svgLine.select(".line")
-        //     .duration(750)
-        //     .attr("d", lineseries(newdata)); // update line
+// ************   UPDATE LINE   *************
+        // update line domain
+        y.domain([d3.min(linedata, function(d) { return d.val; })*.9, 
+                  d3.max(linedata, function(d) { return d.val; })*1.1]).nice();
 
-        // svgLine.select(".y.axis") // change the y axis
-        //     .duration(750)
-        //     .call(yAxis);
+        // update line
+        var newline = d3.select("svg#lines").transition();
+        newline.select(".line")
+            .duration(750)
+            .attr("d", line(linedata));
 
-        // svgLine.select(".dot")
-        //     .duration(750)
-        //     .attr("d", dot); // update line
+        newline.select(".y.axis") // change the y axis
+            .duration(750)
+            .call(yAxis);
 
+// ********* UPDATE SMALL MULTIPLES ********* 
+        var margin2 = {top: 20, right: 10, bottom: 20, left: 10},
+            width2 = 31 - margin2.right - margin2.left,
+            height2 = 110 - margin2.top - margin2.bottom;
 
+        filtered = otherCountries.map(function(d) {
+            if (typeof d[cat] != 'undefined') {
+                return {
+                    name: d.name,
+                    code: d.code,
+                    avg: d3.sum(d[cat], function(f){ return +f[1];}) / d[cat].length
+                }
+          }
+        });
+
+        // reset domains for the multiples
+        miniDomain = d3.extent(filtered, function(d) { return d.avg; });
+        miniScale = d3.scale.linear()
+            .domain(miniDomain).range([height2+5, 0]);
+
+        // select each svg
+        filtered.forEach(function(d) {
+            circles = d3.select("svg#"+d.code)   // select the svg with the same country name
+            .datum(d)
+            .selectAll(".circles")
+            .datum(d)
+            .append("circle")
+            .attr("cx", width2+3)
+            .attr("cy", function(d) { return miniScale(d.avg) + margin2.top; })
+            .attr("r", 5)
+            .style("fill", "orangered"); 
+
+            // y.exit().remove();
+                   circles
+            // .duration(750)
+            .append("circle")
+            .attr("cx", width2+3)
+            .attr("cy", function(d) { return miniScale(d.avg) + margin2.top; })
+            .attr("r", 5)
+            .style("fill", "orangered");
+
+        })
     }
+
 
     function smallMultiples(country) {
 
@@ -347,9 +408,10 @@ function plotEverything(error, world, countryData) {
         // lines will be 90 tall, 4 wide
 
         // identify the region the country is in
-        region = country["region"]
+        region = country["region"];
 
-        console.log("got region: ", region)
+        console.log("got region: ", region, cat)
+        console.log("results region: ", results[0].region)
         // get all countries that are from the same region
         otherCountries = data.filter(function(entry) {
                 return entry["region"] === region;
@@ -370,15 +432,42 @@ function plotEverything(error, world, countryData) {
                 }
           }
         });
+        // console.log("filtered:", filtered)
+
+        miniDomain = d3.extent(filtered, function(d) { return d.avg; });
+        miniScale = d3.scale.linear()
+            .domain(miniDomain).range([height2+5, 0]);
+
+        // var svgMinis = d3.select("div#multiples").selectAll("svg").transition();
+        //     svgMinis
+        //     .duration(750)
+        //     .style("opacity", 0)
+        //     .remove();
 
         // add svgs for each country that meets the criteria
         var svgMinis = d3.select("div#multiples").selectAll("svg")
             .data(filtered)
-            .enter().append("svg")
-            .attr("class", function(d) { return d.name; })
+            .enter()
+            .append("svg")
+            .attr("class", "smalls")
+            .attr("id", function(d) { return d.code; })
             // .attr("style", "outline: thin solid red;")  
             .attr("width", width2 + margin2.left + margin2.right)
-            .attr("height", height2 + margin2.top + margin2.bottom);
+            .attr("height", height2 + margin2.top + margin2.bottom)
+            .style("opacity", 0)
+            .on("mouseover", function(d) {
+                miniTooltip.text(d.name + ": " + formatting(d.avg))
+                .style("left", (d3.event.pageX + 70) + "px")
+                .style("top", (d3.event.pageY - 15) + "px")
+                .style("display", "block");
+            })
+            .on("mouseout", function(d) {
+                miniTooltip.style("display", "none");
+            })
+            .on("mousemove", function() {
+                miniTooltip.style("left", (d3.event.pageX + 15) + "px")
+                .style("top", (d3.event.pageY - 15) + "px");
+            });
 
         lines2 = svgMinis.append("g")
             .attr("class", "lines");
@@ -390,11 +479,10 @@ function plotEverything(error, world, countryData) {
             .attr("height", 85)
             .style("fill", colors(0));
 
-        miniDomain = d3.extent(filtered, function(d) { return d.avg; });
-        miniScale = d3.scale.linear()
-            .domain(miniDomain).range([0, height2+5]);
+        // miniDomain = d3.extent(filtered, function(d) { return d.avg; });
+        // miniScale = d3.scale.linear()
+        //     .domain(miniDomain).range([height2+5, 0]);
 
-        // Circles indicating where the state falls for each variable
         dots = svgMinis.append("g")
             .attr("class", "circles");
 
@@ -402,7 +490,7 @@ function plotEverything(error, world, countryData) {
             .attr("cx", width2+3)
             .attr("cy", function(d) { return miniScale(d.avg) + margin2.top; })
             .attr("r", 5)
-            .style("fill", "steelblue");
+            .style("fill", "orangered");
 
         svgMinis.append("text")
             .attr("class", "countryName")
@@ -411,28 +499,12 @@ function plotEverything(error, world, countryData) {
             .attr("y", 15)
             .text(function(d) { return d.code; });
 
-    // Maximum and minimum values for each variable at end of lines
-    formatting = d3.format("$.2f");
-
-    // ranges2 = svgMinis.append("g")
-    //     .attr("class", "ranges");
-
-    // ranges2.append("text")
-    //     .attr("class", "avgMin")
-    //     .attr("text-anchor", "end")
-    //     .attr("x", margin2.left-5)
-    //     .attr("y", margin2.top+(1/3)*height2+4)
-    //     .text(formatting(miniDomain[0]));
-
-    // ranges2.append("text")
-    //     .attr("class", "avgMax")
-    //     .attr("text-anchor", "start")
-    //     .attr("x", margin2.left+width2+5)
-    //     .attr("y", margin2.top+(1/3)*height2+4)
-    //     .text(formatting(miniDomain[1]));
+        var svgMinis = d3.select("div#multiples").selectAll("svg").transition()
+            .delay(800)
+            .duration(750)
+        .style("opacity", 1);
 
     }
-
 
   });
 }

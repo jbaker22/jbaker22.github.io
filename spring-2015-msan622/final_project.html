@@ -25,14 +25,17 @@
 <body>
     <br>
     <section id="plots"><br>
-        <h4>Select a country:</h4>
-        <span id="listanchor" height="50"></span>
+        <h4>Select a country, and choose an alcohol type:</h4>
         <div id="lhs">
+        <span id="listanchor" height="80"></span>
+        <span id="countryName" height="80"></span>
           <!-- http://bl.ocks.org/KoGor/7024546 -->
           <svg id="map"></svg>
           <svg id="lines"></svg>
         </div>
-          <div id="multiples"></div>
+          <div id="multiples">
+              <div width="100%" height="80" id="rHeader">Regional Data</div>
+          </div>
     </section>
 <script>
 d3.select("svg#map")
@@ -55,6 +58,7 @@ d3.select("svg#lines")
 </script>
 <script src="final/final.js"></script>
 <section id="writeup">
+  <br><br>
     <h2>Submission Details</h2>
         <h3>Techniques</h3>
         <p>I chose to use three visualization techniques: 
