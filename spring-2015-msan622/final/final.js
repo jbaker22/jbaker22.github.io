@@ -317,18 +317,7 @@ function plotEverything(error, world, countryData) {
             .attr("class", "line")
             .attr("d", line);
 
-        console.log("line added:", linedata)
-
-        // add dots
-        // svgLine.selectAll(".dot")
-        //     .data(newdata.filter(function(d) { return +d.val; }))
-        //   .enter().append("circle")
-        //     .attr("class", "dot")
-        //     .attr("cx", line.x())
-        //     .attr("cy", line.y())
-        //     .attr("r", 3.5);
-
-
+        // console.log("line added:", linedata)
       }
 
 
@@ -372,8 +361,6 @@ function plotEverything(error, world, countryData) {
         header.transition().delay(750).duration(750)
             .text("Average Liters of " + cat + " Consumed per Capita, 2010-2013: " + results[0].region)
             .style('opacity', 1);
-        // return countryById[d.id] + " (" + results[0].region + ")";
-
 
         filtered = otherCountries.map(function(d) {
             if (typeof d[cat] != 'undefined') {
@@ -402,9 +389,7 @@ function plotEverything(error, world, countryData) {
             .attr("r", 5)
             .style("fill", "orangered"); 
 
-            // y.exit().remove();
-                   circles
-            // .duration(750)
+            circles
             .append("circle")
             .attr("cx", width2+3)
             .attr("cy", function(d) { return miniScale(d.avg) + margin2.top; })
@@ -454,7 +439,6 @@ function plotEverything(error, world, countryData) {
         filtered.sort(function(a, b) {
             return b.avg - a.avg;
         });
-
 
         miniDomain = d3.extent(filtered, function(d) { return d.avg; });
         miniScale = d3.scale.linear()

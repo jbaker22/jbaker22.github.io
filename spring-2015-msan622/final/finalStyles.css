@@ -48,10 +48,11 @@
 }
 
 #plots {
-    width: 1000px;
-    margin: 0 auto;
+    position: relative;
+    width: 1050px;
+    margin: auto;
     float: left;
-    height: 600px;
+    height: 650px;
 }
 
 #top {
