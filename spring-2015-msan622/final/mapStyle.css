@@ -13,6 +13,8 @@ svg#map {
   pointer-events: all;
   float: left;
   margin-top: 30px;
+  outline: thin solid lightgray;
+
 }
 
 .zone {

@@ -63,7 +63,23 @@ d3.select("svg#lines")
 </script>
 <script src="final/final.js"></script>
 <section id="writeup">
-  <br><br>
+    <h3>Findings/Conclusion</h3>
+    <p>
+        <ul>
+            <li>Among all nations with recorded data, Czech Republic had the highest annual average alcohol consumption for all types (13.08 liters per capita); by exploring data across all regions, with data sorted by type, finding the highest average per-capita value was straightforward</li>
+            <li>In Europe, the top 5 beer-drinking countries are: 
+                <ol><li>Czech Republic - 7.20</li>
+                    <li>Ireland - 6.68</li>
+                    <li>Germany - 6.32</li>
+                    <li>Austria - 5.52</li>
+                    <li>Poland - 5.23</li></ol>
+                Among them, Poland was the only country to see a net increase beer consumption over this time period; all other countries' consumption levels have steadily declined. 
+              </li>
+
+            <li>Perhaps unsurprisingly, France has the highest average per-capita consumption of wine worldwide from 2000-2013 (7.47). The next closest country is Portugal, with 5.45 per-capita consumption--a relatively wide difference. </li>
+        </ul>
+    </p>
+  <br>
     <h2>Submission Details</h2>
         <h3>Techniques</h3>
         <p>I chose to use three visualization techniques: 
@@ -75,7 +91,7 @@ d3.select("svg#lines")
         </p>
 
         <h3>Interactivity</h3>
-        <p>Interactivity with my project</p>
+        <p>For my project, I wanted to be country-centric with respect to what data was being displayed. As such, interactivity starts with the world map. Panning and zooming are enabled to allow users to home in on a particular nation, with a tooltip enabled to show the country names. Once a nation is clicked, the view will zoom in (from context to focus) on that country. The line chart will show the consumption per capita over time for the given alcohol type in the pull-down menu. Additionally, small multiples appear below both plots, showing the other countries that belong to the same region as the selected country. Each small multiple has a tooltip showing the full country name and average consumption for the time period of the given alcohol type. If a country is selected, and a user changes the alcohol type, the line chart and small multiples will smoothly update with the new data, including tooltips with new values. </p>
 
         <h3>Feedback</h3>
         <p>I received two primary points of feedback on <a href="http://jbaker22.github.io/spring-2015-msan622/project_sketch.html" target="_blank">my sketch</a>: 
@@ -92,12 +108,9 @@ d3.select("svg#lines")
                 <li><u>Data</u>: The data was not very clean. Observations could have both <code>null</code> AND "No data" values. Some countries had no consumption data at all, and had to be handled appropriately. Country names were often spelled differently, depending on the source (for example, "Korea, Republic of" versus "Korea (Republic of)" or "Republic of Korea"). Additionally, other data that I wanted to include--namely population figures, country codes, and the topoJSON codes--had to be merged together in some fashion. Ultimately, I managed to stitch a JSON file together of the various disparate sources to get the final, usable data set for use in D3. This step took, by far, the longest to address. </li>
                 <li><u>Interactivity</u>: It was a big problem trying to get each of the three plots to have linked interactivity. The map had it's own "mapping" between the drawn paths for each country, the country's ID and name, then linking those keys to the raw data plotted in the line and small multiples charts (a separate data set altogether from the data needed to plot the map alone). Additionally, it was hard to get changes in one plot or from the pull-down menu to reflect changes in the other plots appropriately. All-in-all, this was an interesting challenge, requiring careful use of scoping to allow each of the other plots to access the same data, while connecting actions between plots through country and/or region name. As part of this hurdle, another issue that came up related to transitions within the individual SVGs in the small multiples. Each of the plots have circles, and updating each of them with transitions at once (rather than deleting and redrawing) took some thinking through. </li>
                 <li><u>Bubble plot</u>: Originally, I wanted to replicate <a href="http://bost.ocks.org/mike/nations/" target="_blank">Mike Bostock's "The Wealth &amp; Health of Nations"</a> design using my data set. However, as I developed the page and interactions further, I felt like there was too much going on with that chart (13 years of data, 190+ countries, multiple regions, etc.) to glean any learnings. So, instead, I decided to create a line chart that clearly focused on the alcohol type and consumption levels for the selected country. </li>
-                <li><u>Small multiples design</u>: Horizontal bars were not going to work for the number of multiples I envisioned (I wanted to fit a lot of data into a smaller space), so I needed to custom-make the bars to be vertical. Thankfully, with some input from Griffin, I was able to come up with a way to develop a design from <a href="http://gokamoto.github.io/MSAN622-InformationVisualization/HW2/final.html#smallMultLegend" target="_blank">a previous homework she did</a>, but turned the multiples vertically. I felt this would be better than the typical bar chart we've done thus far. This led to my final challenge of... </li>
+                <li><u>Small multiples design</u>: Horizontal bars were not going to work for the number of multiples I envisioned (I wanted to fit a lot of data into a smaller space), so I needed to custom-make the bars to be vertical. Thankfully I was able to develop a design, with input from Griffin,from <a href="http://gokamoto.github.io/MSAN622-InformationVisualization/HW2/final.html#smallMultLegend" target="_blank">one of her previous homeworks</a>, but turned the multiples vertically. I felt this would be better than the typical bar chart we've seen in D3 thus far. This led to my final challenge of... </li>
                 <li><u>Overall layout</u>: My original sketch had the map and line plot on the left side, with the small multiples taking up the right side. However, after implementing this, I found myself constantly scrolling up and down to view the line updates. As a result, I chose to change the layout to a "top vs. bottom" design, with the regional data below the map and line chart. This proved to be a better layout, but setting the CSS and HTML in the right way took more time than I expected. </li>
             </ol>
-        </p>
-        <h3>Conclusion</h3>
-        <p>
         </p>
 </section>
 </body>
