@@ -42,6 +42,8 @@ function plotEverything(error, world, countryData) {
       countryById[d.id] = d.name;
     });
 
+    var focused = {};
+
     country_data = d3.json("alcohol_consumption.json", function(data) {
 
         var margin = {top: 30, right: 30, bottom: 40, left: 20},
@@ -170,10 +172,6 @@ function plotEverything(error, world, countryData) {
                   .call(zoom.translate(translate).scale(scale).event);
 
             // remove any lines in the chart
-            var svgLine = d3.select("svg#lines").select(".line").transition();
-            svgLine
-                .duration(750)
-                .remove(); // update line
 
             // svgLine.selectAll(".dot")
             //     .duration(1000)
@@ -258,22 +256,6 @@ function plotEverything(error, world, countryData) {
 
     }
 
-    function convertData(entryData) {
-
-        // get the category that's selected
-        // var linedata = data[cat];
-        // console.log("linedata:", entryData);
-        var newdata = entryData.map(function(d) {
-            return {
-                year: +d[0],
-                val: +d[1]
-            };
-        });    
-        // console.log("newdata:", newdata);
-
-        return newdata;
-
-    }
 
     function lineseries(entryData) {
         // http://bl.ocks.org/mbostock/3883195
@@ -326,7 +308,6 @@ function plotEverything(error, world, countryData) {
 
         // get data for the new category
         filterData = results[0][cat];
-        console.log("filterData:", filterData);
 
         // convert array data types
         var linedata = filterData.map(function(d) {
@@ -362,6 +343,7 @@ function plotEverything(error, world, countryData) {
             .text("Average Liters of " + cat + " Consumed per Capita, 2010-2013: " + results[0].region)
             .style('opacity', 1);
 
+        // get new category averages for the countries
         filtered = otherCountries.map(function(d) {
             if (typeof d[cat] != 'undefined') {
                 return {
@@ -378,24 +360,23 @@ function plotEverything(error, world, countryData) {
             .domain(miniDomain).range([height2+5, 0]);
 
         // select each svg
-        filtered.forEach(function(d) {
+        circles = d3.selectAll("svg.smalls").selectAll("circle")
+            .data(filtered);
+
+        circles.transition()
+            .duration(750)
+            .style("opacity", 0).remove();
+
+
+        // add new circles
+        filtered.map(function(d) {
             circles = d3.select("svg#"+d.code)   // select the svg with the same country name
-            .datum(d)
-            .selectAll(".circles")
             .datum(d)
             .append("circle")
             .attr("cx", width2+3)
             .attr("cy", function(d) { return miniScale(d.avg) + margin2.top; })
             .attr("r", 5)
             .style("fill", "orangered"); 
-
-            circles
-            .append("circle")
-            .attr("cx", width2+3)
-            .attr("cy", function(d) { return miniScale(d.avg) + margin2.top; })
-            .attr("r", 5)
-            .style("fill", "orangered");
-
         })
     }
 
@@ -407,19 +388,15 @@ function plotEverything(error, world, countryData) {
         var margin2 = {top: 20, right: 10, bottom: 20, left: 10},
             width2 = 31 - margin2.right - margin2.left,
             height2 = 110 - margin2.top - margin2.bottom;
-        // lines will be 90 tall, 4 wide
 
         // identify the region the country is in
         region = country["region"];
 
-        console.log("got region: ", region, cat)
-        console.log("results region: ", results[0].region)
         // get all countries that are from the same region
         otherCountries = data.filter(function(entry) {
                 return entry["region"] === region;
         });
 
-        console.log("other countries!", otherCountries)
         // get the current category
         cat = d3.select("select").property("value");
 
@@ -451,7 +428,6 @@ function plotEverything(error, world, countryData) {
             .append("svg")
             .attr("class", "smalls")
             .attr("id", function(d) { return d.code; })
-            // .attr("style", "outline: thin solid red;")  
             .attr("width", width2 + margin2.left + margin2.right)
             .attr("height", height2 + margin2.top + margin2.bottom)
             .style("opacity", 0)
