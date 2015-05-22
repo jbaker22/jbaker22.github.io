@@ -15,7 +15,7 @@ var svgMap = d3.select("svg#map")
 .attr("height", mapHeight);
 
 var zoneTooltip = d3.select("section#plots").append("div").attr("class", "zoneTooltip"),
-miniTooltip = d3.select("div#multiples").append("div").attr("class", "zoneTooltip"),
+miniTooltip = d3.select("div#multiples").append("div").attr("class", "zoneTooltip").attr("id", "miniTooltip"),
 infoLabel = d3.select("#countryName").attr("class", "infoLabel");
 
 var g = svgMap.append("g");
@@ -359,25 +359,32 @@ function plotEverything(error, world, countryData) {
         miniScale = d3.scale.linear()
             .domain(miniDomain).range([height2+5, 0]);
 
-        // select each svg
+        // select each svg, maintaining country code
         circles = d3.selectAll("svg.smalls").selectAll("circle")
-            .data(filtered);
+            .data(filtered, function(d) { return d.code});
 
+        // define new circles to add
+        circles.append("circle")
+            .attr("cy", function(d) { return miniScale(d.avg) + margin2.top; })
+            .style("fill", "orangered");
+        // move circles to new location on range
         circles.transition()
             .duration(750)
-            .style("opacity", 0).remove();
+            .attr("cy", function(d) { return miniScale(d.avg) + margin2.top; });
 
+        // remove old circles
+        circles.exit().remove();
 
-        // add new circles
-        filtered.map(function(d) {
-            circles = d3.select("svg#"+d.code)   // select the svg with the same country name
-            .datum(d)
-            .append("circle")
-            .attr("cx", width2+3)
-            .attr("cy", function(d) { return miniScale(d.avg) + margin2.top; })
-            .attr("r", 5)
-            .style("fill", "orangered"); 
-        })
+        // update tooltips
+        var svgMinis = d3.select("div#multiples").selectAll("svg")
+            .data(filtered, function(d) {return d.code})
+            .on("mouseover", function(d) {
+                miniTooltip.text(d.name + ": " + formatting(d.avg))
+                .style("left", (d3.event.pageX + 70) + "px")
+                .style("top", (d3.event.pageY - 15) + "px")
+                .style("display", "block");
+            });
+
     }
 
 
